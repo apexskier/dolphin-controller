@@ -10,6 +10,7 @@ import UIKit
 import ARMDevSuite
 
 class GCVC: UIViewController {
+	static let shared = GCVC()
 	var alerts: AlertManager!
 
 	override func viewDidLoad() {

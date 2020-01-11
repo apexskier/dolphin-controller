@@ -11,14 +11,94 @@ import UIKit
 import ARMDevSuite
 import FlexColorPicker
 
-extension UIDevice {
-	static func vibrate(intensity: CGFloat) {
-		let generator = UIImpactFeedbackGenerator()
-		generator.impactOccurred(intensity: intensity)
+import AVFoundation
+
+
+extension NSLayoutConstraint {
+	func constraintWithMultiplier(_ multiplier: CGFloat) -> NSLayoutConstraint {
+		return NSLayoutConstraint(item: self.firstItem!, attribute: self.firstAttribute, relatedBy: self.relation, toItem: self.secondItem, attribute: self.secondAttribute, multiplier: multiplier, constant: self.constant)
 	}
-	static func vibrate(style: UIImpactFeedbackGenerator.FeedbackStyle) {
+}
+
+class Preferences {
+	static var shared = Preferences()
+	
+	class Preference<T> {
+		var val: T
+		var key: String
+		
+		init(`default`: T, key: String) {
+			self.val = `default`
+			self.key = key
+		}
+		
+	}
+	
+	var soundOn: Preference<Bool> = Preference(default: false, key: "feedback-sound")
+	var hapticFeedback: Preference<Bool> = Preference(default: true, key: "feedback-haptics")
+	
+	var sensitivity: Preference<CGFloat> = Preference(default: 0.25, key: "ctrl-sensitivity")
+	var stickBroadcastFrequency: Preference<CGFloat> = Preference(default: 3, key: "ctrl-stickPolling")
+	var bButtonScale: Preference<CGFloat> = Preference(default: 1, key: "ctrl-bButton")
+	
+	init() {
+		// load from userDefaults
+		for pref in [soundOn, hapticFeedback] {
+			if UserDefaults.standard.object(forKey: pref.key) != nil {
+				pref.val = UserDefaults.standard.bool(forKey: pref.key)
+			}
+		}
+		
+		for pref in [sensitivity, stickBroadcastFrequency, bButtonScale] {
+			if UserDefaults.standard.object(forKey: pref.key) != nil {
+				pref.val = CGFloat(UserDefaults.standard.float(forKey: pref.key))
+				print(UserDefaults.standard.float(forKey: pref.key))
+			}
+		}
+	}
+	
+	func storeToUserDefaults() {
+		[soundOn, hapticFeedback].forEach { (pref) in
+			UserDefaults.standard.set(pref.val, forKey: pref.key)
+		}
+		
+		[sensitivity, stickBroadcastFrequency, bButtonScale].forEach { (pref) in
+			UserDefaults.standard.set(pref.val, forKey: pref.key)
+		}
+		
+		
+	}
+	
+	
+}
+
+
+extension UIDevice {
+	static var player: AVAudioPlayer?
+	static func prepSoundFile() {
+		
+		guard let url = Bundle.main.url(forResource: "btn", withExtension: "mp3") else { return }
+		
+		do {
+			try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+			try AVAudioSession.sharedInstance().setActive(true)
+			player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
+			
+		} catch let error {
+			print(error.localizedDescription)
+		}
+	}
+	
+	static func buttonFeedback(style: UIImpactFeedbackGenerator.FeedbackStyle) {
 		let generator = UIImpactFeedbackGenerator(style: style)
-		generator.impactOccurred()
+		if Preferences.shared.hapticFeedback.val {
+			generator.impactOccurred()
+		}
+		if Preferences.shared.soundOn.val {
+			player?.currentTime = 0
+			player?.play()
+		}
+		
 	}
 }
 
@@ -44,15 +124,15 @@ class GCButton: UIButton {
 	}
 	
 	@objc func handleDown() {
-		UIDevice.vibrate(style: .light)
+		UIDevice.buttonFeedback(style: .light)
 		delegate?.didPressGCButton(self)
 	}
 	@objc func handleUp() {
-		UIDevice.vibrate(style: .heavy)
+		UIDevice.buttonFeedback(style: .heavy)
 		delegate?.didReleaseGCButton(self)
 	}
 	@objc func handleUpWarn() {
-		UIDevice.vibrate(style: .heavy)
+		UIDevice.buttonFeedback(style: .heavy)
 		delegate?.didReleaseGCButton(self)
 	}
 	
@@ -78,6 +158,7 @@ class GCStick: UIView {
 	var delegate: GCStickDelegate?
 	
 	var stickIndicator: UIView = UIView()
+	private var stickNameLabel: UILabel = UILabel()
 	
 	private var dynamicX: NSLayoutConstraint!
 	private var dynamicY: NSLayoutConstraint!
@@ -92,7 +173,9 @@ class GCStick: UIView {
 	private var dynamicYOrigin: NSLayoutConstraint!
 	
 	private var cnt: Int = 0
-	var broadcastSampling: Int = 3
+	var broadcastSampling: Int {
+		return Int(Preferences.shared.stickBroadcastFrequency.val)
+	}
 	
 	init(name: String, delegate: GCStickDelegate, size: CGFloat = 60) {
 		self.dolphinName = name
@@ -103,7 +186,7 @@ class GCStick: UIView {
 		buildIndicator(size: size)
 		
 		self.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(panned(_:))))
-				
+		
 		
 	}
 	
@@ -120,9 +203,13 @@ class GCStick: UIView {
 		
 	}
 	
+	func setLabel(name: String) {
+		self.stickNameLabel.text = name
+	}
+	
 	@objc func panned(_ g: UIPanGestureRecognizer) {
 		if g.state == .began {
-			UIDevice.vibrate(style: .heavy)
+			UIDevice.buttonFeedback(style: .heavy)
 			let curr = g.location(in: self)
 			let mv = g.translation(in: self)
 			
@@ -136,12 +223,12 @@ class GCStick: UIView {
 			self.delegate?.didRelease(self)
 			cnt = 0
 		} else {
-//			setStickPosition(p: g.location(in: self))
+			//			setStickPosition(p: g.location(in: self))
 			cnt += 1
 			if cnt % broadcastSampling == 1 {
 				let movement = g.translation(in: self)
 				
-				let threshold: CGFloat = 0.25
+				let threshold: CGFloat = Preferences.shared.sensitivity.val
 				
 				
 				let ref = min(self.frame.width, self.frame.height)
@@ -167,7 +254,7 @@ class GCStick: UIView {
 				}
 				
 				if violated && cnt % 5 == 0 {
-					UIDevice.vibrate(style: .light)
+					UIDevice.buttonFeedback(style: .light)
 				}
 				
 				if let lo = lastOrigin {
@@ -197,6 +284,13 @@ class GCStick: UIView {
 		stickIndicator.heightAnchor.constraint(equalToConstant: indicatorSize).isActive = true
 		stickIndicator.layer.cornerRadius = indicatorSize/2
 		stickIndicator.clipsToBounds = true
+		
+		stickIndicator.addSubview(self.stickNameLabel)
+		self.stickNameLabel.center(in: stickIndicator)
+		self.stickNameLabel.font = UIFont.boldSystemFont(ofSize: 20)
+		self.stickNameLabel.adjustsFontSizeToFitWidth = true
+		
+		
 		
 		let originIndicatorScale: CGFloat = 1.2
 		
@@ -237,6 +331,7 @@ class GCStick: UIView {
 		self.originIndicator.backgroundColor = c
 		self.originIndicator.addBorder(colored: c, thickness: 0.5)
 		
+		self.stickNameLabel.textColor = c.modified(withAdditionalHue: 0, additionalSaturation: 0, additionalBrightness: -0.4)
 	}
 	
 	required init?(coder: NSCoder) {
@@ -250,6 +345,7 @@ class ControllerViewController: GCVC {
 	var playerID: Int!
 	
 	// System
+	var bButtonSizing: NSLayoutConstraint!
 	
 	// UI Components
 	var joyStick: GCStick!
@@ -286,6 +382,25 @@ class ControllerViewController: GCVC {
 		}
 	}
 	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if
+			let nav = segue.destination as? UINavigationController,
+			let config = nav.viewControllers.first as? ConfigurationVC {
+			config.onComplete = {
+				Preferences.shared.storeToUserDefaults()
+				self.updateUILayout()
+			}
+		}
+		
+	}
+	
+	func updateUILayout() {
+		self.bButtonSizing.isActive = false
+		self.bButton.removeConstraint(self.bButtonSizing)
+		self.bButtonSizing = self.bButton.widthAnchor.constraint(equalTo: self.aButton.widthAnchor, multiplier: 0.5 * Preferences.shared.bButtonScale.val)
+		self.bButtonSizing.isActive = true
+		self.bButton.layoutIfNeeded()
+	}
 	
 	override func viewDidLayoutSubviews() {
 		let circleButtons: [GCButton] = [aButton, bButton, sButton]
@@ -393,8 +508,10 @@ class ControllerViewController: GCVC {
 			configs.append(ActionConfig(title: "Clear Controller Color", style: .default) {
 				self.backgroundColor = nil
 			})
-			
 		}
+		configs.append(ActionConfig(title: "Configure Controller", style: .default) {
+			self.performSegue(withIdentifier: "controlller2config", sender: nil)
+		})
 		
 		self.alerts.showActionSheet(withTitle: "Settings", andDetail: "Player \(self.playerID!)", configs: configs)
 	}
@@ -470,8 +587,9 @@ class ControllerViewController: GCVC {
 		view.addSubview(bButton)
 		bButton.topAnchor.constraint(equalTo: aButton.bottomAnchor, constant: -.padding).isActive = true
 		bButton.rightAnchor.constraint(equalTo: aButton.leftAnchor, constant: -.padding * 0.5).isActive = true
-		bButton.widthAnchor.constraint(equalTo: aButton.widthAnchor, multiplier: 0.5).isActive = true
-		bButton.widthAnchor.constraint(equalTo: bButton.heightAnchor, multiplier: 1).isActive = true
+		self.bButtonSizing = bButton.widthAnchor.constraint(equalTo: aButton.widthAnchor, multiplier: 0.5 * Preferences.shared.bButtonScale.val)
+		self.bButtonSizing.isActive = true
+		bButton.heightAnchor.constraint(equalTo: bButton.widthAnchor, multiplier: 1).isActive = true
 		bButton.setColor(.gcRed)
 		bButton.setTitle("B", for: .normal)
 		
@@ -493,6 +611,7 @@ class ControllerViewController: GCVC {
 		cStick.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -.padding * 0.5).isActive = true
 		
 		cStick.setColor(.gcYellow)
+		cStick.setLabel(name: "C")
 		
 		
 	}
@@ -580,16 +699,16 @@ class ControllerViewController: GCVC {
 
 extension ControllerViewController: GCButtonDelegate {
 	func didPressGCButton(_ gcButton: GCButton) {
-//		print("Press received for \(gcButton.dolphinName)")
+		//		print("Press received for \(gcButton.dolphinName)")
 		ControllerAPI.shared.sendCommand(player: self.playerID, action: "PRESS", control: gcButton.dolphinName, value: nil) { (err) in
-//			print(err)
+			//			print(err)
 		}
 	}
 	
 	func didReleaseGCButton(_ gcButton: GCButton) {
-//		print("Release received for \(gcButton.dolphinName)")
+		//		print("Release received for \(gcButton.dolphinName)")
 		ControllerAPI.shared.sendCommand(player: self.playerID, action: "RELEASE", control: gcButton.dolphinName, value: nil) { (err) in
-//			print(err)
+			//			print(err)
 		}
 	}
 	
@@ -599,7 +718,7 @@ extension ControllerViewController: GCButtonDelegate {
 extension ControllerViewController: GCStickDelegate {
 	func gcStick(_ gcStick: GCStick, didMoveTo point: CGPoint) {
 		ControllerAPI.shared.sendCommand(player: self.playerID, action: "SET", control: gcStick.dolphinName, value: "\((point.x + 1)/2) \((-point.y + 1)/2)") { (err) in
-//			print("err")
+			//			print("err")
 		}
 	}
 	

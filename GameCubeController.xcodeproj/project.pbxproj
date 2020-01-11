@@ -11,6 +11,10 @@
 		B7A16E9423C87F3D003C66B3 /* NetworkingAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A16E9323C87F3D003C66B3 /* NetworkingAPI.swift */; };
 		B7A16E9623C89747003C66B3 /* SetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A16E9523C89747003C66B3 /* SetupViewController.swift */; };
 		B7A16E9923C89776003C66B3 /* ControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A16E9823C89776003C66B3 /* ControllerViewController.swift */; };
+		B7D3741C23C9C3A2009A84D6 /* PreferenceToggleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D3741B23C9C3A2009A84D6 /* PreferenceToggleCell.swift */; };
+		B7D3741E23C9D296009A84D6 /* PreferenceNumericCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D3741D23C9D296009A84D6 /* PreferenceNumericCell.swift */; };
+		B7D7D90D23C9906A001D80AB /* btn.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B7D7D90C23C9906A001D80AB /* btn.mp3 */; };
+		B7D7D90F23C99377001D80AB /* ConfigurationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7D90E23C99377001D80AB /* ConfigurationVC.swift */; };
 		B7EB3DD523C86F040068084A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB3DD423C86F040068084A /* AppDelegate.swift */; };
 		B7EB3DD723C86F040068084A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB3DD623C86F040068084A /* SceneDelegate.swift */; };
 		B7EB3DDC23C86F040068084A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7EB3DDA23C86F040068084A /* Main.storyboard */; };
@@ -26,6 +30,10 @@
 		B7A16E9323C87F3D003C66B3 /* NetworkingAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingAPI.swift; sourceTree = "<group>"; };
 		B7A16E9523C89747003C66B3 /* SetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupViewController.swift; sourceTree = "<group>"; };
 		B7A16E9823C89776003C66B3 /* ControllerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerViewController.swift; sourceTree = "<group>"; };
+		B7D3741B23C9C3A2009A84D6 /* PreferenceToggleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceToggleCell.swift; sourceTree = "<group>"; };
+		B7D3741D23C9D296009A84D6 /* PreferenceNumericCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferenceNumericCell.swift; sourceTree = "<group>"; };
+		B7D7D90C23C9906A001D80AB /* btn.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = btn.mp3; sourceTree = "<group>"; };
+		B7D7D90E23C99377001D80AB /* ConfigurationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationVC.swift; sourceTree = "<group>"; };
 		B7EB3DD123C86F040068084A /* GameCubeController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameCubeController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7EB3DD423C86F040068084A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B7EB3DD623C86F040068084A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -51,18 +59,13 @@
 		B7A16E9723C8975B003C66B3 /* Viewcontrollers */ = {
 			isa = PBXGroup;
 			children = (
+				B7A16E9823C89776003C66B3 /* ControllerViewController.swift */,
 				B7A16E9523C89747003C66B3 /* SetupViewController.swift */,
-				B7A16E9A23C899BB003C66B3 /* Controller */,
+				B7D7D90E23C99377001D80AB /* ConfigurationVC.swift */,
+				B7D3741B23C9C3A2009A84D6 /* PreferenceToggleCell.swift */,
+				B7D3741D23C9D296009A84D6 /* PreferenceNumericCell.swift */,
 			);
 			path = Viewcontrollers;
-			sourceTree = "<group>";
-		};
-		B7A16E9A23C899BB003C66B3 /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				B7A16E9823C89776003C66B3 /* ControllerViewController.swift */,
-			);
-			path = Controller;
 			sourceTree = "<group>";
 		};
 		B7EB3DC823C86F040068084A = {
@@ -86,6 +89,7 @@
 		B7EB3DD323C86F040068084A /* GameCubeController */ = {
 			isa = PBXGroup;
 			children = (
+				B7D7D90C23C9906A001D80AB /* btn.mp3 */,
 				B7EB3DD423C86F040068084A /* AppDelegate.swift */,
 				B7A16E9123C87076003C66B3 /* UIAttributeExtensions.swift */,
 				B7EB3DD623C86F040068084A /* SceneDelegate.swift */,
@@ -178,6 +182,7 @@
 			files = (
 				B7EB3DE123C86F050068084A /* LaunchScreen.storyboard in Resources */,
 				B7EB3DDE23C86F050068084A /* Assets.xcassets in Resources */,
+				B7D7D90D23C9906A001D80AB /* btn.mp3 in Resources */,
 				B7EB3DDC23C86F040068084A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -234,9 +239,12 @@
 				B7A16E9923C89776003C66B3 /* ControllerViewController.swift in Sources */,
 				B7A16E9623C89747003C66B3 /* SetupViewController.swift in Sources */,
 				B7A16E9423C87F3D003C66B3 /* NetworkingAPI.swift in Sources */,
+				B7D7D90F23C99377001D80AB /* ConfigurationVC.swift in Sources */,
 				B7A16E9223C87076003C66B3 /* UIAttributeExtensions.swift in Sources */,
 				B7EB3DD523C86F040068084A /* AppDelegate.swift in Sources */,
+				B7D3741C23C9C3A2009A84D6 /* PreferenceToggleCell.swift in Sources */,
 				B7EB3DD723C86F040068084A /* SceneDelegate.swift in Sources */,
+				B7D3741E23C9D296009A84D6 /* PreferenceNumericCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -382,7 +390,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.3;
+				CURRENT_PROJECT_VERSION = 1.0.4;
 				DEVELOPMENT_TEAM = 3CDZ864BSN;
 				INFOPLIST_FILE = GameCubeController/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -403,7 +411,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.3;
+				CURRENT_PROJECT_VERSION = 1.0.4;
 				DEVELOPMENT_TEAM = 3CDZ864BSN;
 				INFOPLIST_FILE = GameCubeController/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
