@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>GameCubeController.ipa</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>arm64</string>
+			</array>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string>BE7CF0069791C02243F6B52C32B6AE5F16675F2E</string>
+				<key>dateExpires</key>
+				<string>12/30/20</string>
+				<key>type</key>
+				<string>Apple Distribution</string>
+			</dict>
+			<key>embeddedBinaries</key>
+			<array>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>BE7CF0069791C02243F6B52C32B6AE5F16675F2E</string>
+						<key>dateExpires</key>
+						<string>12/30/20</string>
+						<key>type</key>
+						<string>Apple Distribution</string>
+					</dict>
+					<key>name</key>
+					<string>ARMDevSuite.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>3CDZ864BSN</string>
+						<key>name</key>
+						<string>Boxlet Storage Co.</string>
+					</dict>
+				</dict>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>BE7CF0069791C02243F6B52C32B6AE5F16675F2E</string>
+						<key>dateExpires</key>
+						<string>12/30/20</string>
+						<key>type</key>
+						<string>Apple Distribution</string>
+					</dict>
+					<key>name</key>
+					<string>FlexColorPicker.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>3CDZ864BSN</string>
+						<key>name</key>
+						<string>Boxlet Storage Co.</string>
+					</dict>
+				</dict>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>BE7CF0069791C02243F6B52C32B6AE5F16675F2E</string>
+						<key>dateExpires</key>
+						<string>12/30/20</string>
+						<key>type</key>
+						<string>Apple Distribution</string>
+					</dict>
+					<key>name</key>
+					<string>IQKeyboardManager.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>3CDZ864BSN</string>
+						<key>name</key>
+						<string>Boxlet Storage Co.</string>
+					</dict>
+				</dict>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>BE7CF0069791C02243F6B52C32B6AE5F16675F2E</string>
+						<key>dateExpires</key>
+						<string>12/30/20</string>
+						<key>type</key>
+						<string>Apple Distribution</string>
+					</dict>
+					<key>name</key>
+					<string>JGProgressHUD.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>3CDZ864BSN</string>
+						<key>name</key>
+						<string>Boxlet Storage Co.</string>
+					</dict>
+				</dict>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>BE7CF0069791C02243F6B52C32B6AE5F16675F2E</string>
+						<key>dateExpires</key>
+						<string>12/30/20</string>
+						<key>type</key>
+						<string>Apple Distribution</string>
+					</dict>
+					<key>name</key>
+					<string>SkyFloatingLabelTextField.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>3CDZ864BSN</string>
+						<key>name</key>
+						<string>Boxlet Storage Co.</string>
+					</dict>
+				</dict>
+			</array>
+			<key>entitlements</key>
+			<dict>
+				<key>application-identifier</key>
+				<string>3CDZ864BSN.com.boxletstorage.fun.GameCubeController</string>
+				<key>com.apple.developer.team-identifier</key>
+				<string>3CDZ864BSN</string>
+				<key>get-task-allow</key>
+				<false/>
+				<key>keychain-access-groups</key>
+				<array>
+					<string>3CDZ864BSN.com.boxletstorage.fun.GameCubeController</string>
+				</array>
+			</dict>
+			<key>name</key>
+			<string>GameCubeController.app</string>
+			<key>profile</key>
+			<dict>
+				<key>UUID</key>
+				<string>1d65ef78-f4b9-4b78-a622-58a834215f4f</string>
+				<key>name</key>
+				<string>iOS Team Ad Hoc Provisioning Profile: *</string>
+			</dict>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>3CDZ864BSN</string>
+				<key>name</key>
+				<string>Boxlet Storage Co.</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

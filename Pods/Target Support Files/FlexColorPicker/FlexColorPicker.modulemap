@@ -1,0 +1,6 @@
+framework module FlexColorPicker {
+  umbrella header "FlexColorPicker-umbrella.h"
+
+  export *
+  module * { export * }
+}

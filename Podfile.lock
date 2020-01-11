@@ -1,0 +1,44 @@
+PODS:
+  - ARMDevSuite/Alerts (0.1.74):
+    - ARMDevSuite/ProgressHud
+    - JGProgressHUD
+  - ARMDevSuite/Layouts (0.1.74)
+  - ARMDevSuite/ProgressHud (0.1.74):
+    - ARMDevSuite/Layouts
+    - ARMDevSuite/UISuite
+  - ARMDevSuite/TextField (0.1.74):
+    - ARMDevSuite/UISuite
+    - SkyFloatingLabelTextField (~> 3.0)
+  - ARMDevSuite/UISuite (0.1.74):
+    - ARMDevSuite/Layouts
+  - FlexColorPicker (1.3.1)
+  - IQKeyboardManager (6.5.4)
+  - JGProgressHUD (2.1)
+  - SkyFloatingLabelTextField (3.8.0)
+
+DEPENDENCIES:
+  - ARMDevSuite/Alerts
+  - ARMDevSuite/ProgressHud
+  - ARMDevSuite/TextField
+  - ARMDevSuite/UISuite
+  - FlexColorPicker
+  - IQKeyboardManager
+
+SPEC REPOS:
+  trunk:
+    - ARMDevSuite
+    - FlexColorPicker
+    - IQKeyboardManager
+    - JGProgressHUD
+    - SkyFloatingLabelTextField
+
+SPEC CHECKSUMS:
+  ARMDevSuite: 1f8990e073f585b634b28b731a10c9cf585f525a
+  FlexColorPicker: e627af3d744786378ae65e53214528cc31105921
+  IQKeyboardManager: 72b359cd7e777e3a984cedbe05f8da45320cbb63
+  JGProgressHUD: aa403e9a5b45cae98903c4600cccdd98c0c3ec90
+  SkyFloatingLabelTextField: 5a338412114808e961fe2d14ea2c5452c8b6e4aa
+
+PODFILE CHECKSUM: a9d37e1765f13c7ae4cc65b2a3b72320ac04ade9
+
+COCOAPODS: 1.8.4

@@ -1,0 +1,6 @@
+framework module ARMDevSuite {
+  umbrella header "ARMDevSuite-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,6 @@
+${PODS_ROOT}/Target Support Files/Pods-GameCubeController/Pods-GameCubeController-frameworks.sh
+${BUILT_PRODUCTS_DIR}/ARMDevSuite/ARMDevSuite.framework
+${BUILT_PRODUCTS_DIR}/FlexColorPicker/FlexColorPicker.framework
+${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework
+${BUILT_PRODUCTS_DIR}/JGProgressHUD/JGProgressHUD.framework
+${BUILT_PRODUCTS_DIR}/SkyFloatingLabelTextField/SkyFloatingLabelTextField.framework

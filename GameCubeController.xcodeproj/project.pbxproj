@@ -1,0 +1,445 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B7A16E9223C87076003C66B3 /* UIAttributeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A16E9123C87076003C66B3 /* UIAttributeExtensions.swift */; };
+		B7A16E9423C87F3D003C66B3 /* NetworkingAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A16E9323C87F3D003C66B3 /* NetworkingAPI.swift */; };
+		B7A16E9623C89747003C66B3 /* SetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A16E9523C89747003C66B3 /* SetupViewController.swift */; };
+		B7A16E9923C89776003C66B3 /* ControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A16E9823C89776003C66B3 /* ControllerViewController.swift */; };
+		B7EB3DD523C86F040068084A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB3DD423C86F040068084A /* AppDelegate.swift */; };
+		B7EB3DD723C86F040068084A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB3DD623C86F040068084A /* SceneDelegate.swift */; };
+		B7EB3DDC23C86F040068084A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7EB3DDA23C86F040068084A /* Main.storyboard */; };
+		B7EB3DDE23C86F050068084A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7EB3DDD23C86F050068084A /* Assets.xcassets */; };
+		B7EB3DE123C86F050068084A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7EB3DDF23C86F050068084A /* LaunchScreen.storyboard */; };
+		E970090D168A14A39CD7C567 /* Pods_GameCubeController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40FAC7B74F4083FDDC84402A /* Pods_GameCubeController.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1D0C71A2C37AD16F17D6E637 /* Pods-GameCubeController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GameCubeController.debug.xcconfig"; path = "Target Support Files/Pods-GameCubeController/Pods-GameCubeController.debug.xcconfig"; sourceTree = "<group>"; };
+		40FAC7B74F4083FDDC84402A /* Pods_GameCubeController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GameCubeController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7A16E9123C87076003C66B3 /* UIAttributeExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAttributeExtensions.swift; sourceTree = "<group>"; };
+		B7A16E9323C87F3D003C66B3 /* NetworkingAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingAPI.swift; sourceTree = "<group>"; };
+		B7A16E9523C89747003C66B3 /* SetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupViewController.swift; sourceTree = "<group>"; };
+		B7A16E9823C89776003C66B3 /* ControllerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerViewController.swift; sourceTree = "<group>"; };
+		B7EB3DD123C86F040068084A /* GameCubeController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameCubeController.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7EB3DD423C86F040068084A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B7EB3DD623C86F040068084A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		B7EB3DDB23C86F040068084A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B7EB3DDD23C86F050068084A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B7EB3DE023C86F050068084A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B7EB3DE223C86F050068084A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DF261CD382A1BABF2CA542C0 /* Pods-GameCubeController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GameCubeController.release.xcconfig"; path = "Target Support Files/Pods-GameCubeController/Pods-GameCubeController.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B7EB3DCE23C86F040068084A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E970090D168A14A39CD7C567 /* Pods_GameCubeController.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B7A16E9723C8975B003C66B3 /* Viewcontrollers */ = {
+			isa = PBXGroup;
+			children = (
+				B7A16E9523C89747003C66B3 /* SetupViewController.swift */,
+				B7A16E9A23C899BB003C66B3 /* Controller */,
+			);
+			path = Viewcontrollers;
+			sourceTree = "<group>";
+		};
+		B7A16E9A23C899BB003C66B3 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				B7A16E9823C89776003C66B3 /* ControllerViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		B7EB3DC823C86F040068084A = {
+			isa = PBXGroup;
+			children = (
+				B7EB3DD323C86F040068084A /* GameCubeController */,
+				B7EB3DD223C86F040068084A /* Products */,
+				D23E821B89014945A8ED29FF /* Pods */,
+				CDB108C04EAE30EEDB9F9ABC /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		B7EB3DD223C86F040068084A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B7EB3DD123C86F040068084A /* GameCubeController.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B7EB3DD323C86F040068084A /* GameCubeController */ = {
+			isa = PBXGroup;
+			children = (
+				B7EB3DD423C86F040068084A /* AppDelegate.swift */,
+				B7A16E9123C87076003C66B3 /* UIAttributeExtensions.swift */,
+				B7EB3DD623C86F040068084A /* SceneDelegate.swift */,
+				B7A16E9723C8975B003C66B3 /* Viewcontrollers */,
+				B7A16E9323C87F3D003C66B3 /* NetworkingAPI.swift */,
+				B7EB3DDD23C86F050068084A /* Assets.xcassets */,
+				B7EB3DDA23C86F040068084A /* Main.storyboard */,
+				B7EB3DDF23C86F050068084A /* LaunchScreen.storyboard */,
+				B7EB3DE223C86F050068084A /* Info.plist */,
+			);
+			path = GameCubeController;
+			sourceTree = "<group>";
+		};
+		CDB108C04EAE30EEDB9F9ABC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				40FAC7B74F4083FDDC84402A /* Pods_GameCubeController.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D23E821B89014945A8ED29FF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1D0C71A2C37AD16F17D6E637 /* Pods-GameCubeController.debug.xcconfig */,
+				DF261CD382A1BABF2CA542C0 /* Pods-GameCubeController.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B7EB3DD023C86F040068084A /* GameCubeController */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B7EB3DE523C86F050068084A /* Build configuration list for PBXNativeTarget "GameCubeController" */;
+			buildPhases = (
+				E0FD783B1DCC5867F104EF9C /* [CP] Check Pods Manifest.lock */,
+				B7EB3DCD23C86F040068084A /* Sources */,
+				B7EB3DCE23C86F040068084A /* Frameworks */,
+				B7EB3DCF23C86F040068084A /* Resources */,
+				CA0F509D377F3A844D589199 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GameCubeController;
+			productName = GameCubeController;
+			productReference = B7EB3DD123C86F040068084A /* GameCubeController.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B7EB3DC923C86F040068084A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1130;
+				LastUpgradeCheck = 1130;
+				ORGANIZATIONNAME = "Mobile Developers of Berkeley";
+				TargetAttributes = {
+					B7EB3DD023C86F040068084A = {
+						CreatedOnToolsVersion = 11.3;
+					};
+				};
+			};
+			buildConfigurationList = B7EB3DCC23C86F040068084A /* Build configuration list for PBXProject "GameCubeController" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B7EB3DC823C86F040068084A;
+			productRefGroup = B7EB3DD223C86F040068084A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B7EB3DD023C86F040068084A /* GameCubeController */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B7EB3DCF23C86F040068084A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7EB3DE123C86F050068084A /* LaunchScreen.storyboard in Resources */,
+				B7EB3DDE23C86F050068084A /* Assets.xcassets in Resources */,
+				B7EB3DDC23C86F040068084A /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CA0F509D377F3A844D589199 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-GameCubeController/Pods-GameCubeController-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-GameCubeController/Pods-GameCubeController-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GameCubeController/Pods-GameCubeController-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E0FD783B1DCC5867F104EF9C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-GameCubeController-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B7EB3DCD23C86F040068084A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7A16E9923C89776003C66B3 /* ControllerViewController.swift in Sources */,
+				B7A16E9623C89747003C66B3 /* SetupViewController.swift in Sources */,
+				B7A16E9423C87F3D003C66B3 /* NetworkingAPI.swift in Sources */,
+				B7A16E9223C87076003C66B3 /* UIAttributeExtensions.swift in Sources */,
+				B7EB3DD523C86F040068084A /* AppDelegate.swift in Sources */,
+				B7EB3DD723C86F040068084A /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		B7EB3DDA23C86F040068084A /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B7EB3DDB23C86F040068084A /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		B7EB3DDF23C86F050068084A /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B7EB3DE023C86F050068084A /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		B7EB3DE323C86F050068084A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		B7EB3DE423C86F050068084A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B7EB3DE623C86F050068084A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1D0C71A2C37AD16F17D6E637 /* Pods-GameCubeController.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.0.3;
+				DEVELOPMENT_TEAM = 3CDZ864BSN;
+				INFOPLIST_FILE = GameCubeController/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.boxletstorage.fun.GameCubeController;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B7EB3DE723C86F050068084A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DF261CD382A1BABF2CA542C0 /* Pods-GameCubeController.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.0.3;
+				DEVELOPMENT_TEAM = 3CDZ864BSN;
+				INFOPLIST_FILE = GameCubeController/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.boxletstorage.fun.GameCubeController;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B7EB3DCC23C86F040068084A /* Build configuration list for PBXProject "GameCubeController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B7EB3DE323C86F050068084A /* Debug */,
+				B7EB3DE423C86F050068084A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B7EB3DE523C86F050068084A /* Build configuration list for PBXNativeTarget "GameCubeController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B7EB3DE623C86F050068084A /* Debug */,
+				B7EB3DE723C86F050068084A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B7EB3DC923C86F040068084A /* Project object */;
+}
