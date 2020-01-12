@@ -13,6 +13,7 @@
 		B7A16E9923C89776003C66B3 /* ControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A16E9823C89776003C66B3 /* ControllerViewController.swift */; };
 		B7D3741C23C9C3A2009A84D6 /* PreferenceToggleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D3741B23C9C3A2009A84D6 /* PreferenceToggleCell.swift */; };
 		B7D3741E23C9D296009A84D6 /* PreferenceNumericCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D3741D23C9D296009A84D6 /* PreferenceNumericCell.swift */; };
+		B7D7990A23CA6B0E0036C1CC /* SocketCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7990923CA6B0E0036C1CC /* SocketCommand.swift */; };
 		B7D7D90D23C9906A001D80AB /* btn.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B7D7D90C23C9906A001D80AB /* btn.mp3 */; };
 		B7D7D90F23C99377001D80AB /* ConfigurationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7D90E23C99377001D80AB /* ConfigurationVC.swift */; };
 		B7EB3DD523C86F040068084A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB3DD423C86F040068084A /* AppDelegate.swift */; };
@@ -32,6 +33,7 @@
 		B7A16E9823C89776003C66B3 /* ControllerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerViewController.swift; sourceTree = "<group>"; };
 		B7D3741B23C9C3A2009A84D6 /* PreferenceToggleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceToggleCell.swift; sourceTree = "<group>"; };
 		B7D3741D23C9D296009A84D6 /* PreferenceNumericCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferenceNumericCell.swift; sourceTree = "<group>"; };
+		B7D7990923CA6B0E0036C1CC /* SocketCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketCommand.swift; sourceTree = "<group>"; };
 		B7D7D90C23C9906A001D80AB /* btn.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = btn.mp3; sourceTree = "<group>"; };
 		B7D7D90E23C99377001D80AB /* ConfigurationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationVC.swift; sourceTree = "<group>"; };
 		B7EB3DD123C86F040068084A /* GameCubeController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameCubeController.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,6 +97,7 @@
 				B7EB3DD623C86F040068084A /* SceneDelegate.swift */,
 				B7A16E9723C8975B003C66B3 /* Viewcontrollers */,
 				B7A16E9323C87F3D003C66B3 /* NetworkingAPI.swift */,
+				B7D7990923CA6B0E0036C1CC /* SocketCommand.swift */,
 				B7EB3DDD23C86F050068084A /* Assets.xcassets */,
 				B7EB3DDA23C86F040068084A /* Main.storyboard */,
 				B7EB3DDF23C86F050068084A /* LaunchScreen.storyboard */,
@@ -242,6 +245,7 @@
 				B7D7D90F23C99377001D80AB /* ConfigurationVC.swift in Sources */,
 				B7A16E9223C87076003C66B3 /* UIAttributeExtensions.swift in Sources */,
 				B7EB3DD523C86F040068084A /* AppDelegate.swift in Sources */,
+				B7D7990A23CA6B0E0036C1CC /* SocketCommand.swift in Sources */,
 				B7D3741C23C9C3A2009A84D6 /* PreferenceToggleCell.swift in Sources */,
 				B7EB3DD723C86F040068084A /* SceneDelegate.swift in Sources */,
 				B7D3741E23C9D296009A84D6 /* PreferenceNumericCell.swift in Sources */,

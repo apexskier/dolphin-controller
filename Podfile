@@ -13,4 +13,6 @@ target 'GameCubeController' do
 	pod 'IQKeyboardManager'
 	pod 'FlexColorPicker'
 	
+	pod 'Socket.IO-Client-Swift'
+	
 end

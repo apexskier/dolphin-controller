@@ -15,6 +15,9 @@ PODS:
   - IQKeyboardManager (6.5.4)
   - JGProgressHUD (2.1)
   - SkyFloatingLabelTextField (3.8.0)
+  - Socket.IO-Client-Swift (15.2.0):
+    - Starscream (~> 3.1)
+  - Starscream (3.1.1)
 
 DEPENDENCIES:
   - ARMDevSuite/Alerts
@@ -23,6 +26,7 @@ DEPENDENCIES:
   - ARMDevSuite/UISuite
   - FlexColorPicker
   - IQKeyboardManager
+  - Socket.IO-Client-Swift
 
 SPEC REPOS:
   trunk:
@@ -31,6 +35,8 @@ SPEC REPOS:
     - IQKeyboardManager
     - JGProgressHUD
     - SkyFloatingLabelTextField
+    - Socket.IO-Client-Swift
+    - Starscream
 
 SPEC CHECKSUMS:
   ARMDevSuite: 1f8990e073f585b634b28b731a10c9cf585f525a
@@ -38,7 +44,9 @@ SPEC CHECKSUMS:
   IQKeyboardManager: 72b359cd7e777e3a984cedbe05f8da45320cbb63
   JGProgressHUD: aa403e9a5b45cae98903c4600cccdd98c0c3ec90
   SkyFloatingLabelTextField: 5a338412114808e961fe2d14ea2c5452c8b6e4aa
+  Socket.IO-Client-Swift: 1e3e3a1f09f3312a167f0d781eb2f383d477357c
+  Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
 
-PODFILE CHECKSUM: a9d37e1765f13c7ae4cc65b2a3b72320ac04ade9
+PODFILE CHECKSUM: 89a2da944a30eb2cbb51e1d308ea24ff9f7bb899
 
 COCOAPODS: 1.8.4

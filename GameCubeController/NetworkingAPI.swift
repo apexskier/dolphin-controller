@@ -36,6 +36,8 @@ class ControllerAPI {
 	var host: String?
 	var port: String?
 	
+	var socketPort: String?
+	
 	
 	func endpoint(_ e: Endpoint) -> String? {
 		guard let h = host, let p = port else { return nil }
@@ -59,7 +61,12 @@ class ControllerAPI {
 		let urlString = endpoint(.connect)
 		NetworkingLib.shared.get(url: urlString, params: nil) { (controllers, err) in
 			guard err == nil else { completion?(nil, err); return }
-			if let c = controllers as? [Int] {
+			if
+				let data = controllers as? [String: Any],
+				let c = data["controllers"] as? [Int],
+				let p = data["socket"] as? Int
+			{
+				self.socketPort = "\(p)"
 				if c.count == 0 {
 					completion?(nil, "No Controllers Available")
 				} else {
@@ -72,9 +79,29 @@ class ControllerAPI {
 	}
 	
 	func becomeController(idx: Int, completion: ErrorReturn?) {
-		NetworkingLib.shared.post(url: endpoint(.connect), params: ["player_idx": idx]) { (_, err) in
-			completion?(err)
+		// open a socket and verify that you got that value
+		guard let h = host, let p = self.socketPort else {
+			completion?("Can not open socket. Socket port not provided by server.")
+			return
 		}
+		
+		SocketCommander.shared.connect(host: h, port: p) { (err) in
+			guard err == nil else {
+				completion?(err)
+				return
+			}
+			
+			SocketCommander.shared.twoWayRequest(on: "claim", payload: idx) { (response, err) in
+				guard let response = response, err == nil, response.error == nil else { completion?(err); return }
+				
+				completion?(nil)
+			}
+		}
+		
+		
+		//		NetworkingLib.shared.post(url: endpoint(.connect), params: ["player_idx": idx]) { (_, err) in
+		//			completion?(err)
+		//		}
 	}
 	func disconnectController(idx: Int, completion: ErrorReturn?) {
 		NetworkingLib.shared.post(url: endpoint(.disconnect), params: ["player_idx": idx]) { (_, err) in
@@ -82,15 +109,28 @@ class ControllerAPI {
 		}
 	}
 	
-	func sendCommand(player: Int, action: String, control: String, value: String?, completion: ErrorReturn?) {
-		NetworkingLib.shared.post(url: endpoint(.command), params: [
-			"player_idx": player,
-			"action": action,
-			"input_name": control,
-			"value": value
-		]) { (_, err) in
-			completion?(err)
+	func sendCommand(player: Int, action: String, control: String, value: String?, socket: Bool = false, completion: ErrorReturn?) {
+		if !socket {
+			NetworkingLib.shared.post(url: endpoint(.command), params: [
+				"player_idx": player,
+				"action": action,
+				"input_name": control,
+				"value": value
+			]) { (_, err) in
+				completion?(err)
+			}
+		} else {
+			SocketCommander.shared.emitCommand(data: [
+				"player_idx": player,
+				"action": action,
+				"input_name": control,
+				"value": value
+			])
+			completion?(nil)
 		}
+		
+		
+		
 	}
 	
 }
@@ -102,9 +142,9 @@ class NetworkingLib {
 	
 	func post(url: String? , params: [String: Any]?, completion: Response<Any>?) {
 		guard
-				let urlString = url,
-				let url = URL(string: urlString)
-		else { completion?(nil, "Invalid URL provided"); return }
+			let urlString = url,
+			let url = URL(string: urlString)
+			else { completion?(nil, "Invalid URL provided"); return }
 		
 		guard let jsonData = try? JSONSerialization.data(withJSONObject: params ?? [:], options: [])
 			else { completion?(nil, "Invalid body params provided"); return }
@@ -127,14 +167,14 @@ class NetworkingLib {
 				}
 				
 				guard let httpResponse = resp as? HTTPURLResponse,
-							(200...299).contains(httpResponse.statusCode) else {
-								// can try to extract more info from the error here
-								if mime == "text/html", let txt = String(data: data, encoding: .utf8) {
-									completion?(nil, txt)
-								} else {
-									completion?(nil, "Invalid Response Code \((resp as? HTTPURLResponse)?.statusCode ?? 0)")
-								}
-								
+					(200...299).contains(httpResponse.statusCode) else {
+						// can try to extract more info from the error here
+						if mime == "text/html", let txt = String(data: data, encoding: .utf8) {
+							completion?(nil, txt)
+						} else {
+							completion?(nil, "Invalid Response Code \((resp as? HTTPURLResponse)?.statusCode ?? 0)")
+						}
+						
 						return
 				}
 				
@@ -149,7 +189,7 @@ class NetworkingLib {
 		}
 		
 		task.resume()
-
+		
 	}
 	
 	func get(url: String?, params: [String: String]?, completion: Response<Any>?) {
@@ -172,9 +212,9 @@ class NetworkingLib {
 					return
 				}
 				guard let httpResponse = resp as? HTTPURLResponse,
-							(200...299).contains(httpResponse.statusCode) else {
-								// can try to extract more info from the error here
-								completion?(nil, "Invalid Response Code \((resp as? HTTPURLResponse)?.statusCode ?? 0)")
+					(200...299).contains(httpResponse.statusCode) else {
+						// can try to extract more info from the error here
+						completion?(nil, "Invalid Response Code \((resp as? HTTPURLResponse)?.statusCode ?? 0)")
 						return
 				}
 				

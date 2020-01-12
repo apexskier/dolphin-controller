@@ -37,9 +37,9 @@ class Preferences {
 	var soundOn: Preference<Bool> = Preference(default: false, key: "feedback-sound")
 	var hapticFeedback: Preference<Bool> = Preference(default: true, key: "feedback-haptics")
 	
-	var sensitivity: Preference<CGFloat> = Preference(default: 0.25, key: "ctrl-sensitivity")
-	var stickBroadcastFrequency: Preference<CGFloat> = Preference(default: 3, key: "ctrl-stickPolling")
-	var bButtonScale: Preference<CGFloat> = Preference(default: 1, key: "ctrl-bButton")
+	var sensitivity: Preference<CGFloat> = Preference(default: 0.35, key: "ctrl-sensitivity")
+	var stickBroadcastFrequency: Preference<CGFloat> = Preference(default: 6, key: "ctrl-stickPolling")
+	var bButtonScale: Preference<CGFloat> = Preference(default: 1.67, key: "ctrl-bButton")
 	
 	init() {
 		// load from userDefaults
@@ -177,6 +177,7 @@ class GCStick: UIView {
 		return Int(Preferences.shared.stickBroadcastFrequency.val)
 	}
 	
+	
 	init(name: String, delegate: GCStickDelegate, size: CGFloat = 60) {
 		self.dolphinName = name
 		self.delegate = delegate
@@ -253,7 +254,7 @@ class GCStick: UIView {
 					violated = true
 				}
 				
-				if violated && cnt % 5 == 0 {
+				if violated && cnt % 8 == 0 {
 					UIDevice.buttonFeedback(style: .light)
 				}
 				
@@ -417,9 +418,19 @@ class ControllerViewController: GCVC {
 		
 	}
 	
+	func disconnected() {
+		self.alerts.displayAlert(titled: "You have been disconnected", withDetail: nil) {
+			self.dismiss(animated: true, completion: nil)
+		}
+	}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		SocketCommander.shared.socket.once(clientEvent: .disconnect) { (_, _) in
+			self.disconnected()
+		}
+		
 		
 		if self.playerID == nil { self.playerID = 1 }
 		
@@ -443,6 +454,7 @@ class ControllerViewController: GCVC {
 		cStick 		= GCStick(name: "C", delegate: self, size: 40)
 		
 		initUI()
+		
 		
 	}
 	
@@ -708,6 +720,10 @@ extension ControllerViewController: GCButtonDelegate {
 	func didReleaseGCButton(_ gcButton: GCButton) {
 		//		print("Release received for \(gcButton.dolphinName)")
 		ControllerAPI.shared.sendCommand(player: self.playerID, action: "RELEASE", control: gcButton.dolphinName, value: nil) { (err) in
+			//			print(err)
+		}
+		
+		ControllerAPI.shared.sendCommand(player: self.playerID, action: "RELEASE", control: gcButton.dolphinName, value: nil, socket: true) { (err) in
 			//			print(err)
 		}
 	}

@@ -126,7 +126,7 @@ extension ConfigurationVC: UITableViewDataSource, UITableViewDelegate {
 					title: "Stick Sensitivity",
 					description: "Lower sensitivities have lower thresholds for flicks",
 					preference: Preferences.shared.sensitivity,
-					defaultValue: 0.25,
+					defaultValue: 0.35,
 					integerOnly: false,
 					min: 0.05,
 					max: 0.5
@@ -134,9 +134,9 @@ extension ConfigurationVC: UITableViewDataSource, UITableViewDelegate {
 			case 1:
 				config = PreferenceNumericConfig(
 					title: "Stick Lag",
-					description: "More stick lag results in a better inputs for other buttons",
+					description: "More stick lag reduces the likelihood of lost inputs",
 					preference: Preferences.shared.stickBroadcastFrequency,
-					defaultValue: 3,
+					defaultValue: 6,
 					integerOnly: true,
 					min: 1,
 					max: 10
@@ -146,7 +146,7 @@ extension ConfigurationVC: UITableViewDataSource, UITableViewDelegate {
 					title: "B Button Size",
 					description: "Larger Size increases the area occupied by the B Button",
 					preference: Preferences.shared.bButtonScale,
-					defaultValue: 1,
+					defaultValue: 1.67,
 					integerOnly: false,
 					min: 0.5,
 					max: 3

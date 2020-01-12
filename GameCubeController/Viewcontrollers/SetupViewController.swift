@@ -42,7 +42,8 @@ class SetupViewController: GCVC {
 		// Do any additional setup after loading the view.
 		initUI()
 
-		
+		ipRequest.text = "172.20.10.4"
+		portRequest.text = "3000"
 	}
 
 	func initUI() {
