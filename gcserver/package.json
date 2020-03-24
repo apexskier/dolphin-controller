@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "ip": "^1.1.5"
+    "ip": "^1.1.5",
+    "qrcode-terminal": "^0.12.0"
   }
 }

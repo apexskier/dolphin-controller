@@ -8,11 +8,12 @@
 
 import UIKit
 import ARMDevSuite
+import QRCodeReader
 
 class GCVC: UIViewController {
 	static let shared = GCVC()
 	var alerts: AlertManager!
-
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		UIView.appearance().tintColor = text
@@ -27,8 +28,45 @@ class GCVC: UIViewController {
 	}
 }
 
-class SetupViewController: GCVC {
+var readerVC: QRCodeReaderViewController = {
+    let builder = QRCodeReaderViewControllerBuilder {
+        $0.reader = QRCodeReader(metadataObjectTypes: [.qr], captureDevicePosition: .back)
+        
+        // Configure the view controller (optional)
+        $0.showTorchButton        = true
+        $0.showSwitchCameraButton = true
+        $0.showCancelButton       = true
+        $0.showOverlayView        = true
+        $0.rectOfInterest         = CGRect(x: 0.2, y: 0.2, width: 0.6, height: 0.6)
+    }
+    
+    return QRCodeReaderViewController(builder: builder)
+}()
 
+
+
+class SetupViewController: GCVC, QRCodeReaderViewControllerDelegate {
+	func reader(_ reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {
+		print(result.value)
+		reader.dismiss(animated: true, completion: nil)
+
+		guard let ip = result.value.split(separator: ":").first, let port = result.value.split(separator: ":").last else {
+			
+			self.alerts.displayAlert(titled: "Oops", withDetail: "Failed to parse config from QR Code", completion: nil)
+			return
+		}
+		
+		self.ipRequest.text = String(ip)
+		self.portRequest.text = String(port)
+		self.prepForController(self.connectButton)
+	}
+	
+	func readerDidCancel(_ reader: QRCodeReaderViewController) {
+		reader.dismiss(animated: true, completion: nil)
+		return
+	}
+	
+	
 	let welcomeImage = UIImageView()
 	
 	let ipRequest = ARMTextField()
@@ -36,21 +74,73 @@ class SetupViewController: GCVC {
 	
 	let connectButton = UIButton()
 	
+	let qrButton = UIButton()
+	let controllerButton = UIButton()
+	
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view.
 		initUI()
-
-		ipRequest.text = "172.20.10.4"
-		portRequest.text = "3000"
+		
+		readerVC.delegate = self
+		
 	}
-
+	
 	func initUI() {
 		initImages()
 		initFields()
 		initConnectButton()
+		initActions()
 	}
+	
+	func initActions() {
+		
+		let buttonSize: CGFloat = 50
+		let radius: CGFloat = 10
+		let padding: CGFloat = 15
+		
+		view.addSubview(qrButton)
+		qrButton.translatesAutoresizingMaskIntoConstraints = false
+		qrButton.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: -radius).isActive = true
+		qrButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: radius).isActive = true
+		qrButton.heightAnchor.constraint(equalToConstant: buttonSize).isActive = true
+		qrButton.widthAnchor.constraint(equalToConstant: buttonSize).isActive = true
+		
+		qrButton.clipsToBounds = true
+		qrButton.layer.cornerRadius = radius
+		qrButton.setImage(.qr, for: .normal)
+		qrButton.imageEdgeInsets = UIEdgeInsets(top: padding/2, left: padding, bottom: padding, right: padding/2)
+		
+		view.addSubview(controllerButton)
+		controllerButton.translatesAutoresizingMaskIntoConstraints = false
+		controllerButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: radius).isActive = true
+		controllerButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: radius).isActive = true
+		controllerButton.heightAnchor.constraint(equalToConstant: buttonSize).isActive = true
+		controllerButton.widthAnchor.constraint(equalToConstant: buttonSize).isActive = true
+		
+		controllerButton.clipsToBounds = true
+		controllerButton.layer.cornerRadius = radius
+		controllerButton.setImage(.controller, for: .normal)
+		controllerButton.imageEdgeInsets = UIEdgeInsets(top: padding/2, left: padding/2, bottom: padding, right: padding)
+		
+		
+		qrButton.addTarget(self, action: #selector(openQRScanner), for: .touchUpInside)
+		controllerButton.addTarget(self, action: #selector(showController), for: .touchUpInside)
+		
+		
+		styleButton(qrButton)
+		styleButton(controllerButton)
+	}
+	
+	@objc func openQRScanner() {
+		self.present(readerVC, animated: true, completion: nil)
+	}
+	
+	@objc func showController() {
+		self.performSegue(withIdentifier: "2controller", sender: nil)
+	}
+	
 	
 	func initImages() {
 		view.addSubview(welcomeImage)
@@ -106,7 +196,7 @@ class SetupViewController: GCVC {
 		
 		styleField(ipRequest)
 		styleField(portRequest)
-
+		
 	}
 	
 	func initConnectButton() {
@@ -130,16 +220,18 @@ class SetupViewController: GCVC {
 		styleField(portRequest)
 		
 		styleButton(connectButton)
+		styleButton(qrButton)
+		styleButton(controllerButton)
 	}
 	
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 		super.traitCollectionDidChange(previousTraitCollection)
-
+		
 		
 		guard UIApplication.shared.applicationState == .inactive else {
-				return
+			return
 		}
-
+		
 		setColors()
 		
 	}
@@ -207,11 +299,16 @@ class SetupViewController: GCVC {
 	}
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if let c = segue.destination as? ControllerViewController {
-			c.playerID = sender as! Int
+			if let id = sender as? Int {
+				c.playerID = id
+			} else {
+				c.isSimulator = true
+			}
+			
 		}
 	}
 	
 	
-
+	
 }
 

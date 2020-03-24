@@ -141,6 +141,8 @@ class GCButton: UIButton {
 	}
 	
 	func setColor(_ c: UIColor) {
+		self.tintColor = c
+		self.imageView!.tintColor = .gcGray
 		self.setBackgroundColor(color: c, forState: .normal)
 		self.setTitleColor(c.modified(withAdditionalHue: 0, additionalSaturation: 0, additionalBrightness: -0.4), for: .normal)
 		self.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
@@ -226,45 +228,38 @@ class GCStick: UIView {
 		} else {
 			//			setStickPosition(p: g.location(in: self))
 			cnt += 1
+			let movement = g.translation(in: self)
+			let threshold: CGFloat = Preferences.shared.sensitivity.val
+			let ref = min(self.frame.width, self.frame.height)
+			
+			var percentX = abs(movement.x)/ref
+			var percentY = abs(movement.y)/ref
+			
+			var pointX = movement.x/(ref/3)
+			var pointY = movement.y/(ref/3)
+			
+			var violated = false
+			
+			if percentX > threshold {
+				pointX = pointX < 0 ? -1 : 1
+				percentX = threshold
+				violated = true
+			}
+			if percentY > threshold {
+				pointY = pointY < 0 ? -1 : 1
+				percentY = threshold
+				violated = true
+			}
+			if violated && cnt % 8 == 0 {
+				UIDevice.buttonFeedback(style: .light)
+			}
+			
+			if let lo = lastOrigin {
+				let sX: CGFloat = pointX < 0 ? -1 : 1
+				let sY: CGFloat = pointY < 0 ? -1 : 1
+				setStickPosition(p: CGPoint(x: lo.x + percentX * sX * ref , y: lo.y + percentY * sY * ref))
+			}
 			if cnt % broadcastSampling == 1 {
-				let movement = g.translation(in: self)
-				
-				let threshold: CGFloat = Preferences.shared.sensitivity.val
-				
-				
-				let ref = min(self.frame.width, self.frame.height)
-				
-				var percentX = abs(movement.x)/ref
-				var percentY = abs(movement.y)/ref
-				
-				var pointX = movement.x/(ref/3)
-				var pointY = movement.y/(ref/3)
-				
-				var violated = false
-				
-				if percentX > threshold {
-					pointX = pointX < 0 ? -1 : 1
-					percentX = threshold
-					violated = true
-				}
-				
-				if percentY > threshold {
-					pointY = pointY < 0 ? -1 : 1
-					percentY = threshold
-					violated = true
-				}
-				
-				if violated && cnt % 8 == 0 {
-					UIDevice.buttonFeedback(style: .light)
-				}
-				
-				if let lo = lastOrigin {
-					let sX: CGFloat = pointX < 0 ? -1 : 1
-					let sY: CGFloat = pointY < 0 ? -1 : 1
-					setStickPosition(p: CGPoint(x: lo.x + percentX * sX * ref , y: lo.y + percentY * sY * ref))
-				}
-				
-				
 				self.delegate?.gcStick(self, didMoveTo: CGPoint(x: pointX, y: pointY))
 			}
 		}
@@ -343,6 +338,7 @@ class GCStick: UIView {
 class ControllerViewController: GCVC {
 	
 	// Data
+	var isSimulator: Bool = false
 	var playerID: Int!
 	
 	// System
@@ -427,12 +423,16 @@ class ControllerViewController: GCVC {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		SocketCommander.shared.socket.once(clientEvent: .disconnect) { (_, _) in
-			self.disconnected()
+		if !self.isSimulator {
+			SocketCommander.shared.socket.once(clientEvent: .disconnect) { (_, _) in
+				self.disconnected()
+			}
 		}
 		
-		
 		if self.playerID == nil { self.playerID = 1 }
+		
+		
+		
 		
 		// Do any additional setup after loading the view.
 		aButton = GCButton(name: "A", delegate: self)
@@ -490,7 +490,12 @@ class ControllerViewController: GCVC {
 	
 	@objc func openSettings() {
 		var configs = [
-			ActionConfig(title: "Disconnect", style: .destructive, callback: {
+			ActionConfig(title: !self.isSimulator ? "Disconnect" : "Go Back", style: .destructive, callback: {
+				guard !self.isSimulator else {
+					self.dismiss(animated: true, completion: nil)
+					return
+				}
+				
 				
 				self.alerts.startProgressHud(withTitle: "Disconnecting")
 				ControllerAPI.shared.disconnectController(idx: self.playerID) { (err) in
@@ -537,7 +542,9 @@ class ControllerViewController: GCVC {
 	
 	func initCenter() {
 		view.addSubview(sButton)
-		sButton.center(in: self.view)
+		sButton.translatesAutoresizingMaskIntoConstraints = false
+		sButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+		sButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -.padding * 2).isActive = true
 		sButton.widthAnchor.constraint(equalToConstant: 45).isActive = true
 		sButton.heightAnchor.constraint(equalTo: sButton.widthAnchor).isActive = true
 		sButton.setColor(.gcGray)
@@ -572,29 +579,37 @@ class ControllerViewController: GCVC {
 	
 	func initButtonArea() {
 		view.addSubview(xButton)
-		xButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -.padding * 1.5).isActive = true
-		xButton.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+		xButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -.padding * 3).isActive = true
+		xButton.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: -.padding).isActive = true
 		xButton.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.3).isActive = true
 		xButton.widthAnchor.constraint(equalTo: xButton.heightAnchor, multiplier: 0.4).isActive = true
 		xButton.setColor(.gcGray)
+		xButton.setBackgroundImage(UIImage.x.withTintColor(.gcGray), for: .normal)
+		xButton.tintColor = .gcGray
+		xButton.imageView?.tintColor = .gcGray
+		xButton.imageView?.contentMode = .scaleAspectFit
 		xButton.setTitle("X", for: .normal)
 		
 		view.addSubview(aButton)
-		aButton.rightAnchor.constraint(equalTo: xButton.leftAnchor, constant: -.padding).isActive = true
-		aButton.centerYAnchor.constraint(equalTo: xButton.centerYAnchor, constant: 0 * .padding).isActive = true
+		aButton.rightAnchor.constraint(equalTo: xButton.leftAnchor, constant: -.padding * 0.75).isActive = true
+		aButton.centerYAnchor.constraint(equalTo: xButton.centerYAnchor, constant: 1 * .padding).isActive = true
 		aButton.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.3).isActive = true
 		aButton.widthAnchor.constraint(equalTo: aButton.heightAnchor, multiplier: 1).isActive = true
 		aButton.setColor(.gcGreen)
 		aButton.setTitle("A", for: .normal)
 		
 		view.addSubview(yButton)
-		yButton.bottomAnchor.constraint(equalTo: aButton.topAnchor, constant: -0.5 * .padding).isActive = true
+		yButton.bottomAnchor.constraint(equalTo: aButton.topAnchor, constant: -0.25 * .padding).isActive = true
 		yButton.widthAnchor.constraint(equalTo: aButton.widthAnchor).isActive = true
 		yButton.leftAnchor.constraint(equalTo: aButton.leftAnchor, constant: -1 * .padding).isActive = true
 		yButton.heightAnchor.constraint(equalTo: yButton.widthAnchor, multiplier: 0.4).isActive = true
 		yButton.setColor(.gcGray)
+		yButton.setBackgroundImage(UIImage.y.withTintColor(.gcGray), for: .normal)
+		yButton.tintColor = .gcGray
+		yButton.imageView?.tintColor = .gcGray
+		yButton.imageView?.contentMode = .scaleAspectFit
 		yButton.setTitle("Y", for: .normal)
-		yButton.transform = CGAffineTransform(rotationAngle: -.pi/12)
+//		yButton.transform = CGAffineTransform(rotationAngle: -.pi/12)
 		
 		view.addSubview(bButton)
 		bButton.topAnchor.constraint(equalTo: aButton.bottomAnchor, constant: -.padding).isActive = true
@@ -632,7 +647,7 @@ class ControllerViewController: GCVC {
 		view.addSubview(rButton)
 		rButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -0.5 * .padding).isActive = true
 		rButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0.5 * .padding).isActive = true
-		rButton.leftAnchor.constraint(equalTo: aButton.centerXAnchor).isActive = true
+		rButton.leftAnchor.constraint(equalTo: aButton.centerXAnchor, constant: 2 * .padding).isActive = true
 		rButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
 		
 		rButton.setColor(.gcGray)
@@ -650,7 +665,7 @@ class ControllerViewController: GCVC {
 		view.addSubview(zButton)
 		zButton.topAnchor.constraint(equalTo: rButton.bottomAnchor, constant: 0.5 * .padding).isActive = true
 		zButton.rightAnchor.constraint(equalTo: rButton.rightAnchor).isActive = true
-		zButton.leftAnchor.constraint(equalTo: yButton.rightAnchor).isActive = true
+		zButton.leftAnchor.constraint(equalTo: yButton.rightAnchor, constant: .padding).isActive = true
 		zButton.heightAnchor.constraint(equalTo: rButton.heightAnchor).isActive = true
 		
 		zButton.setColor(.gcPurple)
@@ -712,6 +727,7 @@ class ControllerViewController: GCVC {
 extension ControllerViewController: GCButtonDelegate {
 	func didPressGCButton(_ gcButton: GCButton) {
 		//		print("Press received for \(gcButton.dolphinName)")
+		guard !isSimulator else { return }
 		ControllerAPI.shared.sendCommand(player: self.playerID, action: "PRESS", control: gcButton.dolphinName, value: nil) { (err) in
 			//			print(err)
 		}
@@ -719,6 +735,7 @@ extension ControllerViewController: GCButtonDelegate {
 	
 	func didReleaseGCButton(_ gcButton: GCButton) {
 		//		print("Release received for \(gcButton.dolphinName)")
+		guard !isSimulator else { return }
 		ControllerAPI.shared.sendCommand(player: self.playerID, action: "RELEASE", control: gcButton.dolphinName, value: nil) { (err) in
 			//			print(err)
 		}
@@ -733,12 +750,14 @@ extension ControllerViewController: GCButtonDelegate {
 
 extension ControllerViewController: GCStickDelegate {
 	func gcStick(_ gcStick: GCStick, didMoveTo point: CGPoint) {
+		guard !isSimulator else { return }
 		ControllerAPI.shared.sendCommand(player: self.playerID, action: "SET", control: gcStick.dolphinName, value: "\((point.x + 1)/2) \((-point.y + 1)/2)") { (err) in
 			//			print("err")
 		}
 	}
 	
 	func didRelease(_ gcStick: GCStick) {
+		guard !isSimulator else { return }
 		self.gcStick(gcStick, didMoveTo: .zero)
 	}
 	

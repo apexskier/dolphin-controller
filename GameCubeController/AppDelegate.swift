@@ -25,8 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		ARMBubbleProgressHud.defaultStyle.bubbleStyle = .border
 		ARMBubbleProgressHud.defaultStyle.bubbleGap = false
 		ARMBubbleProgressHud.defaultStyle.animationStyle = .blinking
-		ARMBubbleProgressHud.defaultStyle.colorPrimary = .themeGreen
-		ARMBubbleProgressHud.defaultStyle.colorSecondary = .themeFuschia
+		ARMBubbleProgressHud.defaultStyle.colorPrimary = .themeBlueLight
+		ARMBubbleProgressHud.defaultStyle.colorSecondary = .themeBlueDark
 		
 		return true
 	}

@@ -12,6 +12,7 @@ target 'GameCubeController' do
 	pod 'ARMDevSuite/TextField'
 	pod 'IQKeyboardManager'
 	pod 'FlexColorPicker'
+	pod 'QRCodeReader.swift', '~> 10.1.0'
 	
 	pod 'Socket.IO-Client-Swift'
 	

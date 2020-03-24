@@ -7,6 +7,8 @@ var exec                    = require("child_process").exec;
 
 var http                    = require('http').createServer(app);
 var io                      = require("socket.io")(http)
+var qrcode                  = require('qrcode-terminal');
+
 
 
 
@@ -118,6 +120,7 @@ io.on('connection', function(socket){
 
 
   socket.on('disconnect', function(){
+    if (!soc_player_idx) { return }
     console.log(soc_player_idx-1);
     console.log(CONTROLLERS[soc_player_idx-1]);
     if (CONTROLLERS[soc_player_idx-1].isConnected) {
@@ -161,7 +164,8 @@ function makeResponse(status, payload, err=null) {
 
 app.listen(BROADCAST_PORT, function () {
   console.log('Main Communication Service listening on ' + `${ip.address()}:${BROADCAST_PORT}` + '!')
+  qrcode.generate(`${ip.address()}:${BROADCAST_PORT}`);
 })
 http.listen(SOCKET_PORT, function(){
-  console.log(`Command Socket listening on ${ip.address()}:${SOCKET_PORT}`);
+  // console.log(`Command Socket listening on ${ip.address()}:${SOCKET_PORT}`);
 });

@@ -11,7 +11,11 @@ import UIKit
 
 extension UIImage {
 	static let logo = UIImage(named: "melee-logo")!
-	static let bg = UIImage(named: "melee")!
+	static let qr = UIImage(named: "qr")!
+	static let controller = UIImage(named: "controller")!
+	
+	static let x = UIImage(named: "x")!
+	static let y = UIImage(named: "y")!
 }
 
 extension CGFloat {
@@ -32,6 +36,10 @@ extension UIColor {
 	static var themeMaroon: UIColor = UIColor.colorWithRGB(rgbValue: 0x7D387D)
 	static var themeGreen: UIColor = UIColor.colorWithRGB(rgbValue: 0x008f6d)
 	
+	static var themeBlueDark: UIColor = UIColor.colorWithRGB(rgbValue: 0x006cd5)
+	static var themeBlueMed: UIColor = UIColor.colorWithRGB(rgbValue: 0x2da0da)
+	static var themeBlueLight: UIColor = UIColor.colorWithRGB(rgbValue: 0x67ccff)
+	
 	static var LED: UIColor = UIColor.colorWithRGB(rgbValue: 0x96fff1)
 }
 
@@ -40,7 +48,7 @@ extension UIViewController {
 		return self.traitCollection.userInterfaceStyle == .dark
 	}
 	var text: UIColor {
-		return isDark ? .themeYellow : .themeGreen
+		return isDark ? .themeBlueLight : .themeBlueDark
 	}
 	var textAccent: UIColor {
 		return .themeFuschia

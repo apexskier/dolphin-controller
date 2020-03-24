@@ -1,0 +1,9 @@
+Pods/*
+Podfile.lock
+GameCubeController.xcworkspace/xcuserdata/*
+GameCubeController.xcworkspace/xcuserdata/*
+GameCubeController.xcodeproj/xcuserdata/*
+.DS_Store
+GameCubeController.xcodeproj/xcuserdata/*
+exports
+assets
