@@ -394,18 +394,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.5;
-				DEVELOPMENT_TEAM = 3CDZ864BSN;
+				CURRENT_PROJECT_VERSION = 1.0.6;
+				DEVELOPMENT_TEAM = Y2JVY29H4R;
 				INFOPLIST_FILE = GameCubeController/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.boxletstorage.fun.GameCubeController;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.mdb.devcore.ajay.dolphincontroller;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -415,18 +415,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.5;
-				DEVELOPMENT_TEAM = 3CDZ864BSN;
+				CURRENT_PROJECT_VERSION = 1.0.6;
+				DEVELOPMENT_TEAM = Y2JVY29H4R;
 				INFOPLIST_FILE = GameCubeController/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.boxletstorage.fun.GameCubeController;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.mdb.devcore.ajay.dolphincontroller;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
