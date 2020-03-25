@@ -9,7 +9,7 @@ var http                    = require('http').createServer(app);
 var io                      = require("socket.io")(http)
 var qrcode                  = require('qrcode-terminal');
 
-
+const DolphinConfigDirectory = `${os.homedir()}/Library/Application Support/Dolphin`
 
 
 const SOCKET_PORT           = 4000
@@ -94,7 +94,7 @@ function executeCommand(json, player) {
   }
 
   var command = `echo '${input_string.toUpperCase()}'`
-  var target = `'${os.homedir()}/Library/Application Support/Dolphin/Pipes/ctrl${player}'`
+  var target = `'${DolphinConfigDirectory}/Pipes/ctrl${player}'`
   var process = exec(`${command} > ${target}`, { timeout: 200 })
   console.log(`${command} > ${target}`);
   process.stdout.on("data", data => console.log(data));
