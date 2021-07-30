@@ -11,6 +11,10 @@
   "dependencies": {
     "express": "^4.17.1",
     "ip": "^1.1.5",
-    "qrcode-terminal": "^0.12.0"
+    "qrcode-terminal": "^0.12.0",
+    "socket.io": "2"
+  },
+  "devDependencies": {
+    "prettier": "^2.3.2"
   }
 }
