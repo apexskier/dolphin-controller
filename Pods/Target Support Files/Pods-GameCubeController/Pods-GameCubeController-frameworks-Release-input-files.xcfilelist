@@ -1,9 +1,0 @@
-${PODS_ROOT}/Target Support Files/Pods-GameCubeController/Pods-GameCubeController-frameworks.sh
-${BUILT_PRODUCTS_DIR}/ARMDevSuite/ARMDevSuite.framework
-${BUILT_PRODUCTS_DIR}/FlexColorPicker/FlexColorPicker.framework
-${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework
-${BUILT_PRODUCTS_DIR}/JGProgressHUD/JGProgressHUD.framework
-${BUILT_PRODUCTS_DIR}/QRCodeReader.swift/QRCodeReader.framework
-${BUILT_PRODUCTS_DIR}/SkyFloatingLabelTextField/SkyFloatingLabelTextField.framework
-${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework
-${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework
