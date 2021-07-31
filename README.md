@@ -1,4 +1,4 @@
-﻿# Dolphin Controller
+# Dolphin Controller
 
 ![enter image description here](https://raw.githubusercontent.com/ajaymerchia/dolphin-controller/master/GameCubeController/Assets.xcassets/melee-logo.imageset/logo-text.png)
 
@@ -27,6 +27,8 @@ mkfifo ctrl2
 mkfifo ctrl3
 mkfifo ctrl4
 ```
+
+https://wiki.dolphin-emu.org/index.php?title=Pipe_Input
 
 ### Controller Config
 In `DolphinConfigDirectory/Config` open up `GCPadNew.ini` and replace its contents with the following [file](https://raw.githubusercontent.com/ajaymerchia/dolphin-controller/master/GCPadNew.ini)

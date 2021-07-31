@@ -1,0 +1,830 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 52;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C53D555D26B43D4F00E1F75B /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D555C26B43D4F00E1F75B /* Tests_iOS.swift */; };
+		C53D556826B43D4F00E1F75B /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D556726B43D4F00E1F75B /* Tests_macOS.swift */; };
+		C53D556D26B43D4F00E1F75B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D554226B43D4C00E1F75B /* ContentView.swift */; };
+		C53D556E26B43D4F00E1F75B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C53D554326B43D4E00E1F75B /* Assets.xcassets */; };
+		C53D556F26B43D4F00E1F75B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C53D554326B43D4E00E1F75B /* Assets.xcassets */; };
+		C53D557F26B43E2500E1F75B /* DolphinControllerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D557E26B43E1F00E1F75B /* DolphinControllerApp.swift */; };
+		C53D558026B43E2B00E1F75B /* DolphinControllerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D554126B43D4C00E1F75B /* DolphinControllerApp.swift */; };
+		C53D558226B43E7300E1F75B /* HostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D558126B43E7300E1F75B /* HostService.swift */; };
+		C53D558426B43EA600E1F75B /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D558326B43EA600E1F75B /* Controller.swift */; };
+		C53D558726B43F3C00E1F75B /* ObservableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D558626B43F3C00E1F75B /* ObservableObject.swift */; };
+		C53D558826B43F3C00E1F75B /* ObservableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D558626B43F3C00E1F75B /* ObservableObject.swift */; };
+		C53D558A26B43FBC00E1F75B /* ControllerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D558926B43FBC00E1F75B /* ControllerService.swift */; };
+		C53D558D26B4402E00E1F75B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D558C26B4402E00E1F75B /* ContentView.swift */; };
+		C53D559026B443D500E1F75B /* Multipeer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D558F26B443D500E1F75B /* Multipeer.swift */; };
+		C53D559126B443D500E1F75B /* Multipeer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D558F26B443D500E1F75B /* Multipeer.swift */; };
+		C53D559226B4441D00E1F75B /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D558326B43EA600E1F75B /* Controller.swift */; };
+		C53D559726B457FF00E1F75B /* PeerId.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D559626B457FF00E1F75B /* PeerId.swift */; };
+		C53D559826B457FF00E1F75B /* PeerId.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D559626B457FF00E1F75B /* PeerId.swift */; };
+		C53D559B26B5310900E1F75B /* NIOHTTP1 in Frameworks */ = {isa = PBXBuildFile; productRef = C53D559A26B5310900E1F75B /* NIOHTTP1 */; };
+		C53D559D26B5310900E1F75B /* NIOWebSocket in Frameworks */ = {isa = PBXBuildFile; productRef = C53D559C26B5310900E1F75B /* NIOWebSocket */; };
+		C53D559F26B5310900E1F75B /* NIO in Frameworks */ = {isa = PBXBuildFile; productRef = C53D559E26B5310900E1F75B /* NIO */; };
+		C53D55A226B5311900E1F75B /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D55A026B5311900E1F75B /* Server.swift */; };
+		C53D55A526B5332D00E1F75B /* NIO in Frameworks */ = {isa = PBXBuildFile; productRef = C53D55A426B5332D00E1F75B /* NIO */; };
+		C53D55A726B5332D00E1F75B /* NIOHTTP1 in Frameworks */ = {isa = PBXBuildFile; productRef = C53D55A626B5332D00E1F75B /* NIOHTTP1 */; };
+		C53D55A926B5332D00E1F75B /* NIOWebSocket in Frameworks */ = {isa = PBXBuildFile; productRef = C53D55A826B5332D00E1F75B /* NIOWebSocket */; };
+		C53D55AB26B5362700E1F75B /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D55AA26B5362700E1F75B /* Client.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C53D555926B43D4F00E1F75B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C53D553C26B43D4C00E1F75B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C53D554726B43D4E00E1F75B;
+			remoteInfo = "DolphinController (iOS)";
+		};
+		C53D556426B43D4F00E1F75B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C53D553C26B43D4C00E1F75B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C53D554F26B43D4F00E1F75B;
+			remoteInfo = "DolphinController (macOS)";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		C53D554126B43D4C00E1F75B /* DolphinControllerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DolphinControllerApp.swift; sourceTree = "<group>"; };
+		C53D554226B43D4C00E1F75B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C53D554326B43D4E00E1F75B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C53D554826B43D4E00E1F75B /* DolphinController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DolphinController.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C53D554B26B43D4E00E1F75B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C53D555026B43D4F00E1F75B /* DolphinController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DolphinController.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C53D555226B43D4F00E1F75B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C53D555326B43D4F00E1F75B /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
+		C53D555826B43D4F00E1F75B /* Tests iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C53D555C26B43D4F00E1F75B /* Tests_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_iOS.swift; sourceTree = "<group>"; };
+		C53D555E26B43D4F00E1F75B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C53D556326B43D4F00E1F75B /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C53D556726B43D4F00E1F75B /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
+		C53D556926B43D4F00E1F75B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C53D557E26B43E1F00E1F75B /* DolphinControllerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DolphinControllerApp.swift; sourceTree = "<group>"; };
+		C53D558126B43E7300E1F75B /* HostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HostService.swift; path = macOS/HostService.swift; sourceTree = SOURCE_ROOT; };
+		C53D558326B43EA600E1F75B /* Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controller.swift; sourceTree = "<group>"; };
+		C53D558626B43F3C00E1F75B /* ObservableObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableObject.swift; sourceTree = "<group>"; };
+		C53D558926B43FBC00E1F75B /* ControllerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerService.swift; sourceTree = "<group>"; };
+		C53D558C26B4402E00E1F75B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C53D558F26B443D500E1F75B /* Multipeer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Multipeer.swift; sourceTree = "<group>"; };
+		C53D559626B457FF00E1F75B /* PeerId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerId.swift; sourceTree = "<group>"; };
+		C53D55A026B5311900E1F75B /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
+		C53D55AA26B5362700E1F75B /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C53D554526B43D4E00E1F75B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C53D559F26B5310900E1F75B /* NIO in Frameworks */,
+				C53D559B26B5310900E1F75B /* NIOHTTP1 in Frameworks */,
+				C53D559D26B5310900E1F75B /* NIOWebSocket in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C53D554D26B43D4F00E1F75B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C53D55A526B5332D00E1F75B /* NIO in Frameworks */,
+				C53D55A726B5332D00E1F75B /* NIOHTTP1 in Frameworks */,
+				C53D55A926B5332D00E1F75B /* NIOWebSocket in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C53D555526B43D4F00E1F75B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C53D556026B43D4F00E1F75B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C53D553B26B43D4C00E1F75B = {
+			isa = PBXGroup;
+			children = (
+				C53D554026B43D4C00E1F75B /* Shared */,
+				C53D554A26B43D4E00E1F75B /* iOS */,
+				C53D555126B43D4F00E1F75B /* macOS */,
+				C53D555B26B43D4F00E1F75B /* Tests iOS */,
+				C53D556626B43D4F00E1F75B /* Tests macOS */,
+				C53D554926B43D4E00E1F75B /* Products */,
+				C53D55A326B5332D00E1F75B /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		C53D554026B43D4C00E1F75B /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				C53D558526B43F2C00E1F75B /* Extensions */,
+				C53D554326B43D4E00E1F75B /* Assets.xcassets */,
+				C53D558326B43EA600E1F75B /* Controller.swift */,
+				C53D558F26B443D500E1F75B /* Multipeer.swift */,
+				C53D559626B457FF00E1F75B /* PeerId.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		C53D554926B43D4E00E1F75B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C53D554826B43D4E00E1F75B /* DolphinController.app */,
+				C53D555026B43D4F00E1F75B /* DolphinController.app */,
+				C53D555826B43D4F00E1F75B /* Tests iOS.xctest */,
+				C53D556326B43D4F00E1F75B /* Tests macOS.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C53D554A26B43D4E00E1F75B /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				C53D558C26B4402E00E1F75B /* ContentView.swift */,
+				C53D554126B43D4C00E1F75B /* DolphinControllerApp.swift */,
+				C53D558926B43FBC00E1F75B /* ControllerService.swift */,
+				C53D554B26B43D4E00E1F75B /* Info.plist */,
+				C53D55AA26B5362700E1F75B /* Client.swift */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		C53D555126B43D4F00E1F75B /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				C53D554226B43D4C00E1F75B /* ContentView.swift */,
+				C53D557E26B43E1F00E1F75B /* DolphinControllerApp.swift */,
+				C53D558126B43E7300E1F75B /* HostService.swift */,
+				C53D555226B43D4F00E1F75B /* Info.plist */,
+				C53D555326B43D4F00E1F75B /* macOS.entitlements */,
+				C53D55A026B5311900E1F75B /* Server.swift */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		C53D555B26B43D4F00E1F75B /* Tests iOS */ = {
+			isa = PBXGroup;
+			children = (
+				C53D555C26B43D4F00E1F75B /* Tests_iOS.swift */,
+				C53D555E26B43D4F00E1F75B /* Info.plist */,
+			);
+			path = "Tests iOS";
+			sourceTree = "<group>";
+		};
+		C53D556626B43D4F00E1F75B /* Tests macOS */ = {
+			isa = PBXGroup;
+			children = (
+				C53D556726B43D4F00E1F75B /* Tests_macOS.swift */,
+				C53D556926B43D4F00E1F75B /* Info.plist */,
+			);
+			path = "Tests macOS";
+			sourceTree = "<group>";
+		};
+		C53D558526B43F2C00E1F75B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C53D558626B43F3C00E1F75B /* ObservableObject.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		C53D55A326B5332D00E1F75B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C53D554726B43D4E00E1F75B /* DolphinController (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C53D557226B43D4F00E1F75B /* Build configuration list for PBXNativeTarget "DolphinController (iOS)" */;
+			buildPhases = (
+				C53D554426B43D4E00E1F75B /* Sources */,
+				C53D554526B43D4E00E1F75B /* Frameworks */,
+				C53D554626B43D4E00E1F75B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "DolphinController (iOS)";
+			packageProductDependencies = (
+				C53D559A26B5310900E1F75B /* NIOHTTP1 */,
+				C53D559C26B5310900E1F75B /* NIOWebSocket */,
+				C53D559E26B5310900E1F75B /* NIO */,
+			);
+			productName = "DolphinController (iOS)";
+			productReference = C53D554826B43D4E00E1F75B /* DolphinController.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C53D554F26B43D4F00E1F75B /* DolphinController (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C53D557526B43D4F00E1F75B /* Build configuration list for PBXNativeTarget "DolphinController (macOS)" */;
+			buildPhases = (
+				C53D554C26B43D4F00E1F75B /* Sources */,
+				C53D554D26B43D4F00E1F75B /* Frameworks */,
+				C53D554E26B43D4F00E1F75B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "DolphinController (macOS)";
+			packageProductDependencies = (
+				C53D55A426B5332D00E1F75B /* NIO */,
+				C53D55A626B5332D00E1F75B /* NIOHTTP1 */,
+				C53D55A826B5332D00E1F75B /* NIOWebSocket */,
+			);
+			productName = "DolphinController (macOS)";
+			productReference = C53D555026B43D4F00E1F75B /* DolphinController.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C53D555726B43D4F00E1F75B /* Tests iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C53D557826B43D4F00E1F75B /* Build configuration list for PBXNativeTarget "Tests iOS" */;
+			buildPhases = (
+				C53D555426B43D4F00E1F75B /* Sources */,
+				C53D555526B43D4F00E1F75B /* Frameworks */,
+				C53D555626B43D4F00E1F75B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C53D555A26B43D4F00E1F75B /* PBXTargetDependency */,
+			);
+			name = "Tests iOS";
+			productName = "Tests iOS";
+			productReference = C53D555826B43D4F00E1F75B /* Tests iOS.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		C53D556226B43D4F00E1F75B /* Tests macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C53D557B26B43D4F00E1F75B /* Build configuration list for PBXNativeTarget "Tests macOS" */;
+			buildPhases = (
+				C53D555F26B43D4F00E1F75B /* Sources */,
+				C53D556026B43D4F00E1F75B /* Frameworks */,
+				C53D556126B43D4F00E1F75B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C53D556526B43D4F00E1F75B /* PBXTargetDependency */,
+			);
+			name = "Tests macOS";
+			productName = "Tests macOS";
+			productReference = C53D556326B43D4F00E1F75B /* Tests macOS.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C53D553C26B43D4C00E1F75B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1250;
+				LastUpgradeCheck = 1250;
+				TargetAttributes = {
+					C53D554726B43D4E00E1F75B = {
+						CreatedOnToolsVersion = 12.5.1;
+					};
+					C53D554F26B43D4F00E1F75B = {
+						CreatedOnToolsVersion = 12.5.1;
+					};
+					C53D555726B43D4F00E1F75B = {
+						CreatedOnToolsVersion = 12.5.1;
+						TestTargetID = C53D554726B43D4E00E1F75B;
+					};
+					C53D556226B43D4F00E1F75B = {
+						CreatedOnToolsVersion = 12.5.1;
+						TestTargetID = C53D554F26B43D4F00E1F75B;
+					};
+				};
+			};
+			buildConfigurationList = C53D553F26B43D4C00E1F75B /* Build configuration list for PBXProject "DolphinController" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = C53D553B26B43D4C00E1F75B;
+			packageReferences = (
+				C53D559926B5310900E1F75B /* XCRemoteSwiftPackageReference "swift-nio" */,
+			);
+			productRefGroup = C53D554926B43D4E00E1F75B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C53D554726B43D4E00E1F75B /* DolphinController (iOS) */,
+				C53D554F26B43D4F00E1F75B /* DolphinController (macOS) */,
+				C53D555726B43D4F00E1F75B /* Tests iOS */,
+				C53D556226B43D4F00E1F75B /* Tests macOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C53D554626B43D4E00E1F75B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C53D556E26B43D4F00E1F75B /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C53D554E26B43D4F00E1F75B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C53D556F26B43D4F00E1F75B /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C53D555626B43D4F00E1F75B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C53D556126B43D4F00E1F75B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C53D554426B43D4E00E1F75B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C53D558026B43E2B00E1F75B /* DolphinControllerApp.swift in Sources */,
+				C53D559026B443D500E1F75B /* Multipeer.swift in Sources */,
+				C53D558D26B4402E00E1F75B /* ContentView.swift in Sources */,
+				C53D559726B457FF00E1F75B /* PeerId.swift in Sources */,
+				C53D559226B4441D00E1F75B /* Controller.swift in Sources */,
+				C53D558726B43F3C00E1F75B /* ObservableObject.swift in Sources */,
+				C53D558A26B43FBC00E1F75B /* ControllerService.swift in Sources */,
+				C53D55AB26B5362700E1F75B /* Client.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C53D554C26B43D4F00E1F75B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C53D558826B43F3C00E1F75B /* ObservableObject.swift in Sources */,
+				C53D557F26B43E2500E1F75B /* DolphinControllerApp.swift in Sources */,
+				C53D558226B43E7300E1F75B /* HostService.swift in Sources */,
+				C53D559826B457FF00E1F75B /* PeerId.swift in Sources */,
+				C53D556D26B43D4F00E1F75B /* ContentView.swift in Sources */,
+				C53D558426B43EA600E1F75B /* Controller.swift in Sources */,
+				C53D55A226B5311900E1F75B /* Server.swift in Sources */,
+				C53D559126B443D500E1F75B /* Multipeer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C53D555426B43D4F00E1F75B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C53D555D26B43D4F00E1F75B /* Tests_iOS.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C53D555F26B43D4F00E1F75B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C53D556826B43D4F00E1F75B /* Tests_macOS.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C53D555A26B43D4F00E1F75B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C53D554726B43D4E00E1F75B /* DolphinController (iOS) */;
+			targetProxy = C53D555926B43D4F00E1F75B /* PBXContainerItemProxy */;
+		};
+		C53D556526B43D4F00E1F75B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C53D554F26B43D4F00E1F75B /* DolphinController (macOS) */;
+			targetProxy = C53D556426B43D4F00E1F75B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		C53D557026B43D4F00E1F75B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		C53D557126B43D4F00E1F75B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		C53D557326B43D4F00E1F75B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6D9DLTQJSN;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = iOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.camlittle.DolphinController;
+				PRODUCT_NAME = DolphinController;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C53D557426B43D4F00E1F75B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6D9DLTQJSN;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = iOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.camlittle.DolphinController;
+				PRODUCT_NAME = DolphinController;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C53D557626B43D4F00E1F75B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 6D9DLTQJSN;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = macOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.camlittle.DolphinController;
+				PRODUCT_NAME = DolphinController;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		C53D557726B43D4F00E1F75B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 6D9DLTQJSN;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = macOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.camlittle.DolphinController;
+				PRODUCT_NAME = DolphinController;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		C53D557926B43D4F00E1F75B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6D9DLTQJSN;
+				INFOPLIST_FILE = "Tests iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.camlittle.Tests-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "DolphinController (iOS)";
+			};
+			name = Debug;
+		};
+		C53D557A26B43D4F00E1F75B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6D9DLTQJSN;
+				INFOPLIST_FILE = "Tests iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.camlittle.Tests-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "DolphinController (iOS)";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C53D557C26B43D4F00E1F75B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 6D9DLTQJSN;
+				INFOPLIST_FILE = "Tests macOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.camlittle.Tests-macOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "DolphinController (macOS)";
+			};
+			name = Debug;
+		};
+		C53D557D26B43D4F00E1F75B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 6D9DLTQJSN;
+				INFOPLIST_FILE = "Tests macOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.camlittle.Tests-macOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "DolphinController (macOS)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C53D553F26B43D4C00E1F75B /* Build configuration list for PBXProject "DolphinController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C53D557026B43D4F00E1F75B /* Debug */,
+				C53D557126B43D4F00E1F75B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C53D557226B43D4F00E1F75B /* Build configuration list for PBXNativeTarget "DolphinController (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C53D557326B43D4F00E1F75B /* Debug */,
+				C53D557426B43D4F00E1F75B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C53D557526B43D4F00E1F75B /* Build configuration list for PBXNativeTarget "DolphinController (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C53D557626B43D4F00E1F75B /* Debug */,
+				C53D557726B43D4F00E1F75B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C53D557826B43D4F00E1F75B /* Build configuration list for PBXNativeTarget "Tests iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C53D557926B43D4F00E1F75B /* Debug */,
+				C53D557A26B43D4F00E1F75B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C53D557B26B43D4F00E1F75B /* Build configuration list for PBXNativeTarget "Tests macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C53D557C26B43D4F00E1F75B /* Debug */,
+				C53D557D26B43D4F00E1F75B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C53D559926B5310900E1F75B /* XCRemoteSwiftPackageReference "swift-nio" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-nio.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.30.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C53D559A26B5310900E1F75B /* NIOHTTP1 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C53D559926B5310900E1F75B /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOHTTP1;
+		};
+		C53D559C26B5310900E1F75B /* NIOWebSocket */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C53D559926B5310900E1F75B /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOWebSocket;
+		};
+		C53D559E26B5310900E1F75B /* NIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C53D559926B5310900E1F75B /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIO;
+		};
+		C53D55A426B5332D00E1F75B /* NIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C53D559926B5310900E1F75B /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIO;
+		};
+		C53D55A626B5332D00E1F75B /* NIOHTTP1 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C53D559926B5310900E1F75B /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOHTTP1;
+		};
+		C53D55A826B5332D00E1F75B /* NIOWebSocket */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C53D559926B5310900E1F75B /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOWebSocket;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = C53D553C26B43D4C00E1F75B /* Project object */;
+}
