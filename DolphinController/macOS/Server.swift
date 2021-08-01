@@ -31,7 +31,13 @@ public class Server {
     func upgradePipelineHandler(channel: Channel, _: HTTPRequestHead) -> EventLoopFuture<Void> {
         self.controllers.append(channel)
         do {
-            let websocketHandler = try WebSocketHandler(index: self.controllers.count-1)
+            let index = self.controllers.count
+            let websocketHandler = try WebSocketHandler(index: index-1, onClose: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                self.controllers.remove(at: index-1)
+            })
             return channel.pipeline.addHandler(websocketHandler)
         } catch {
             fatalError(error.localizedDescription)
@@ -162,11 +168,13 @@ private final class WebSocketHandler: NSObject, ChannelInboundHandler {
     private let id = UUID()
     private let index: Int
     private var outputStream: OutputStream
+    private var onClose: () -> Void
 
     private var awaitingClose: Bool = false
     
-    init(index: Int) throws {
+    init(index: Int, onClose: @escaping () -> Void) throws {
         self.index = index
+        self.onClose = onClose
         
         guard let applicationSupport = try? FileManager.default.url(
                 for: .applicationSupportDirectory,
@@ -215,6 +223,7 @@ private final class WebSocketHandler: NSObject, ChannelInboundHandler {
     
     func handlerRemoved(context: ChannelHandlerContext) {
         print("handler removed", id)
+        onClose()
     }
     
     private static var newline: UInt8 = 0x0A
