@@ -153,7 +153,6 @@ private final class ControllerClientWebsocketHandler: ChannelInboundHandler {
         self.delegate = delegate
     }
     
-    // This is being hit, channel active won't be called as it is already added.
     public func handlerAdded(context: ChannelHandlerContext) {
         print("WebSocket handler added.")
     }

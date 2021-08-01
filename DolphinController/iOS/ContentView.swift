@@ -71,15 +71,17 @@ struct ContentView: View {
         VStack {
             Text("Hello, world (controller)!")
                 .padding()
-            Button("connect client") {
-                do {
-                    try client.connect()
-                } catch {
-                    self.error = error
+            if (client.channel == nil) {
+                Button("connect client") {
+                    do {
+                        try client.connect()
+                    } catch {
+                        self.error = error
+                    }
                 }
+                    .padding()
+                    .disabled(client.channel != nil)
             }
-            .padding()
-            .disabled(client.channel != nil)
             if let i = client.controllerIndex {
                 Text("\(i+1)")
             }

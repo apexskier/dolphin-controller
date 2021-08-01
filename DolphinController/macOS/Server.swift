@@ -30,7 +30,12 @@ public class Server {
     
     func upgradePipelineHandler(channel: Channel, _: HTTPRequestHead) -> EventLoopFuture<Void> {
         self.controllers.append(channel)
-        return channel.pipeline.addHandler(WebSocketHandler(index: self.controllers.count-1))
+        do {
+            let websocketHandler = try WebSocketHandler(index: self.controllers.count-1)
+            return channel.pipeline.addHandler(websocketHandler)
+        } catch {
+            fatalError(error.localizedDescription)
+        }
     }
     
     func run() throws {
@@ -66,7 +71,7 @@ public class Server {
                     channel.pipeline.addHandler(httpHandler)
                 }
             }
-            .childChannelOption(ChannelOptions.socket(IPPROTO_TCP, TCP_NODELAY), value: 1)
+            .childChannelOption(ChannelOptions.socketOption(.tcp_nodelay), value: 1)
             .childChannelOption(ChannelOptions.recvAllocator, value: AdaptiveRecvByteBufferAllocator())
     }
 }
@@ -160,7 +165,7 @@ private final class WebSocketHandler: NSObject, ChannelInboundHandler {
 
     private var awaitingClose: Bool = false
     
-    init(index: Int) {
+    init(index: Int) throws {
         self.index = index
         
         guard let applicationSupport = try? FileManager.default.url(
@@ -171,19 +176,22 @@ private final class WebSocketHandler: NSObject, ChannelInboundHandler {
         ) else {
             fatalError("Failed to find application support directory")
         }
+//        guard let bundleId = Bundle.main.bundleIdentifier else {
+//            fatalError("Failed to find application support directory")
+//        }
+        
         let pipesFolder = applicationSupport
-            .appendingPathComponent("pipes")
+            .appendingPathComponent("Dolphin")
+            .appendingPathComponent("Pipes")
         if !FileManager.default.fileExists(atPath: pipesFolder.path) {
-            try! FileManager.default.createDirectory(
+            try FileManager.default.createDirectory(
                 at: pipesFolder,
                 withIntermediateDirectories: true,
                 attributes: nil
             )
         }
         let pipeUrl = pipesFolder.appendingPathComponent("ctrl\(index+1)")
-        try? FileManager.default.removeItem(at: pipeUrl)
-        mkfifo(pipeUrl.path, 0o644)
-//        FileManager.default.createFile(atPath: pipeUrl.path, contents: nil, attributes: nil)
+//        mkfifo(pipeUrl.path, 0o644)
         guard let outputStream = OutputStream(url: pipeUrl, append: true) else {
             fatalError("Failed to create outputstream")
         }
@@ -191,14 +199,18 @@ private final class WebSocketHandler: NSObject, ChannelInboundHandler {
         
         super.init()
         
-        outputStream.delegate = self
+        self.outputStream.delegate = self
         outputStream.open()
+        print("created websocket handler")
+    }
+    
+    deinit {
+        self.outputStream.close()
     }
 
     public func handlerAdded(context: ChannelHandlerContext) {
         print("handler added", id)
         self.ping(context: context)
-        
     }
     
     func handlerRemoved(context: ChannelHandlerContext) {
