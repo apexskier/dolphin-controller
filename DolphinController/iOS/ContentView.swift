@@ -49,13 +49,16 @@ extension View {
 struct PressButton: View {
     @EnvironmentObject var client: Client
     
+    private let haptic = UIImpactFeedbackGenerator(style: .rigid)
     var label: String
     
     var body: some View {
         Button(label) {}.pressAction(onPress: {
             client.send("PRESS \(label)")
+            haptic.impactOccurred()
         }, onRelease: {
             client.send("RELEASE \(label)")
+            haptic.impactOccurred()
         })
     }
 }
@@ -66,11 +69,53 @@ struct ContentView: View {
     @State private var desiredHost: KnownPeer? = nil
     @State private var hostCode: String = ""
     @State private var error: Error? = nil
+    @State private var mainDrag: DragGesture.Value? = nil {
+        willSet {
+            guard let value = newValue else {
+                client.send("SET MAIN 0.5 0.5")
+                return
+            }
+            
+            if mainDrag == nil {
+                mainHapticStart.impactOccurred()
+            }
+            
+            let translation = value.translation
+            let x = min(max(translation.width / 200, -0.5), 0.5)
+            let y = min(max(-translation.height / 200, -0.5), 0.5)
+            client.send("SET MAIN \(x+0.5) \(y+0.5)")
+            let intensity = sqrt(x*2*x*2 + y*2*y*2)
+            if (intensity > 1) {
+                mainHaptic.impactOccurred()
+            }
+        }
+    }
+    @State private var cTranslation: CGSize? = nil {
+        willSet {
+            guard let value = newValue else {
+                client.send("SET C 0.5 0.5")
+                return
+            }
+            
+            if cTranslation == nil {
+                mainHapticStart.impactOccurred()
+            }
+            
+            let x = min(max(value.width / 150, -0.5), 0.5)
+            let y = min(max(-value.height / 150, -0.5), 0.5)
+            client.send("SET C \(x+0.5) \(y+0.5)")
+            let intensity = sqrt(x*2*x*2 + y*2*y*2)
+            if (intensity > 1) {
+                mainHaptic.impactOccurred()
+            }
+        }
+    }
+    
+    private let mainHaptic = UIImpactFeedbackGenerator(style: .soft)
+    private let mainHapticStart = UIImpactFeedbackGenerator(style: .rigid)
     
     var body: some View {
         VStack {
-            Text("Hello, world (controller)!")
-                .padding()
             if (client.channel == nil) {
                 Button("connect client") {
                     do {
@@ -82,15 +127,165 @@ struct ContentView: View {
                     .padding()
                     .disabled(client.channel != nil)
             }
-            if let i = client.controllerIndex {
-                Text("\(i+1)")
+            
+            VStack {
+                HStack {
+                    PressButton(label: "L")
+                        .buttonStyle(GCCButton(color: Color(red: 221/256, green: 218/256, blue: 231/256)))
+                    Spacer()
+                    PressButton(label: "R")
+                        .buttonStyle(GCCButton(color: Color(red: 221/256, green: 218/256, blue: 231/256)))
+                }
+                .frame(
+                  minWidth: 0,
+                  maxWidth: .infinity,
+                  alignment: .center
+                )
+                
+                HStack {
+                    VStack {
+                        ZStack(alignment: .center) {
+                            Circle()
+                                .fill(
+                                    Color(red: 221/256, green: 218/256, blue: 231/256)
+                                        .opacity(0.2)
+                                )
+                                .frame(width: 200, height: 200)
+                                .gesture(
+                                    DragGesture(minimumDistance: 0)
+                                        .onChanged({ value in
+                                            self.mainDrag = value
+                                        })
+                                        .onEnded({ value in
+                                            self.mainDrag = nil
+                                        })
+                                )
+                            if let mainDrag = self.mainDrag {
+                                Circle()
+                                    .fill(
+                                        Color(red: 221/256, green: 218/256, blue: 231/256)
+                                            .opacity(0.5)
+                                    )
+                                    .frame(width: 50, height: 50)
+                                    .position(
+                                        x: mainDrag.startLocation.x + 25,
+                                        y: mainDrag.startLocation.y - 25
+                                    )
+                                    .allowsHitTesting(false)
+                                Circle()
+                                    .fill(
+                                        Color(red: 221/256, green: 218/256, blue: 231/256)
+                                            .opacity(1)
+                                    )
+                                    .frame(width: 50, height: 50)
+                                    .position(
+                                        x: mainDrag.startLocation.x + mainDrag.translation.width + 25,
+                                        y: mainDrag.startLocation.y + mainDrag.translation.height - 25
+                                    )
+                                    .allowsHitTesting(false)
+                            } else {
+                                Circle()
+                                    .fill(
+                                        Color(red: 221/256, green: 218/256, blue: 231/256)
+                                            .opacity(0.5)
+                                    )
+                                    .frame(width: 50, height: 50)
+                                    .allowsHitTesting(false)
+                            }
+                        }
+                        
+                        ZStack {
+                            PressButton(label: "UP")
+                                .buttonStyle(GCCButton(color: Color(red: 221/256, green: 218/256, blue: 231/256)))
+                                .position(x: 50, y: 0)
+                            PressButton(label: "DOWN")
+                                .buttonStyle(GCCButton(color: Color(red: 221/256, green: 218/256, blue: 231/256)))
+                                .position(x: 50, y: 100)
+                            PressButton(label: "LEFT")
+                                .buttonStyle(GCCButton(color: Color(red: 221/256, green: 218/256, blue: 231/256)))
+                                .position(x: 0, y: 50)
+                            PressButton(label: "RIGHT")
+                                .buttonStyle(GCCButton(color: Color(red: 221/256, green: 218/256, blue: 231/256)))
+                                .position(x: 100, y: 50)
+                        }
+                    }
+                    
+                    VStack {
+                        HStack(alignment: .center, spacing: 20) {
+                            if client.controllerIndex == 0 {
+                                Rectangle().fill(Color.blue).frame(width: 12, height: 12)
+                            } else {
+                                Rectangle().fill(Color.gray).frame(width: 12, height: 12)
+                            }
+                            if client.controllerIndex == 1 {
+                                Rectangle().fill(Color.blue).frame(width: 12, height: 12)
+                            } else {
+                                Rectangle().fill(Color.gray).frame(width: 12, height: 12)
+                            }
+                            if client.controllerIndex == 2 {
+                                Rectangle().fill(Color.blue).frame(width: 12, height: 12)
+                            } else {
+                                Rectangle().fill(Color.gray).frame(width: 12, height: 12)
+                            }
+                            if client.controllerIndex == 3 {
+                                Rectangle().fill(Color.blue).frame(width: 12, height: 12)
+                            } else {
+                                Rectangle().fill(Color.gray).frame(width: 12, height: 12)
+                            }
+                        }
+                        
+                        PressButton(label: "START")
+                            .buttonStyle(GCCButton(color: Color(red: 221/256, green: 218/256, blue: 231/256)))
+                    }
+
+                    VStack {
+                        ZStack {
+                            PressButton(label: "A")
+                                .buttonStyle(GCCButton(color: Color(red: 55/256, green: 199/256, blue: 195/256)))
+                            PressButton(label: "B")
+                                .buttonStyle(GCCButton(color: Color(red: 232/256, green: 16/256, blue: 39/256)))
+                                .position(x: 0, y: 240)
+                            PressButton(label: "Y")
+                                .buttonStyle(GCCButton(color: Color(red: 221/256, green: 218/256, blue: 231/256)))
+                                .position(x: 100, y: 40)
+                            PressButton(label: "X")
+                                .buttonStyle(GCCButton(color: Color(red: 221/256, green: 218/256, blue: 231/256)))
+                                .position(x: 200, y: 100)
+                            PressButton(label: "Z")
+                                .buttonStyle(GCCButton(color: Color(red: 221/256, green: 218/256, blue: 231/256)))
+                                .position(x: 120, y: 240)
+                        }
+                        
+                            ZStack(alignment: .center) {
+                                Circle()
+                                    .fill(Color(red: 254/256, green: 217/256, blue: 39/256).opacity(0.4))
+                                    .frame(width: 150, height: 150)
+                                Circle()
+                                    .fill(Color(red: 254/256, green: 217/256, blue: 39/256))
+                                    .frame(width: 50, height: 50)
+                                    .gesture(
+                                        DragGesture(minimumDistance: 0)
+                                            .onChanged({ value in
+                                                self.cTranslation = value.translation
+                                            })
+                                            .onEnded({ value in
+                                                self.cTranslation = nil
+                                            })
+                                    )
+                                    .offset(x: self.cTranslation?.width ?? 0, y: self.cTranslation?.height ?? 0)
+                            }
+                    }
+                }
             }
-            PressButton(label: "A")
-                .buttonStyle(GCCButton(color: Color(red: 55/256, green: 199/256, blue: 195/256)))
-            PressButton(label: "B")
-                .buttonStyle(GCCButton(color: Color(red: 232/256, green: 16/256, blue: 39/256)))
-            PressButton(label: "START")
-                .buttonStyle(GCCButton(color: Color(red: 221/256, green: 218/256, blue: 231/256)))
+            .frame(
+              minWidth: 0,
+              maxWidth: .infinity,
+              minHeight: 0,
+              maxHeight: .infinity,
+              alignment: .center
+            )
+                
+                
 //            List(controllerService.knownPeers.values.sorted(by: { a, b in
 //                a.peer.displayName > b.peer.displayName
 //            })) { peer in
