@@ -150,27 +150,62 @@ public class WebsocketUpgradeHandler: ChannelInboundHandler, RemovableChannelHan
     }
 }
 
-private final class WebSocketHandler: ChannelInboundHandler {
+private final class WebSocketHandler: NSObject, ChannelInboundHandler {
     typealias InboundIn = WebSocketFrame
     typealias OutboundOut = WebSocketFrame
 
     private let id = UUID()
     private let index: Int
+    private var outputStream: OutputStream
 
     private var awaitingClose: Bool = false
     
     init(index: Int) {
         self.index = index
+        
+        guard let applicationSupport = try? FileManager.default.url(
+                for: .applicationSupportDirectory,
+                in: .userDomainMask,
+                appropriateFor: nil,
+                create: true
+        ) else {
+            fatalError("Failed to find application support directory")
+        }
+        let pipesFolder = applicationSupport
+            .appendingPathComponent("pipes")
+        if !FileManager.default.fileExists(atPath: pipesFolder.path) {
+            try! FileManager.default.createDirectory(
+                at: pipesFolder,
+                withIntermediateDirectories: true,
+                attributes: nil
+            )
+        }
+        let pipeUrl = pipesFolder.appendingPathComponent("ctrl\(index+1)")
+        try? FileManager.default.removeItem(at: pipeUrl)
+        mkfifo(pipeUrl.path, 0o644)
+//        FileManager.default.createFile(atPath: pipeUrl.path, contents: nil, attributes: nil)
+        guard let outputStream = OutputStream(url: pipeUrl, append: true) else {
+            fatalError("Failed to create outputstream")
+        }
+        self.outputStream = outputStream
+        
+        super.init()
+        
+        outputStream.delegate = self
+        outputStream.open()
     }
 
     public func handlerAdded(context: ChannelHandlerContext) {
         print("handler added", id)
         self.ping(context: context)
+        
     }
     
     func handlerRemoved(context: ChannelHandlerContext) {
         print("handler removed", id)
     }
+    
+    private static var newline: UInt8 = 0x0A
 
     public func channelRead(context: ChannelHandlerContext, data: NIOAny) {
         let frame = self.unwrapInboundIn(data)
@@ -181,9 +216,7 @@ private final class WebSocketHandler: ChannelInboundHandler {
         case .pong:
             self.pong(context: context, frame: frame)
         case .text:
-            var data = frame.unmaskedData
-            let text = data.readString(length: data.readableBytes) ?? ""
-            print(id, text)
+            self.streamText(buffer: frame.unmaskedData)
         case .binary, .continuation, .ping:
             // We ignore these frames.
             break
@@ -217,27 +250,23 @@ private final class WebSocketHandler: ChannelInboundHandler {
     }
     
     private func ping(context: ChannelHandlerContext) {
-        print("Ping")
         let buffer = context.channel.allocator.buffer(string: "\(self.index),\(self.id)")
         let frame = WebSocketFrame(fin: true, opcode: .ping, data: buffer)
         context.writeAndFlush(self.wrapOutboundOut(frame), promise: nil)
     }
 
     private func pong(context: ChannelHandlerContext, frame: WebSocketFrame) {
-        print("Pong")
-//        var frameData = frame.data
-//        let maskingKey = frame.maskKey
-//
-//        if let maskingKey = maskingKey {
-//            frameData.webSocketUnmask(maskingKey)
-//        }
-//
-//        let responseFrame = WebSocketFrame(fin: true, opcode: .pong, data: frameData)
-//        context.write(self.wrapOutboundOut(responseFrame), promise: nil)
-        
-        var frameData = frame.data
-        if let frameDataString = frameData.readString(length: 18) {
-            print("Websocket: Received: \(frameDataString)")
+        // noop
+    }
+    
+    private func streamText(buffer: ByteBuffer) {
+        var data = buffer
+        var written = data.readableBytes
+        while written > 0 {
+            written -= data.readWithUnsafeReadableBytes({ pointer in
+                self.outputStream.write(pointer.baseAddress!.assumingMemoryBound(to: UInt8.self), maxLength: written)
+            })
+            self.outputStream.write(&WebSocketHandler.newline, maxLength: 1)
         }
     }
 
@@ -251,5 +280,11 @@ private final class WebSocketHandler: ChannelInboundHandler {
             context.close(mode: .output, promise: nil)
         }
         awaitingClose = true
+    }
+}
+
+extension WebSocketHandler: StreamDelegate {
+    func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
+        print("stream event: \(eventCode)")
     }
 }
