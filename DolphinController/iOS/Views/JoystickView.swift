@@ -67,8 +67,8 @@ struct Joystick<Label>: View where Label: View {
             }
             
             let translation = value.translation
-            let x = (translation.width / diameter).clamped(to: -0.5...0.5)
-            let y = (-translation.height / diameter).clamped(to: -0.5...0.5)
+            let x = (translation.width / (diameter*1.5)).clamped(to: -0.5...0.5)
+            let y = (-translation.height / (diameter*1.5)).clamped(to: -0.5...0.5)
             client.send("SET \(identifier) \(x+0.5) \(y+0.5)")
             let magnitude = sqrt(x*2*x*2 + y*2*y*2)
             inCenter = magnitude < 0.2
@@ -110,7 +110,9 @@ struct Joystick<Label>: View where Label: View {
             ZStack {
                 if let dragValue = self.dragValue {
                     ZStack {
-                        target
+                        Circle()
+                            .fill(color.opacity(0.2))
+                            .frame(width: diameter*1.5, height: diameter*1.5)
                         knob
                     }
                         .position(
@@ -132,7 +134,7 @@ struct Joystick<Label>: View where Label: View {
         var x = drag.translation.width
         var y = drag.translation.height
         let magnitude = sqrt(x*x + y*y)
-        let r = diameter/2
+        let r = (diameter*1.5)/2
         if magnitude > r {
             x = (x / magnitude) * r
             y = (y / magnitude) * r

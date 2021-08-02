@@ -6,19 +6,8 @@ struct ContentView: View {
     var body: some View {
         VStack {
 //            Text("Code: \(hostService.hostCode)")
-            
-            List(server.controllers) { controller in
-                Text("\(controller.channel.localAddress?.description ?? "<unknown>")")
-            }
-            
-//            List(hostService.knownPeers.values.sorted(by: { a, b in
-//                a.peer.displayName > b.peer.displayName
-//            })) { peer in
-//                HStack {
-//                    Text("\(peer.peer.displayName)")
-//                    Text("\(peer.connectionStatus.description)")
-//                }
-//            }
+            Text("\(server.controllers.count) controller\(server.controllers.count == 1 ? "" : "s") connected")
+                .padding()
         }
     }
 }

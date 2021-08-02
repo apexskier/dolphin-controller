@@ -2,9 +2,9 @@ import UIKit
 import CoreHaptics
 
 class Haptics {
-    private var engine: CHHapticEngine!
+    private var engine: CHHapticEngine?
     private var engineNeedsStart = true
-    private var continuousPlayer: CHHapticAdvancedPatternPlayer!
+    private var continuousPlayer: CHHapticAdvancedPatternPlayer?
     
     private lazy var supportsHaptics: Bool = {
         // Check if the device supports haptics.
@@ -30,10 +30,10 @@ class Haptics {
         }
         
         // Mute audio to reduce latency for collision haptics.
-        engine.playsHapticsOnly = true
+        engine?.playsHapticsOnly = true
         
         // The stopped handler alerts you of engine stoppage.
-        engine.stoppedHandler = { reason in
+        engine?.stoppedHandler = { reason in
             print("Stop Handler: The engine stopped for reason: \(reason.rawValue)")
             switch reason {
             case .audioSessionInterrupt:
@@ -56,13 +56,13 @@ class Haptics {
         }
         
         // The reset handler provides an opportunity to restart the engine.
-        engine.resetHandler = {
+        engine?.resetHandler = {
             
             print("Reset Handler: Restarting the engine.")
             
             do {
                 // Try restarting the engine.
-                try self.engine.start()
+                try self.engine?.start()
                 
                 // Indicate that the next time the app requires a haptic, the app doesn't need to call engine.start().
                 self.engineNeedsStart = false
@@ -77,7 +77,7 @@ class Haptics {
         
         // Start the haptic engine for the first time.
         do {
-            try self.engine.start()
+            try self.engine?.start()
         } catch {
             print("Failed to start the engine: \(error)")
         }
@@ -110,18 +110,18 @@ class Haptics {
             let pattern = try CHHapticPattern(events: [continuousEvent], parameters: [])
             
             // Create a player from the continuous haptic pattern.
-            continuousPlayer = try engine.makeAdvancedPlayer(with: pattern)
+            continuousPlayer = try engine?.makeAdvancedPlayer(with: pattern)
         } catch let error {
             print("Pattern Player Creation Error: \(error)")
         }
     }
     
     public func start() {
-        try? self.continuousPlayer.start(atTime: CHHapticTimeImmediate)
+        try? self.continuousPlayer?.start(atTime: CHHapticTimeImmediate)
     }
     
     public func stop() {
-        try? self.continuousPlayer.stop(atTime: CHHapticTimeImmediate)
+        try? self.continuousPlayer?.stop(atTime: CHHapticTimeImmediate)
     }
     
     public func setIntensity(_ val: CGFloat) {
@@ -134,7 +134,7 @@ class Haptics {
         
         // Send dynamic parameters to the haptic player.
         do {
-            try self.continuousPlayer.sendParameters([intensityParameter], atTime: CHHapticTimeImmediate)
+            try self.continuousPlayer?.sendParameters([intensityParameter], atTime: CHHapticTimeImmediate)
         } catch let error {
             print("Dynamic Parameter Error: \(error)")
         }

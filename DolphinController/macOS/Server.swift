@@ -37,18 +37,20 @@ public class Server: ObservableObject {
     }
     
     func upgradePipelineHandler(channel: Channel, _: HTTPRequestHead) -> EventLoopFuture<Void> {
-        self.controllers.append(Controller(channel: channel))
-        do {
+        DispatchQueue.main.sync {
             let index = self.controllers.count
-            let websocketHandler = try WebSocketHandler(index: index-1, onClose: { [weak self] in
-                guard let self = self else {
-                    return
-                }
-                self.controllers.remove(at: index-1)
-            })
-            return channel.pipeline.addHandler(websocketHandler)
-        } catch {
-            fatalError(error.localizedDescription)
+            self.controllers.append(Controller(channel: channel))
+            do {
+                let websocketHandler = try WebSocketHandler(index: index, onClose: { [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+                    self.controllers.remove(at: index)
+                })
+                return channel.pipeline.addHandler(websocketHandler)
+            } catch {
+                fatalError(error.localizedDescription)
+            }
         }
     }
     
