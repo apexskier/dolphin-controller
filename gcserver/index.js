@@ -148,7 +148,7 @@ io.on("connection", function (socket) {
         makeResponse(
           402,
           null,
-          `Player ${requestedPlayerNumber} has already been claimed. ${err}`
+          `Player ${requestedPlayerNumber} has already been claimed.`
         )
       );
     }
