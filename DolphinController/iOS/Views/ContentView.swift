@@ -98,11 +98,11 @@ struct PressButton<Label>: View where Label: View {
             label
         }
         .pressAction(onPress: {
-            client.send("PRESS \(label)")
-            haptic.impactOccurred()
+            client.send("PRESS \(identifier)")
+            haptic.impactOccurred(intensity: 1)
         }, onRelease: {
-            client.send("RELEASE \(label)")
-            haptic.impactOccurred()
+            client.send("RELEASE \(identifier)")
+            haptic.impactOccurred(intensity: 0.4)
         })
     }
 }
@@ -130,7 +130,7 @@ struct ContentView: View {
                     Spacer()
                     
                     ZStack {
-                        PressButton(label: Image(systemName: "arrowtriangle.up.fill"), identifier: "UP")
+                        PressButton(label: Image(systemName: "arrowtriangle.up.fill"), identifier: "D_UP")
                             .buttonStyle(GCCButton(
                                 color: grayColor,
                                 width: 42,
@@ -138,7 +138,7 @@ struct ContentView: View {
                                 shape: RoundedRectangle(cornerRadius: 4)
                             ))
                             .position(x: 42*1.5, y: 42*0.5)
-                        PressButton(label: Image(systemName: "arrowtriangle.down.fill"), identifier: "DOWN")
+                        PressButton(label: Image(systemName: "arrowtriangle.down.fill"), identifier: "D_DOWN")
                             .buttonStyle(GCCButton(
                                 color: grayColor,
                                 width: 42,
@@ -146,7 +146,7 @@ struct ContentView: View {
                                 shape: RoundedRectangle(cornerRadius: 4)
                             ))
                             .position(x: 42*1.5, y: 42*2.5)
-                        PressButton(label: Image(systemName: "arrowtriangle.left.fill"), identifier: "LEFT")
+                        PressButton(label: Image(systemName: "arrowtriangle.left.fill"), identifier: "D_LEFT")
                             .buttonStyle(GCCButton(
                                 color: grayColor,
                                 width: 42,
@@ -154,7 +154,7 @@ struct ContentView: View {
                                 shape: RoundedRectangle(cornerRadius: 4)
                             ))
                             .position(x: 42*0.5, y: 42*1.5)
-                        PressButton(label: Image(systemName: "arrowtriangle.right.fill"), identifier: "RIGHT")
+                        PressButton(label: Image(systemName: "arrowtriangle.right.fill"), identifier: "D_RIGHT")
                             .buttonStyle(GCCButton(
                                 color: grayColor,
                                 width: 42,

@@ -12,10 +12,32 @@ struct Joystick<Label>: View where Label: View {
     private let edgeHaptic = UIImpactFeedbackGenerator(style: .soft)
     private let pressHaptic = UIImpactFeedbackGenerator(style: .rigid)
     
+    @State private var inCenter: Bool = true {
+        willSet {
+            if inCenter != newValue {
+                if newValue {
+                    pressHaptic.impactOccurred(intensity: 0.6)
+                } else {
+                    pressHaptic.impactOccurred(intensity: 0.3)
+                }
+            }
+        }
+    }
+    @State private var outsideEdges: Bool = false {
+        willSet {
+            if newValue {
+                if !outsideEdges {
+                    pressHaptic.impactOccurred(intensity: 0.8)
+                }
+//                edgeHaptic.impactOccurred(intensity: 0.5)
+            }
+        }
+    }
     @State private var dragValue: DragGesture.Value? = nil {
         willSet {
             guard let value = newValue else {
                 client.send("SET \(identifier) 0.5 0.5")
+                inCenter = true
                 return
             }
             
@@ -27,10 +49,12 @@ struct Joystick<Label>: View where Label: View {
             let x = (translation.width / diameter).clamped(to: -0.5...0.5)
             let y = (-translation.height / diameter).clamped(to: -0.5...0.5)
             client.send("SET \(identifier) \(x+0.5) \(y+0.5)")
-            let intensity = sqrt(x*2*x*2 + y*2*y*2)
-            if (intensity > 1) {
-                edgeHaptic.impactOccurred()
-            }
+            let magnitude = sqrt(x*2*x*2 + y*2*y*2)
+            inCenter = magnitude < 0.2
+            outsideEdges = magnitude > 1
+//            if outsideEdges {
+//                edgeHaptic.impactOccurred(intensity: 0.5)
+//            }
         }
     }
     
@@ -57,6 +81,8 @@ struct Joystick<Label>: View where Label: View {
                     DragGesture(minimumDistance: 0)
                         .onChanged({ value in
                             self.dragValue = value
+                            self.pressHaptic.prepare()
+                            self.edgeHaptic.prepare()
                         })
                         .onEnded({ value in
                             self.dragValue = nil
