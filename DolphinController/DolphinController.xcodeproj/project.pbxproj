@@ -10,8 +10,6 @@
 		C50E761426B7C71900FB8C2C /* Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E761326B7C71900FB8C2C /* Comparable.swift */; };
 		C50E761526B7C71900FB8C2C /* Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E761326B7C71900FB8C2C /* Comparable.swift */; };
 		C50E761726B7CA6B00FB8C2C /* JoystickView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E761626B7CA6B00FB8C2C /* JoystickView.swift */; };
-		C50E761826B7CA6B00FB8C2C /* JoystickView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E761626B7CA6B00FB8C2C /* JoystickView.swift */; };
-		C50E761A26B7CA8A00FB8C2C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D558C26B4402E00E1F75B /* ContentView.swift */; };
 		C53D555D26B43D4F00E1F75B /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D555C26B43D4F00E1F75B /* Tests_iOS.swift */; };
 		C53D556826B43D4F00E1F75B /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D556726B43D4F00E1F75B /* Tests_macOS.swift */; };
 		C53D556D26B43D4F00E1F75B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D554226B43D4C00E1F75B /* ContentView.swift */; };
@@ -416,7 +414,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C53D558826B43F3C00E1F75B /* ObservableObject.swift in Sources */,
-				C50E761A26B7CA8A00FB8C2C /* ContentView.swift in Sources */,
 				C53D557F26B43E2500E1F75B /* DolphinControllerApp.swift in Sources */,
 				C53D558226B43E7300E1F75B /* HostService.swift in Sources */,
 				C50E761526B7C71900FB8C2C /* Comparable.swift in Sources */,
@@ -424,7 +421,6 @@
 				C53D556D26B43D4F00E1F75B /* ContentView.swift in Sources */,
 				C53D558426B43EA600E1F75B /* Controller.swift in Sources */,
 				C53D55A226B5311900E1F75B /* Server.swift in Sources */,
-				C50E761826B7CA6B00FB8C2C /* JoystickView.swift in Sources */,
 				C53D559126B443D500E1F75B /* Multipeer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
