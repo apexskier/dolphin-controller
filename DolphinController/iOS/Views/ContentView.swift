@@ -1,9 +1,11 @@
 import SwiftUI
+import CoreGraphics
 
-struct GCCButton: ButtonStyle {
+struct GCCButton<S>: ButtonStyle where S: Shape {
     var color: Color
-    var width: CGFloat = 42
-    var height: CGFloat = 42
+    var width: CGFloat? = nil
+    var height: CGFloat? = nil
+    var shape: S
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -13,8 +15,38 @@ struct GCCButton: ButtonStyle {
             .foregroundColor(.black.opacity(0.2))
             // https://gist.github.com/tadija/cb4ec0cbf0a89886d488d1d8b595d0e9
             .font(.custom("Futura-CondensedMedium", size: 30))
-            .clipShape(Circle())
+            .clipShape(shape)
             .brightness(configuration.isPressed ? -0.1 : 0)
+    }
+}
+
+extension GCCButton where S == Circle {
+    init(color: Color, width: CGFloat = 42, height: CGFloat = 42) {
+        self.init(color: color, width: width, height: height, shape: Circle())
+    }
+}
+
+struct CurvedPill: Shape {
+    var radius: CGFloat = 0.4
+    
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        
+        path.move(to: CGPoint(x: rect.minX + rect.width * 0.1, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.maxX - rect.width * 0.1, y: rect.minY))
+        path.addArc(
+            tangent1End: CGPoint(x: rect.maxX - rect.width * 0.1, y: rect.minY),
+            tangent2End: CGPoint(x: rect.maxX - rect.width * 0.1, y: rect.maxY),
+            radius: rect.width * 0.1
+        )
+        path.addLine(to: CGPoint(x: rect.minX + rect.width * 0.1, y: rect.maxY))
+        path.addArc(
+            tangent1End: CGPoint(x: rect.minX + rect.width * 0.1, y: rect.maxY),
+            tangent2End: CGPoint(x: rect.minX + rect.width * 0.1, y: rect.minY),
+            radius: rect.width * 0.1
+        )
+        
+        return path
     }
 }
 
@@ -87,20 +119,7 @@ struct ContentView: View {
     var body: some View {
         VStack {
             HStack {
-                PressButton(label: Text("L"), identifier: "L")
-                    .buttonStyle(GCCButton(color: grayColor))
-                Spacer()
-                PressButton(label: Text("R"), identifier: "R")
-                    .buttonStyle(GCCButton(color: grayColor))
-            }
-                .frame(
-                  minWidth: 0,
-                  maxWidth: .infinity,
-                  alignment: .center
-                )
-            
-            HStack {
-                VStack {
+                VStack(alignment: .center) {
                     Joystick(
                         identifier: "MAIN",
                         color: Color(red: 221/256, green: 218/256, blue: 231/256),
@@ -108,34 +127,86 @@ struct ContentView: View {
                         label: Text("")
                     )
                     
+                    Spacer()
+                    
                     ZStack {
                         PressButton(label: Image(systemName: "arrowtriangle.up.fill"), identifier: "UP")
-                            .buttonStyle(GCCButton(color: grayColor))
-                            .position(x: 50, y: 0)
+                            .buttonStyle(GCCButton(
+                                color: grayColor,
+                                width: 42,
+                                height: 42,
+                                shape: RoundedRectangle(cornerRadius: 4)
+                            ))
+                            .position(x: 42*1.5, y: 42*0.5)
                         PressButton(label: Image(systemName: "arrowtriangle.down.fill"), identifier: "DOWN")
-                            .buttonStyle(GCCButton(color: grayColor))
-                            .position(x: 50, y: 100)
+                            .buttonStyle(GCCButton(
+                                color: grayColor,
+                                width: 42,
+                                height: 42,
+                                shape: RoundedRectangle(cornerRadius: 4)
+                            ))
+                            .position(x: 42*1.5, y: 42*2.5)
                         PressButton(label: Image(systemName: "arrowtriangle.left.fill"), identifier: "LEFT")
-                            .buttonStyle(GCCButton(color: grayColor))
-                            .position(x: 0, y: 50)
+                            .buttonStyle(GCCButton(
+                                color: grayColor,
+                                width: 42,
+                                height: 42,
+                                shape: RoundedRectangle(cornerRadius: 4)
+                            ))
+                            .position(x: 42*0.5, y: 42*1.5)
                         PressButton(label: Image(systemName: "arrowtriangle.right.fill"), identifier: "RIGHT")
-                            .buttonStyle(GCCButton(color: grayColor))
-                            .position(x: 100, y: 50)
+                            .buttonStyle(GCCButton(
+                                color: grayColor,
+                                width: 42,
+                                height: 42,
+                                shape: RoundedRectangle(cornerRadius: 4)
+                            ))
+                            .position(x: 42*2.5, y: 42*1.5)
                     }
+                    .frame(width: 42*3, height: 42*3)
                 }
+                .frame(width: 200)
+                
+                Spacer()
                 
                 VStack {
-                    if (client.channel == nil) {
-                        Button("connect client") {
-                            do {
-                                try client.connect()
-                            } catch {
-                                self.error = error
+                    Spacer()
+                    
+                    VStack(spacing: 8) {
+                        HStack {
+                            PressButton(label: Text("L"), identifier: "L")
+                                .buttonStyle(GCCButton(
+                                    color: grayColor,
+                                    width: 100,
+                                    height: 42,
+                                    shape: RoundedRectangle(cornerRadius: 4, style: .continuous)
+                                ))
+                            Spacer()
+                            HStack(spacing: 8) {
+                                PressButton(label: Text("R"), identifier: "R")
+                                    .buttonStyle(GCCButton(
+                                        color: grayColor,
+                                        width: 100,
+                                        height: 42,
+                                        shape: RoundedRectangle(cornerRadius: 4, style: .continuous)
+                                    ))
                             }
                         }
-                            .padding()
-                            .disabled(client.channel != nil)
+                        PressButton(label: Text("Z"), identifier: "Z")
+                            .buttonStyle(GCCButton(
+                                color: Color(red: 72/256, green: 100/256, blue: 226/256),
+                                width: 100,
+                                height: 42,
+                                shape: RoundedRectangle(cornerRadius: 4, style: .continuous)
+                            ))
                     }
+                        .frame(
+                          minWidth: 0,
+                          maxWidth: .infinity,
+                          alignment: .center
+                        )
+                    
+                    Spacer()
                     
                     HStack(alignment: .center, spacing: 20) {
                         if client.controllerIndex == 0 {
@@ -160,9 +231,31 @@ struct ContentView: View {
                         }
                     }
                     
-                    PressButton(label: EmptyView(), identifier: "START")
-                        .buttonStyle(GCCButton(color: grayColor))
+                    Spacer()
+                    
+                    PressButton(label: Text(""), identifier: "START")
+                        .buttonStyle(GCCButton(
+                            color: grayColor,
+                            width: 34,
+                            height: 34,
+                            shape: Circle()
+                        ))
+                    
+                    Spacer()
+                    
+                    if (client.channel == nil) {
+                        Button("Connect") {
+                            client.connect()
+                        }
+                            .buttonStyle(GCCButton(
+                                color: grayColor,
+                                shape: Capsule(style: .continuous)
+                            ))
+                            .disabled(client.channel != nil)
+                    }
                 }
+                
+                Spacer()
 
                 VStack {
                     ZStack {
@@ -178,18 +271,31 @@ struct ContentView: View {
                                 width: 60,
                                 height: 60
                             ))
-                            .position(x: 0, y: 120)
-                            .clipShape(Circle())
+                            .offset(x: 0, y: 60 + 12 + 30)
+                            .rotationEffect(.degrees(60))
                         PressButton(label: Text("Y"), identifier: "Y")
-                            .buttonStyle(GCCButton(color: grayColor))
-                            .position(x: 100, y: 40)
+                            .buttonStyle(GCCButton(
+                                color: grayColor,
+                                width: 80,
+                                height: 42,
+                                shape: Capsule(style: .continuous)
+                            ))
+                            .offset(x: 0, y: 60 + 12 + 21)
+                            .rotationEffect(.degrees(175))
                         PressButton(label: Text("X"), identifier: "X")
-                            .buttonStyle(GCCButton(color: grayColor))
-                            .position(x: 200, y: 100)
-                        PressButton(label: Text("Z"), identifier: "Z")
-                            .buttonStyle(GCCButton(color: Color(red: 72/256, green: 100/256, blue: 226/256)))
-                            .position(x: 120, y: 240)
+                            .buttonStyle(GCCButton(
+                                color: grayColor,
+                                width: 80,
+                                height: 42,
+                                shape: Capsule(style: .continuous)
+                            ))
+                            .offset(x: 0, y: 60 + 12 + 21)
+                            .rotationEffect(.degrees(260))
                     }
+                        .offset(y: 20)
+                        .frame(height: 120 + 60)
+                    
+                    Spacer()
                     
                     Joystick(
                         identifier: "C",
@@ -201,9 +307,10 @@ struct ContentView: View {
                             .font(.custom("Futura-CondensedMedium", size: 30))
                     )
                 }
+                .frame(width: 200)
             }
         }
-            .ignoresSafeArea()
+            .padding()
             .frame(
               minWidth: 0,
               maxWidth: .infinity,
@@ -211,7 +318,6 @@ struct ContentView: View {
               maxHeight: .infinity,
               alignment: .center
             )
-            .background(Color(red: 106/256, green: 115/256, blue: 188/256))
             .sheet(item: $desiredHost, content: { host in
                 TextField("Enter code", text: $hostCode)
                     .keyboardType(.numberPad)

@@ -36,7 +36,7 @@ public class Client: ObservableObject {
             }
     }
     
-    func connect() throws {
+    func connect() {
         if channel?.isActive == true {
             return
         }

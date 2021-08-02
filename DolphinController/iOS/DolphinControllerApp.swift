@@ -7,9 +7,13 @@ struct DolphinControllerApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(controllerService)
-                .environmentObject(client)
+            ZStack {
+                Color(red: 106/256, green: 115/256, blue: 188/256)
+                    .ignoresSafeArea()
+                ContentView()
+                    .environmentObject(controllerService)
+                    .environmentObject(client)
+            }
         }
     }
 }
