@@ -10,12 +10,13 @@ struct DolphinControllerApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(hostService)
+                .environmentObject(appDelegate.server)
         }
     }
 }
 
 class AppDelegate: NSObject, NSApplicationDelegate {
-    private let server = Server(host: "0.0.0.0", port: 12345)
+    let server = Server(host: "0.0.0.0", port: 12345)
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         try! server.run()

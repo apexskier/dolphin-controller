@@ -1,4 +1,5 @@
 import SwiftUI
+import CoreHaptics
 
 struct Joystick<Label>: View where Label: View {
     @EnvironmentObject var client: Client
@@ -6,11 +7,30 @@ struct Joystick<Label>: View where Label: View {
     var identifier: String
     var color: Color
     var diameter: CGFloat
-    var knobDiameter: CGFloat = 50
+    var knobDiameter: CGFloat
     var label: Label
+    var hapticsSharpness: Float
     
-    private let edgeHaptic = UIImpactFeedbackGenerator(style: .soft)
     private let pressHaptic = UIImpactFeedbackGenerator(style: .rigid)
+    private let haptics: Haptics
+    
+    init(
+        identifier: String,
+        color: Color,
+        diameter: CGFloat,
+        knobDiameter: CGFloat,
+        label: Label,
+        hapticsSharpness: Float
+    ) {
+        self.identifier = identifier
+        self.color = color
+        self.diameter = diameter
+        self.knobDiameter = knobDiameter
+        self.label = label
+        self.hapticsSharpness = hapticsSharpness
+        
+        self.haptics = Haptics(sharpness: hapticsSharpness)
+    }
     
     @State private var inCenter: Bool = true {
         willSet {
@@ -29,7 +49,6 @@ struct Joystick<Label>: View where Label: View {
                 if !outsideEdges {
                     pressHaptic.impactOccurred(intensity: 0.8)
                 }
-//                edgeHaptic.impactOccurred(intensity: 0.5)
             }
         }
     }
@@ -38,10 +57,12 @@ struct Joystick<Label>: View where Label: View {
             guard let value = newValue else {
                 client.send("SET \(identifier) 0.5 0.5")
                 inCenter = true
+                haptics.stop()
                 return
             }
             
             if dragValue == nil {
+                haptics.start()
                 pressHaptic.impactOccurred()
             }
             
@@ -52,9 +73,8 @@ struct Joystick<Label>: View where Label: View {
             let magnitude = sqrt(x*2*x*2 + y*2*y*2)
             inCenter = magnitude < 0.2
             outsideEdges = magnitude > 1
-//            if outsideEdges {
-//                edgeHaptic.impactOccurred(intensity: 0.5)
-//            }
+            
+            haptics.setIntensity(magnitude)
         }
     }
     
@@ -82,7 +102,6 @@ struct Joystick<Label>: View where Label: View {
                         .onChanged({ value in
                             self.dragValue = value
                             self.pressHaptic.prepare()
-                            self.edgeHaptic.prepare()
                         })
                         .onEnded({ value in
                             self.dragValue = nil

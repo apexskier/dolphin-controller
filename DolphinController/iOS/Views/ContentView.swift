@@ -124,7 +124,12 @@ struct ContentView: View {
                         identifier: "MAIN",
                         color: Color(red: 221/256, green: 218/256, blue: 231/256),
                         diameter: 150,
-                        label: Text("")
+                        knobDiameter: 110,
+                        label: Image(systemName: "target")
+                            .resizable()
+                            .frame(width: 95, height: 95)
+                            .foregroundColor(.black.opacity(0.2)),
+                        hapticsSharpness: 0.8
                     )
                     
                     Spacer()
@@ -301,10 +306,12 @@ struct ContentView: View {
                         identifier: "C",
                         color: Color(red: 254/256, green: 217/256, blue: 39/256),
                         diameter: 150,
+                        knobDiameter: 80,
                         label: Text("C")
                             .foregroundColor(.black.opacity(0.2))
                             // https://gist.github.com/tadija/cb4ec0cbf0a89886d488d1d8b595d0e9
-                            .font(.custom("Futura-CondensedMedium", size: 30))
+                            .font(.custom("Futura-CondensedMedium", size: 30)),
+                        hapticsSharpness: 0.8
                     )
                 }
                 .frame(width: 200)

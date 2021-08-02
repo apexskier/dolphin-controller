@@ -1,20 +1,24 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var hostService: HostService
+    @EnvironmentObject var server: Server
     
     var body: some View {
         VStack {
-            Text("Code: \(hostService.hostCode)")
+//            Text("Code: \(hostService.hostCode)")
             
-            List(hostService.knownPeers.values.sorted(by: { a, b in
-                a.peer.displayName > b.peer.displayName
-            })) { peer in
-                HStack {
-                    Text("\(peer.peer.displayName)")
-                    Text("\(peer.connectionStatus.description)")
-                }
+            List(server.controllers) { controller in
+                Text("\(controller.channel.localAddress?.description ?? "<unknown>")")
             }
+            
+//            List(hostService.knownPeers.values.sorted(by: { a, b in
+//                a.peer.displayName > b.peer.displayName
+//            })) { peer in
+//                HStack {
+//                    Text("\(peer.peer.displayName)")
+//                    Text("\(peer.connectionStatus.description)")
+//                }
+//            }
         }
     }
 }

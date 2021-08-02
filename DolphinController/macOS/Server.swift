@@ -7,14 +7,22 @@ enum ServerError: Error {
     case noOpenControllerPorts
 }
 
-public class Server {
+class Controller: ObservableObject, Identifiable {
+    var channel: Channel
+    
+    init(channel: Channel) {
+        self.channel = channel
+    }
+}
+
+public class Server: ObservableObject {
     private let group = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
     private var upgrader: NIOWebSocketServerUpgrader? = nil
     
     private var host: String
     private var port: Int
     
-    private var controllers: [Channel] = []
+    @Published var controllers: [Controller] = []
     
     init(host: String, port: Int) {
         self.host = host
@@ -29,7 +37,7 @@ public class Server {
     }
     
     func upgradePipelineHandler(channel: Channel, _: HTTPRequestHead) -> EventLoopFuture<Void> {
-        self.controllers.append(channel)
+        self.controllers.append(Controller(channel: channel))
         do {
             let index = self.controllers.count
             let websocketHandler = try WebSocketHandler(index: index-1, onClose: { [weak self] in
@@ -86,9 +94,9 @@ public class WebsocketUpgradeHandler: ChannelInboundHandler, RemovableChannelHan
     public typealias InboundIn = HTTPServerRequestPart
     public typealias OutboundOut = HTTPServerResponsePart
     
-    private var controllers: [Channel]
+    private var controllers: [Controller]
     
-    init(controllers: inout [Channel]) {
+    init(controllers: inout [Controller]) {
         self.controllers = controllers
     }
     
