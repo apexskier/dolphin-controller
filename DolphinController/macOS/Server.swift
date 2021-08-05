@@ -37,20 +37,22 @@ public class Server: ObservableObject {
     }
     
     func upgradePipelineHandler(channel: Channel, _: HTTPRequestHead) -> EventLoopFuture<Void> {
-        DispatchQueue.main.sync {
-            let index = self.controllers.count
+        let index = self.controllers.count
+        DispatchQueue.main.async {
             self.controllers.append(Controller(channel: channel))
-            do {
-                let websocketHandler = try WebSocketHandler(index: index, onClose: { [weak self] in
-                    guard let self = self else {
-                        return
-                    }
+        }
+        do {
+            let websocketHandler = try WebSocketHandler(index: index, onClose: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                DispatchQueue.main.async {
                     self.controllers.remove(at: index)
-                })
-                return channel.pipeline.addHandler(websocketHandler)
-            } catch {
-                fatalError(error.localizedDescription)
-            }
+                }
+            })
+            return channel.pipeline.addHandler(websocketHandler)
+        } catch {
+            fatalError(error.localizedDescription)
         }
     }
     
@@ -76,7 +78,7 @@ public class Server: ObservableObject {
             .serverChannelOption(ChannelOptions.backlog, value: 256)
             .serverChannelOption(ChannelOptions.socketOption(.so_reuseaddr), value: 1)
             .childChannelInitializer { channel in
-                let httpHandler = WebsocketUpgradeHandler(controllers: &self.controllers)
+                let httpHandler = WebsocketUpgradeHandler(isFull: self.controllers.count >= 4)
                 let config: NIOHTTPServerUpgradeConfiguration = (
                     upgraders: [self.upgrader!],
                     completionHandler: { _ in
@@ -96,10 +98,10 @@ public class WebsocketUpgradeHandler: ChannelInboundHandler, RemovableChannelHan
     public typealias InboundIn = HTTPServerRequestPart
     public typealias OutboundOut = HTTPServerResponsePart
     
-    private var controllers: [Controller]
+    private var isFull: Bool
     
-    init(controllers: inout [Controller]) {
-        self.controllers = controllers
+    init(isFull: Bool) {
+        self.isFull = isFull
     }
     
     public func channelRead(context: ChannelHandlerContext, data: NIOAny) {
@@ -116,7 +118,7 @@ public class WebsocketUpgradeHandler: ChannelInboundHandler, RemovableChannelHan
             return
         }
         
-        if self.controllers.count >= 4 {
+        if self.isFull {
             self.respond409(context: context)
             return
         }
@@ -218,8 +220,10 @@ private final class WebSocketHandler: NSObject, ChannelInboundHandler {
         super.init()
         
         self.outputStream.delegate = self
-        outputStream.open()
-        print("created websocket handler")
+        DispatchQueue.global().async {
+            // this blocks until the other side of the fifo pipe is opened for input
+            self.outputStream.open()
+        }
     }
     
     deinit {

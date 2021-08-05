@@ -1,5 +1,6 @@
-import SwiftUI
+import Combine
 import CoreGraphics
+import SwiftUI
 
 struct GCCButton<S>: ButtonStyle where S: Shape {
     var color: Color
@@ -115,6 +116,8 @@ struct ContentView: View {
     @State private var desiredHost: KnownPeer? = nil
     @State private var hostCode: String = ""
     @State private var error: Error? = nil
+    @State private var clientConnectionCancellable: AnyCancellable? = nil
+    @State private var clientDisconnectionCancellable: AnyCancellable? = nil
     
     var body: some View {
         VStack {
@@ -250,13 +253,38 @@ struct ContentView: View {
                     
                     if (client.channel == nil) {
                         Button("Connect") {
-                            client.connect()
+                            self.clientConnectionCancellable = client.connect()
+                                .receive(on: RunLoop.main)
+                                .sink(receiveCompletion: { completion in
+                                    if case .failure(let error) = completion {
+                                        self.error = error
+                                    }
+                                    self.clientConnectionCancellable = nil
+                                }, receiveValue: { _ in
+                                    fatalError()
+                                })
                         }
                             .buttonStyle(GCCButton(
                                 color: grayColor,
                                 shape: Capsule(style: .continuous)
                             ))
-                            .disabled(client.channel != nil)
+                    } else {
+                        Button("Disconnect") {
+                            self.clientDisconnectionCancellable = client.disconnect()
+                                .receive(on: RunLoop.main)
+                                .sink(receiveCompletion: { completion in
+                                    if case .failure(let error) = completion {
+                                        self.error = error
+                                    }
+                                    self.clientDisconnectionCancellable = nil
+                                }, receiveValue: { _ in
+                                    fatalError()
+                                })
+                        }
+                            .buttonStyle(GCCButton(
+                                color: grayColor,
+                                shape: Capsule(style: .continuous)
+                            ))
                     }
                 }
                 

@@ -1,3 +1,4 @@
+import Combine
 import Foundation
 import NIO
 import NIOHTTP1
@@ -7,8 +8,8 @@ public class Client: ObservableObject {
     private let group = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
     public var channel: Channel? = nil {
         didSet {
-            DispatchQueue.main.sync {
-                objectWillChange.send()
+            DispatchQueue.main.async {
+                self.objectWillChange.send()
             }
         }
     }
@@ -16,7 +17,7 @@ public class Client: ObservableObject {
     @Published var controllerIndex: Int? = nil
     
     private var bootstrap: ClientBootstrap {
-        ClientBootstrap(group: group)
+        ClientBootstrap(group: self.group)
             .channelOption(ChannelOptions.socketOption(.so_reuseaddr), value: 1)
             .channelInitializer { channel in
                 let httpHandler = HTTPInitialRequestHandler(host: "192.168.1.39", port: 12345)
@@ -36,21 +37,26 @@ public class Client: ObservableObject {
             }
     }
     
-    func connect() {
+    func connect() -> AnyPublisher<Never, Error> {
+        let publisher = PassthroughSubject<Never, Error>()
         if channel?.isActive == true {
-            return
+            return publisher.eraseToAnyPublisher()
         }
         DispatchQueue.global(qos: .userInitiated).async {
             do {
-                self.channel = try self.bootstrap.connect(host: "192.168.1.39", port: 12345).wait()
-                print("\(self.channel!.localAddress!) is now open")
-                try self.channel!.closeFuture.wait()
+                let channel = try self.bootstrap.connect(host: "192.168.1.39", port: 12345).wait()
+                self.channel = channel
+                print("\(channel.localAddress?.description ?? "<unknown>") is now open")
+                try channel.closeFuture.wait()
             } catch {
+                publisher.send(completion: .failure(error))
                 print("error: ", error)
             }
+            publisher.send(completion: .finished)
             self.channel = nil
             print("Closed")
         }
+        return publisher.eraseToAnyPublisher()
     }
     
     func send(_ content: String) {
@@ -61,9 +67,17 @@ public class Client: ObservableObject {
         channel.writeAndFlush(frame, promise: nil)
     }
     
-    func shutdown() throws {
-        try group.syncShutdownGracefully()
-        print("Client closed")
+    func disconnect() -> AnyPublisher<Never, Error> {
+        let publisher = PassthroughSubject<Never, Error>()
+        _ = self.channel?.close().whenComplete({ result in
+            if case .failure(let error) = result {
+                publisher.send(completion: .failure(error))
+            } else {
+                publisher.send(completion: .finished)
+            }
+            self.channel = nil
+        })
+        return publisher.eraseToAnyPublisher()
     }
 }
 
@@ -132,13 +146,20 @@ private final class HTTPInitialRequestHandler: ChannelInboundHandler, RemovableC
 }
 
 protocol ControllerClientWebsocketHandlerDelegate {
-    func didGetIndex(index: Int)
+    func didConnect(index: Int)
+    func didDisconnect()
 }
 
 extension Client: ControllerClientWebsocketHandlerDelegate {
-    func didGetIndex(index: Int) {
+    func didConnect(index: Int) {
         DispatchQueue.main.sync {
             self.controllerIndex = index
+        }
+    }
+    
+    func didDisconnect() {
+        DispatchQueue.main.sync {
+            self.controllerIndex = nil
         }
     }
 }
@@ -159,6 +180,7 @@ private final class ControllerClientWebsocketHandler: ChannelInboundHandler {
 
     public func handlerRemoved(context: ChannelHandlerContext) {
         print("WebSocket handler removed.")
+        delegate.didDisconnect()
     }
 
     public func channelRead(context: ChannelHandlerContext, data: NIOAny) {
@@ -200,7 +222,7 @@ private final class ControllerClientWebsocketHandler: ChannelInboundHandler {
             if let substr = frameDataString.split(separator: ",").first,
                let index = Int(String(substr)) {
                 print("You're controller number \(index+1)")
-                delegate.didGetIndex(index: index)
+                delegate.didConnect(index: index)
             }
         }
         
