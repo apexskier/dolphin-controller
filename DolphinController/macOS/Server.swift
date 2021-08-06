@@ -187,43 +187,7 @@ private final class WebSocketHandler: NSObject, ChannelInboundHandler {
     init(index: Int, onClose: @escaping () -> Void) throws {
         self.index = index
         self.onClose = onClose
-        
-        guard let applicationSupport = try? FileManager.default.url(
-                for: .applicationSupportDirectory,
-                in: .userDomainMask,
-                appropriateFor: nil,
-                create: true
-        ) else {
-            fatalError("Failed to find application support directory")
-        }
-//        guard let bundleId = Bundle.main.bundleIdentifier else {
-//            fatalError("Failed to find application support directory")
-//        }
-        
-        let pipesFolder = applicationSupport
-            .appendingPathComponent("Dolphin")
-            .appendingPathComponent("Pipes")
-        if !FileManager.default.fileExists(atPath: pipesFolder.path) {
-            try FileManager.default.createDirectory(
-                at: pipesFolder,
-                withIntermediateDirectories: true,
-                attributes: nil
-            )
-        }
-        let pipeUrl = pipesFolder.appendingPathComponent("ctrl\(index+1)")
-//        mkfifo(pipeUrl.path, 0o644)
-        guard let outputStream = OutputStream(url: pipeUrl, append: true) else {
-            fatalError("Failed to create outputstream")
-        }
-        self.outputStream = outputStream
-        
-        super.init()
-        
-        self.outputStream.delegate = self
-        DispatchQueue.global().async {
-            // this blocks until the other side of the fifo pipe is opened for input
-            self.outputStream.open()
-        }
+        self.outputStream = try createPipe(index: index)
     }
     
     deinit {
@@ -233,9 +197,12 @@ private final class WebSocketHandler: NSObject, ChannelInboundHandler {
     public func handlerAdded(context: ChannelHandlerContext) {
         print("handler added", id)
         self.ping(context: context)
+        DispatchQueue.global().async {
+            self.outputStream.open()
+        }
     }
     
-    func handlerRemoved(context: ChannelHandlerContext) {
+    public func handlerRemoved(context: ChannelHandlerContext) {
         print("handler removed", id)
         onClose()
     }
@@ -249,7 +216,7 @@ private final class WebSocketHandler: NSObject, ChannelInboundHandler {
         case .connectionClose:
             self.receivedClose(context: context, frame: frame)
         case .pong:
-            self.pong(context: context, frame: frame)
+            break
         case .text:
             self.streamText(buffer: frame.unmaskedData)
         case .binary, .continuation, .ping:
@@ -289,17 +256,16 @@ private final class WebSocketHandler: NSObject, ChannelInboundHandler {
         let frame = WebSocketFrame(fin: true, opcode: .ping, data: buffer)
         context.writeAndFlush(self.wrapOutboundOut(frame), promise: nil)
     }
-
-    private func pong(context: ChannelHandlerContext, frame: WebSocketFrame) {
-        // noop
-    }
     
     private func streamText(buffer: ByteBuffer) {
         var data = buffer
         var written = data.readableBytes
         while written > 0 {
             written -= data.readWithUnsafeReadableBytes({ pointer in
-                self.outputStream.write(pointer.baseAddress!.assumingMemoryBound(to: UInt8.self), maxLength: written)
+                guard let address = pointer.baseAddress else {
+                    return 0
+                }
+                return self.outputStream.write(address.assumingMemoryBound(to: UInt8.self), maxLength: written)
             })
             self.outputStream.write(&WebSocketHandler.newline, maxLength: 1)
         }
@@ -318,8 +284,33 @@ private final class WebSocketHandler: NSObject, ChannelInboundHandler {
     }
 }
 
-extension WebSocketHandler: StreamDelegate {
-    func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
-        print("stream event: \(eventCode)")
+enum PipeError: Error {
+    case openFailed
+}
+
+func createPipe(index: Int) throws -> OutputStream {
+    let applicationSupport = try FileManager.default.url(
+        for: .applicationSupportDirectory,
+        in: .userDomainMask,
+        appropriateFor: nil,
+        create: true
+    )
+    
+    let pipesFolder = applicationSupport
+        .appendingPathComponent("Dolphin")
+        .appendingPathComponent("Pipes")
+    if !FileManager.default.fileExists(atPath: pipesFolder.path) {
+        try FileManager.default.createDirectory(
+            at: pipesFolder,
+            withIntermediateDirectories: true,
+            attributes: nil
+        )
     }
+    let pipeUrl = pipesFolder.appendingPathComponent("ctrl\(index+1)")
+    mkfifo(pipeUrl.path, 0o644)
+    guard let outputStream = OutputStream(url: pipeUrl, append: true) else {
+        throw PipeError.openFailed
+    }
+    
+    return outputStream
 }
