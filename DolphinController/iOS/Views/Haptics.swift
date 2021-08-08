@@ -26,7 +26,7 @@ class Haptics {
         do {
             engine = try CHHapticEngine()
         } catch let error {
-            fatalError("Engine Creation Error: \(error)")
+            print("haptic error", error)
         }
         
         // Mute audio to reduce latency for collision haptics.

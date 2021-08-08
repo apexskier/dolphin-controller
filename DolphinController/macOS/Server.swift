@@ -22,7 +22,17 @@ public class Server: ObservableObject {
     private var host: String
     private var port: Int
     
-    @Published var controllers: [Controller] = []
+    @Published var controllers: [Int: Controller?] = [:]
+    var controllerCount = 4
+    
+    var nextControllerIndex: Int? {
+        for i in 0...controllerCount {
+            if controllers[i] == nil {
+                return i
+            }
+        }
+        return nil
+    }
     
     init(host: String, port: Int) {
         self.host = host
@@ -37,9 +47,14 @@ public class Server: ObservableObject {
     }
     
     func upgradePipelineHandler(channel: Channel, _: HTTPRequestHead) -> EventLoopFuture<Void> {
-        let index = self.controllers.count
+        guard let index = self.nextControllerIndex else {
+            channel.pipeline.fireErrorCaught(ServerError.noOpenControllerPorts)
+            return channel.pipeline.close()
+        }
+        
         DispatchQueue.main.async {
-            self.controllers.append(Controller(channel: channel))
+            print("controller \(index) connect", channel.isActive)
+            self.controllers[index] = Controller(channel: channel)
         }
         do {
             let websocketHandler = try WebSocketHandler(index: index, onClose: { [weak self] in
@@ -47,7 +62,8 @@ public class Server: ObservableObject {
                     return
                 }
                 DispatchQueue.main.async {
-                    self.controllers.remove(at: index)
+                    print("controller \(index) disconnect")
+                    self.controllers[index] = nil
                 }
             })
             return channel.pipeline.addHandler(websocketHandler)
@@ -183,11 +199,16 @@ private final class WebSocketHandler: NSObject, ChannelInboundHandler {
     private var onClose: () -> Void
 
     private var awaitingClose: Bool = false
+    private var writeQueue: DispatchQueue
     
     init(index: Int, onClose: @escaping () -> Void) throws {
         self.index = index
         self.onClose = onClose
         self.outputStream = try createPipe(index: index)
+        self.writeQueue = DispatchQueue(
+            label: "ctrl queue \(index)",
+            qos: .userInteractive
+        )
     }
     
     deinit {
@@ -195,17 +216,13 @@ private final class WebSocketHandler: NSObject, ChannelInboundHandler {
     }
 
     public func handlerAdded(context: ChannelHandlerContext) {
-        print("handler added", id)
-        self.ping(context: context)
+        self.sendPing(context: context)
         DispatchQueue.global().async {
-            print("opening output stream", self.id)
             self.outputStream.open()
-            print("output stream opened", self.id)
         }
     }
     
     public func handlerRemoved(context: ChannelHandlerContext) {
-        print("handler removed", id)
         onClose()
     }
     
@@ -217,6 +234,11 @@ private final class WebSocketHandler: NSObject, ChannelInboundHandler {
         switch frame.opcode {
         case .connectionClose:
             self.receivedClose(context: context, frame: frame)
+        case .ping:
+            let buffer = context.channel.allocator.buffer(string: "\(self.index)")
+            let frame = WebSocketFrame(fin: true, opcode: .pong, data: buffer)
+            context.writeAndFlush(self.wrapOutboundOut(frame), promise: nil)
+            break
         case .pong:
             break
         case .text:
@@ -257,9 +279,10 @@ private final class WebSocketHandler: NSObject, ChannelInboundHandler {
         }
     }
     
-    private func ping(context: ChannelHandlerContext) {
-        let buffer = context.channel.allocator.buffer(string: "\(self.index),\(self.id)")
+    private func sendPing(context: ChannelHandlerContext) {
+        let buffer = context.channel.allocator.buffer(string: "\(self.index)")
         let frame = WebSocketFrame(fin: true, opcode: .ping, data: buffer)
+        print("ping", context.channel.isActive, context.channel.isWritable)
         context.writeAndFlush(self.wrapOutboundOut(frame), promise: nil)
     }
     
@@ -278,7 +301,7 @@ private final class WebSocketHandler: NSObject, ChannelInboundHandler {
                     let bytesWritten = self.outputStream.write(address.assumingMemoryBound(to: UInt8.self), maxLength: written)
                     if bytesWritten < 0 {
                         guard let error = self.outputStream.streamError else {
-                            fatalError()
+                            fatalError("expected a stream error")
                         }
                         throw error
                     }

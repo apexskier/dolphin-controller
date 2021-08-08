@@ -3,6 +3,7 @@ import Foundation
 import NIO
 import NIOHTTP1
 import NIOWebSocket
+import UIKit
 
 public class Client: ObservableObject {
     private let group = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
@@ -94,8 +95,6 @@ private final class HTTPInitialRequestHandler: ChannelInboundHandler, RemovableC
     }
     
     public func channelActive(context: ChannelHandlerContext) {
-        print("Client connected to \(context.remoteAddress!)")
-
         // We are connected. It's time to send the message to the server to initialize the upgrade dance.
         var headers = HTTPHeaders()
         headers.add(name: "Host", value: "\(host):\(port)")
@@ -130,10 +129,6 @@ private final class HTTPInitialRequestHandler: ChannelInboundHandler, RemovableC
             print("Closing channel.")
             context.close(promise: nil)
         }
-    }
-    
-    public func handlerRemoved(context: ChannelHandlerContext) {
-        print("HTTP handler removed")
     }
     
     public func errorCaught(context: ChannelHandlerContext, error: Error) {
@@ -175,11 +170,14 @@ private final class ControllerClientWebsocketHandler: ChannelInboundHandler {
     }
     
     public func handlerAdded(context: ChannelHandlerContext) {
-        print("WebSocket handler added.")
+        let identifier = UIDevice.current.identifierForVendor ?? UUID()
+        let buffer = context.channel.allocator.buffer(string: identifier.uuidString)
+        let frame = WebSocketFrame(fin: true, opcode: .ping, data: buffer)
+        print("ping", context.channel.isActive, context.channel.isWritable)
+        context.writeAndFlush(self.wrapOutboundOut(frame), promise: nil)
     }
 
     public func handlerRemoved(context: ChannelHandlerContext) {
-        print("WebSocket handler removed.")
         delegate.didDisconnect()
     }
 
@@ -189,6 +187,8 @@ private final class ControllerClientWebsocketHandler: ChannelInboundHandler {
         switch frame.opcode {
         case .ping:
             self.handlePing(context: context, frame: frame)
+        case .pong:
+            self.handlePong(context: context, frame: frame)
         case .text:
             var data = frame.unmaskedData
             let text = data.readString(length: data.readableBytes) ?? ""
@@ -217,11 +217,8 @@ private final class ControllerClientWebsocketHandler: ChannelInboundHandler {
     private func handlePing(context: ChannelHandlerContext, frame: WebSocketFrame) {
         print("Ping")
         var frameData = frame.data
-        if let frameDataString = frameData.readString(length: 18) {
-            print("Websocket: Received: \(frameDataString)")
-            if let substr = frameDataString.split(separator: ",").first,
-               let index = Int(String(substr)) {
-                print("You're controller number \(index+1)")
+        if let indexStr = frameData.readString(length: 1) {
+            if let index = Int(String(indexStr)) {
                 delegate.didConnect(index: index)
             }
         }
@@ -234,6 +231,16 @@ private final class ControllerClientWebsocketHandler: ChannelInboundHandler {
 
         let responseFrame = WebSocketFrame(fin: true, opcode: .pong, data: frameData)
         context.write(self.wrapOutboundOut(responseFrame), promise: nil)
+    }
+    
+    private func handlePong(context: ChannelHandlerContext, frame: WebSocketFrame) {
+        print("Pong")
+        var frameData = frame.data
+        if let indexStr = frameData.readString(length: 1) {
+            if let index = Int(String(indexStr)) {
+                delegate.didConnect(index: index)
+            }
+        }
     }
     
     private func closeOnError(context: ChannelHandlerContext) {
