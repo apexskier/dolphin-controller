@@ -85,6 +85,22 @@ extension View {
     }
 }
 
+struct Light: View {
+    let on: Bool
+    
+    var body: some View {
+        if on {
+            return Rectangle()
+                .fill(Color(red: 103/256, green: 197/256, blue: 209/256))
+                .frame(width: 12, height: 12)
+        } else {
+            return Rectangle()
+                .fill(Color(red: 107/256, green: 111/256, blue: 116/256))
+                .frame(width: 12, height: 12)
+        }
+    }
+}
+
 struct PressButton<Label>: View where Label: View {
     @EnvironmentObject var client: Client
     
@@ -190,15 +206,13 @@ struct ContentView: View {
                                     shape: RoundedRectangle(cornerRadius: 4, style: .continuous)
                                 ))
                             Spacer()
-                            HStack(spacing: 8) {
-                                PressButton(label: Text("R"), identifier: "R")
-                                    .buttonStyle(GCCButton(
-                                        color: grayColor,
-                                        width: 100,
-                                        height: 42,
-                                        shape: RoundedRectangle(cornerRadius: 4, style: .continuous)
-                                    ))
-                            }
+                            PressButton(label: Text("R"), identifier: "R")
+                                .buttonStyle(GCCButton(
+                                    color: grayColor,
+                                    width: 100,
+                                    height: 42,
+                                    shape: RoundedRectangle(cornerRadius: 4, style: .continuous)
+                                ))
                         }
                         PressButton(label: Text("Z"), identifier: "Z")
                             .buttonStyle(GCCButton(
@@ -217,26 +231,10 @@ struct ContentView: View {
                     Spacer()
                     
                     HStack(alignment: .center, spacing: 20) {
-                        if client.controllerIndex == 0 {
-                            Rectangle().fill(Color.blue).frame(width: 12, height: 12)
-                        } else {
-                            Rectangle().fill(Color.gray).frame(width: 12, height: 12)
-                        }
-                        if client.controllerIndex == 1 {
-                            Rectangle().fill(Color.blue).frame(width: 12, height: 12)
-                        } else {
-                            Rectangle().fill(Color.gray).frame(width: 12, height: 12)
-                        }
-                        if client.controllerIndex == 2 {
-                            Rectangle().fill(Color.blue).frame(width: 12, height: 12)
-                        } else {
-                            Rectangle().fill(Color.gray).frame(width: 12, height: 12)
-                        }
-                        if client.controllerIndex == 3 {
-                            Rectangle().fill(Color.blue).frame(width: 12, height: 12)
-                        } else {
-                            Rectangle().fill(Color.gray).frame(width: 12, height: 12)
-                        }
+                        Light(on: client.controllerIndex == 0)
+                        Light(on: client.controllerIndex == 1)
+                        Light(on: client.controllerIndex == 2)
+                        Light(on: client.controllerIndex == 3)
                     }
                     
                     Spacer()
