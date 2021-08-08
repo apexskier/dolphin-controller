@@ -12,6 +12,9 @@ struct DolphinControllerApp: App {
                 .environmentObject(hostService)
                 .environmentObject(appDelegate.server)
         }
+            .commands {
+                CommandGroup(replacing: .newItem) {}
+            }
     }
 }
 
@@ -19,6 +22,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let server = Server(host: "0.0.0.0", port: 12345)
     
     func applicationDidFinishLaunching(_ notification: Notification) {
+        NSWindow.allowsAutomaticWindowTabbing = false
+        
+        signal(SIGPIPE) { _ in
+            // ignore sigpipes
+        }
+        
         try! server.run()
     }
     
