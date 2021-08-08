@@ -266,11 +266,9 @@ private final class WebSocketHandler: NSObject, ChannelInboundHandler {
     private func streamText(buffer: ByteBuffer) throws {
         var data = buffer
         if !self.outputStream.hasSpaceAvailable {
-            print("output stream not ready for writing")
             return
         }
         var written = data.readableBytes
-        print("writing to output stream", self.id)
         while written > 0 {
             do {
                 written -= try data.readWithUnsafeReadableBytes({ pointer in
@@ -286,6 +284,7 @@ private final class WebSocketHandler: NSObject, ChannelInboundHandler {
                     }
                     return bytesWritten
                 })
+                self.outputStream.write(&WebSocketHandler.newline, maxLength: 1)
             } catch {
                 if (error as NSError).domain == NSPOSIXErrorDomain
                     && (error as NSError).code == EPIPE {
@@ -293,14 +292,11 @@ private final class WebSocketHandler: NSObject, ChannelInboundHandler {
                     // Broken pipe error
                     self.outputStream = try createPipe(index: index)
                     DispatchQueue.global().async {
-                        print("opening output stream", self.id)
                         self.outputStream.open()
-                        print("output stream opened", self.id)
                     }
                 }
                 return
             }
-            self.outputStream.write(&WebSocketHandler.newline, maxLength: 1)
         }
     }
 
