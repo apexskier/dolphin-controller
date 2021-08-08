@@ -198,7 +198,9 @@ private final class WebSocketHandler: NSObject, ChannelInboundHandler {
         print("handler added", id)
         self.ping(context: context)
         DispatchQueue.global().async {
+            print("opening output stream", self.id)
             self.outputStream.open()
+            print("output stream opened", self.id)
         }
     }
     
@@ -218,7 +220,11 @@ private final class WebSocketHandler: NSObject, ChannelInboundHandler {
         case .pong:
             break
         case .text:
-            self.streamText(buffer: frame.unmaskedData)
+            do {
+                try self.streamText(buffer: frame.unmaskedData)
+            } catch {
+                print("Error", error)
+            }
         case .binary, .continuation, .ping:
             // We ignore these frames.
             break
@@ -257,16 +263,43 @@ private final class WebSocketHandler: NSObject, ChannelInboundHandler {
         context.writeAndFlush(self.wrapOutboundOut(frame), promise: nil)
     }
     
-    private func streamText(buffer: ByteBuffer) {
+    private func streamText(buffer: ByteBuffer) throws {
         var data = buffer
+        if !self.outputStream.hasSpaceAvailable {
+            print("output stream not ready for writing")
+            return
+        }
         var written = data.readableBytes
+        print("writing to output stream", self.id)
         while written > 0 {
-            written -= data.readWithUnsafeReadableBytes({ pointer in
-                guard let address = pointer.baseAddress else {
-                    return 0
+            do {
+                written -= try data.readWithUnsafeReadableBytes({ pointer in
+                    guard let address = pointer.baseAddress else {
+                        return 0
+                    }
+                    let bytesWritten = self.outputStream.write(address.assumingMemoryBound(to: UInt8.self), maxLength: written)
+                    if bytesWritten < 0 {
+                        guard let error = self.outputStream.streamError else {
+                            fatalError()
+                        }
+                        throw error
+                    }
+                    return bytesWritten
+                })
+            } catch {
+                if (error as NSError).domain == NSPOSIXErrorDomain
+                    && (error as NSError).code == EPIPE {
+                    print("pipe closed, reopening")
+                    // Broken pipe error
+                    self.outputStream = try createPipe(index: index)
+                    DispatchQueue.global().async {
+                        print("opening output stream", self.id)
+                        self.outputStream.open()
+                        print("output stream opened", self.id)
+                    }
                 }
-                return self.outputStream.write(address.assumingMemoryBound(to: UInt8.self), maxLength: written)
-            })
+                return
+            }
             self.outputStream.write(&WebSocketHandler.newline, maxLength: 1)
         }
     }
