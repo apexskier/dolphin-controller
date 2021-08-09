@@ -4,12 +4,12 @@ import SwiftUI
 struct DolphinControllerApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate: AppDelegate
 
-    let hostService = HostService()
+//    let hostService = HostService()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(hostService)
+//                .environmentObject(hostService)
                 .environmentObject(appDelegate.server)
         }
             .commands {
@@ -19,7 +19,7 @@ struct DolphinControllerApp: App {
 }
 
 class AppDelegate: NSObject, NSApplicationDelegate {
-    let server = Server(host: "0.0.0.0", port: 12345)
+    let server = Server(host: "0.0.0.0")
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSWindow.allowsAutomaticWindowTabbing = false
