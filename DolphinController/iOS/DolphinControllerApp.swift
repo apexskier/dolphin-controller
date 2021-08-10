@@ -1,6 +1,8 @@
 import SwiftUI
 import CoreHaptics
 import Combine
+import Network
+import Foundation
 
 @main
 struct DolphinControllerApp: App {
@@ -18,12 +20,38 @@ struct DolphinControllerApp: App {
 //                    .environmentObject(controllerService)
                     .environmentObject(client)
             }.sheet(isPresented: $showServers) {
-                ProgressView("Finding servers")
+                if test.loading {
+                    ProgressView("Finding servers")
+                }
                 VStack {
                     List(test.servers) { server in
                         Text(server.name)
                         Button("Connect") {
-                            server.service.resolve(withTimeout: 5)
+                            let connection = NWConnection(to: server.endpoint, using: .tcp)
+
+                            connection.stateUpdateHandler = { state in
+                                if let innerEndpoint = connection.currentPath?.localEndpoint,
+                                   case .hostPort(let host, let port) = innerEndpoint {
+                                    print(state, "connected on", "\(host):\(port)")
+                                }
+                                switch state {
+                                case .ready:
+                                    connection.send(
+                                        content: "HELLO".data(using: .utf8),
+                                        completion: .contentProcessed({ err in
+                                            if let error = err {
+                                                print("ERROR", error)
+                                            } else {
+                                                print("SENT")
+                                            }
+                                        })
+                                    )
+                                    break
+                                default:
+                                    break
+                                }
+                            }
+                            connection.start(queue: .global(qos: .userInitiated))
                         }
                     }
                 }
@@ -33,10 +61,10 @@ struct DolphinControllerApp: App {
 }
 
 class ServerFinder: NSObject, ObservableObject {
-    let serviceBrowser = NetServiceBrowser()
+    let serviceBrowser: NWBrowser
     
     @Published
-    var loading: Bool
+    var loading: Bool = false
     
     @Published
     var servers = [Server]() {
@@ -49,87 +77,59 @@ class ServerFinder: NSObject, ObservableObject {
     private var serversSinks = [AnyCancellable]()
     
     override init() {
-        loading = true
+        self.serviceBrowser = NWBrowser(
+            for: .bonjour(type: "_dolphinC._tcp.", domain: nil),
+            using: .tcp
+        )
         
         super.init()
         
-        serviceBrowser.delegate = self
-        serviceBrowser.searchForServices(ofType: "_dolphinC._tcp.", inDomain: "")
+        serviceBrowser.stateUpdateHandler = { state in
+            DispatchQueue.main.async {
+                switch state {
+                case .ready:
+                    self.loading = true
+                default:
+                    self.loading = false
+                }
+            }
+        }
+        serviceBrowser.browseResultsChangedHandler = { services, change in
+            let servers: [Server] = services.compactMap({ service in
+                switch service.endpoint {
+                case .service(name: let name, type: _, domain: _, interface: _):
+                    return Server(name: name, endpoint: service.endpoint)
+                default:
+                    // ignore, we're only looking for bonjour services
+                    return nil
+                }
+            })
+            DispatchQueue.main.async {
+                self.servers = servers
+            }
+        }
+        
+        serviceBrowser.start(queue: .global(qos: .userInitiated))
     }
     
     deinit {
-        serviceBrowser.stop()
+        serviceBrowser.cancel()
         loading = false
     }
 }
 
 class Server: NSObject, ObservableObject, Identifiable {
     var id: ObjectIdentifier {
-        ObjectIdentifier("\(address) \(name)" as NSString)
+        ObjectIdentifier("\(name)" as NSString)
     }
     
-    let address: String
     let name: String
-    let service: NetService
+    let endpoint: NWEndpoint
     
-    init(address: String, name: String, service: NetService) {
-        self.address = address
+    init(name: String, endpoint: NWEndpoint) {
         self.name = name
-        self.service = service
+        self.endpoint = endpoint
         
         super.init()
-        
-        self.service.delegate = self
-    }
-}
-
-extension Server: NetServiceDelegate {
-    func netServiceDidResolveAddress(_ sender: NetService) {
-        guard let addresses = sender.addresses else {
-            return
-        }
-        
-        var ips = [String]()
-        for addressData in addresses {
-            var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
-            addressData.withUnsafeBytes { pointer in
-                guard let address = pointer.baseAddress else {
-                    fatalError()
-                }
-                guard getnameinfo(
-                    address.assumingMemoryBound(to: sockaddr.self),
-                    socklen_t(addressData.count),
-                    &hostname,
-                    socklen_t(hostname.count),
-                    nil,
-                    0,
-                    NI_NUMERICHOST
-                ) == 0 else {
-                    return
-                }
-            }
-            ips.append(String(cString: hostname))
-        }
-        print(ips, sender.port)
-    }
-    
-    func netService(_ sender: NetService, didNotResolve errorDict: [String : NSNumber]) {
-        print("Failed to resolve")
-    }
-}
-
-extension ServerFinder: NetServiceBrowserDelegate {
-    func netServiceBrowser(_ browser: NetServiceBrowser, didFind service: NetService, moreComing: Bool) {
-        loading = moreComing
-        print("Found service", service.name)
-        servers.append(Server(address: "unknown", name: service.name, service: service))
-    }
-    
-    func netServiceBrowser(_ browser: NetServiceBrowser, didRemove service: NetService, moreComing: Bool) {
-        loading = moreComing
-        print("Remove service", service.name)
-        servers.removeAll { server in
-            server.service == service
-        }
     }
 }

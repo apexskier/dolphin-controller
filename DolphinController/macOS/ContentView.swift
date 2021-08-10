@@ -11,6 +11,9 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
+            if server.broadcasting {
+                ProgressView("Broadcasting")
+            }
 //            Text("Code: \(hostService.hostCode)")
             Text("\(connectedControllerCount) controller\(connectedControllerCount == 1 ? "" : "s") connected")
                 .padding()

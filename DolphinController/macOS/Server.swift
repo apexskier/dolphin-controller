@@ -24,6 +24,7 @@ public class Server: ObservableObject {
     private var port: Int32
     private let netService: NWListener
     
+    @Published var broadcasting: Bool = false
     @Published var controllers: [Int: Controller?] = [:]
     var controllerCount = 4
     
@@ -51,10 +52,22 @@ public class Server: ObservableObject {
             print("NWListener service change: \(change)")
         }
         netService.stateUpdateHandler = { state in
-            print("NWListener state change: \(state), \(self.netService.port)")
+            DispatchQueue.main.async {
+                switch state {
+                case .ready:
+                    self.broadcasting = true
+                default:
+                    self.broadcasting = false
+                }
+            }
         }
         netService.newConnectionHandler = { connection in
             print("NWListener connection \(connection.debugDescription)")
+            connection.receiveMessage { data, context, complete, error in
+                if let data = data, complete {
+                    print("RECEIVE", String(data: data, encoding: .utf8))
+                }
+            }
         }
         
         self.upgrader = NIOWebSocketServerUpgrader(
