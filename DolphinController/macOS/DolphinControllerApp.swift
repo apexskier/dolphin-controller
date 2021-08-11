@@ -19,7 +19,7 @@ struct DolphinControllerApp: App {
 }
 
 class AppDelegate: NSObject, NSApplicationDelegate {
-    let server = Server(host: "0.0.0.0")
+    let server = Server()
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSWindow.allowsAutomaticWindowTabbing = false
@@ -28,10 +28,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             // ignore sigpipes
         }
         
-        try! server.run()
+        try! server.start()
     }
     
     func applicationWillTerminate(_ notification: Notification) {
-        try! server.shutdown()
+        try! server.stop()
     }
 }

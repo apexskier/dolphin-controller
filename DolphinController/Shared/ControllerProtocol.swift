@@ -2,9 +2,10 @@ import Foundation
 import Network
 
 // Define the types of commands your game will use.
-enum ControllerMessageType: UInt8 {
+enum ControllerMessageType: UInt32 {
     case invalid = 0
     case command = 1
+    case controllerNumberAssigned = 2
 }
 
 // Create a class that implements a framing protocol.
@@ -100,16 +101,16 @@ extension NWProtocolFramer.Message {
 
 // Define a protocol header struct to help encode and decode bytes.
 struct ControllerProtocolHeader: Codable {
-    let type: UInt8
+    let type: UInt32
     let length: UInt32
 
-    init(type: UInt8, length: UInt32) {
+    init(type: UInt32, length: UInt32) {
         self.type = type
         self.length = length
     }
 
     init(_ buffer: UnsafeMutableRawBufferPointer) {
-        var tempType: UInt8 = 0
+        var tempType: UInt32 = 0
         var tempLength: UInt32 = 0
         withUnsafeMutableBytes(of: &tempType) { typePtr in
             typePtr.copyMemory(

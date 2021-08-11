@@ -1,13 +1,10 @@
 import Combine
 import Foundation
-import NIO
-import NIOHTTP1
-import NIOWebSocket
 import UIKit
+import Network
 
 public class Client: ObservableObject {
-    private let group = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
-    public var channel: Channel? = nil {
+    public var connection: NWConnection? = nil {
         didSet {
             DispatchQueue.main.async {
                 self.objectWillChange.send()
@@ -17,126 +14,79 @@ public class Client: ObservableObject {
     
     @Published var controllerIndex: Int? = nil
     
-    private var bootstrap: ClientBootstrap {
-        ClientBootstrap(group: self.group)
-            .channelOption(ChannelOptions.socketOption(.so_reuseaddr), value: 1)
-            .channelInitializer { channel in
-                let httpHandler = HTTPInitialRequestHandler(host: "192.168.1.39", port: 12345)
-                let websocketUpgrader = NIOWebSocketClientUpgrader(requestKey: "testingTODO") { channel, _ in
-                    let websocketHandler = ControllerClientWebsocketHandler(delegate: self)
-                    return channel.pipeline.addHandler(websocketHandler)
-                }
-                let config: NIOHTTPClientUpgradeConfiguration = (
-                    upgraders: [websocketUpgrader],
-                    completionHandler: { _ in
-                        channel.pipeline.removeHandler(httpHandler, promise: nil)
+    private func receiveNextMessage() {
+        guard let connection = connection else {
+            return
+        }
+
+        connection.receiveMessage { (content, context, isComplete, error) in
+            guard let content = content else {
+                return
+            }
+            // Extract your message type from the received context.
+            if let message = context?.protocolMetadata(definition: ControllerProtocol.definition) as? NWProtocolFramer.Message {
+                switch message.controllerMessageType {
+                case .controllerNumberAssigned:
+                    let number = content.withUnsafeBytes { pointer in
+                        pointer.load(as: Int8.self)
                     }
-                )
-                return channel.pipeline.addHTTPClientHandlers(withClientUpgrade: config).flatMap {
-                    channel.pipeline.addHandler(httpHandler)
+                    DispatchQueue.main.async {
+                        self.controllerIndex = Int(number)
+                    }
+                default:
+                    fatalError()
                 }
             }
+            if error == nil {
+                // Continue to receive more messages until you receive and error.
+                self.receiveNextMessage()
+            } else {
+                fatalError(error!.debugDescription)
+            }
+        }
     }
     
-    func connect() -> AnyPublisher<Never, Error> {
-        let publisher = PassthroughSubject<Never, Error>()
-        if channel?.isActive == true {
-            return publisher.eraseToAnyPublisher()
-        }
-        DispatchQueue.global(qos: .userInitiated).async {
-            do {
-                let channel = try self.bootstrap.connect(host: "192.168.1.39", port: 12345).wait()
-                self.channel = channel
-                print("\(channel.localAddress?.description ?? "<unknown>") is now open")
-                try channel.closeFuture.wait()
-            } catch {
-                publisher.send(completion: .failure(error))
-                print("error: ", error)
+    func connect(connection: NWConnection) {
+        self.connection = connection
+        
+        connection.stateUpdateHandler = { state in
+            switch state {
+            case .ready:
+                self.receiveNextMessage()
+            case .failed(let error):
+                print("\(connection) failed with error", error)
+                connection.cancel()
+            default:
+                break
             }
-            publisher.send(completion: .finished)
-            self.channel = nil
-            print("Closed")
         }
-        return publisher.eraseToAnyPublisher()
+        
+        connection.start(queue: .main)
     }
     
     func send(_ content: String) {
-        guard let channel = self.channel, channel.isActive else { return }
+        guard let connection = self.connection else { return }
+        
+        // Create a message object to hold the command type.
+        let message = NWProtocolFramer.Message(controllerMessageType: .command)
+        let context = NWConnection.ContentContext(
+            identifier: "Command",
+            metadata: [message]
+        )
 
-        let buffer = channel.allocator.buffer(string: content)
-        let frame = WebSocketFrame(fin: true, opcode: .text, data: buffer)
-        channel.writeAndFlush(frame, promise: nil)
+        // Send the application content along with the message.
+        connection.send(
+            content: Data(content.utf8),
+            contentContext: context,
+            isComplete: true,
+            completion: .idempotent
+        )
     }
     
     func disconnect() -> AnyPublisher<Never, Error> {
         let publisher = PassthroughSubject<Never, Error>()
-        _ = self.channel?.close().whenComplete({ result in
-            if case .failure(let error) = result {
-                publisher.send(completion: .failure(error))
-            } else {
-                publisher.send(completion: .finished)
-            }
-            self.channel = nil
-        })
+        self.connection?.cancel()
         return publisher.eraseToAnyPublisher()
-    }
-}
-
-private final class HTTPInitialRequestHandler: ChannelInboundHandler, RemovableChannelHandler {
-    public typealias InboundIn = HTTPClientResponsePart
-    public typealias OutboundOut = HTTPClientRequestPart
-
-    public let host: String
-    public let port: Int
-
-    public init(host: String, port: Int) {
-        self.host = host
-        self.port = port
-    }
-    
-    public func channelActive(context: ChannelHandlerContext) {
-        // We are connected. It's time to send the message to the server to initialize the upgrade dance.
-        var headers = HTTPHeaders()
-        headers.add(name: "Host", value: "\(host):\(port)")
-        headers.add(name: "Content-Type", value: "text/plain; charset=utf-8")
-        headers.add(name: "Content-Length", value: "\(0)")
-        
-        let requestHead = HTTPRequestHead(
-            version: .http1_1,
-            method: .GET,
-            uri: "/",
-            headers: headers
-        )
-        
-        context.write(self.wrapOutboundOut(.head(requestHead)), promise: nil)
-        let body = HTTPClientRequestPart.body(.byteBuffer(ByteBuffer()))
-        context.write(self.wrapOutboundOut(body), promise: nil)
-        context.writeAndFlush(self.wrapOutboundOut(.end(nil)), promise: nil)
-    }
-    
-    public func channelRead(context: ChannelHandlerContext, data: NIOAny) {
-        let clientResponse = self.unwrapInboundIn(data)
-        
-        print("Upgrade failed")
-        
-        switch clientResponse {
-        case .head(let responseHead):
-            print("Received status: \(responseHead.status)")
-        case .body(let byteBuffer):
-            let string = String(buffer: byteBuffer)
-            print("Received: '\(string)' back from the server.")
-        case .end:
-            print("Closing channel.")
-            context.close(promise: nil)
-        }
-    }
-    
-    public func errorCaught(context: ChannelHandlerContext, error: Error) {
-        print("error: ", error)
-        
-        // As we are not really interested getting notified on success or failure
-        // we just pass nil as promise to reduce allocations.
-        context.close(promise: nil)
     }
 }
 
@@ -155,102 +105,6 @@ extension Client: ControllerClientWebsocketHandlerDelegate {
     func didDisconnect() {
         DispatchQueue.main.sync {
             self.controllerIndex = nil
-        }
-    }
-}
-
-private final class ControllerClientWebsocketHandler: ChannelInboundHandler {
-    typealias InboundIn = WebSocketFrame
-    typealias OutboundOut = WebSocketFrame
-    
-    var delegate: ControllerClientWebsocketHandlerDelegate
-    
-    init(delegate: ControllerClientWebsocketHandlerDelegate) {
-        self.delegate = delegate
-    }
-    
-    public func handlerAdded(context: ChannelHandlerContext) {
-        let identifier = UIDevice.current.identifierForVendor ?? UUID()
-        let buffer = context.channel.allocator.buffer(string: identifier.uuidString)
-        let frame = WebSocketFrame(fin: true, opcode: .ping, data: buffer)
-        print("ping", context.channel.isActive, context.channel.isWritable)
-        context.writeAndFlush(self.wrapOutboundOut(frame), promise: nil)
-    }
-
-    public func handlerRemoved(context: ChannelHandlerContext) {
-        delegate.didDisconnect()
-    }
-
-    public func channelRead(context: ChannelHandlerContext, data: NIOAny) {
-        let frame = self.unwrapInboundIn(data)
-        
-        switch frame.opcode {
-        case .ping:
-            self.handlePing(context: context, frame: frame)
-        case .pong:
-            self.handlePong(context: context, frame: frame)
-        case .text:
-            var data = frame.unmaskedData
-            let text = data.readString(length: data.readableBytes) ?? ""
-            print("Websocket: Received \(text)")
-        case .connectionClose:
-            self.receivedClose(context: context, frame: frame)
-        case .binary, .continuation, .pong:
-            // We ignore these frames.
-            break
-        default:
-            // Unknown frames are errors.
-            self.closeOnError(context: context)
-        }
-    }
-    
-    public func channelReadComplete(context: ChannelHandlerContext) {
-        context.flush()
-    }
-
-    private func receivedClose(context: ChannelHandlerContext, frame: WebSocketFrame) {
-        // Handle a received close frame. We're just going to close.
-        print("Received Close instruction from server")
-        context.close(promise: nil)
-    }
-    
-    private func handlePing(context: ChannelHandlerContext, frame: WebSocketFrame) {
-        print("Ping")
-        var frameData = frame.data
-        if let indexStr = frameData.readString(length: 1) {
-            if let index = Int(String(indexStr)) {
-                delegate.didConnect(index: index)
-            }
-        }
-        
-        let maskingKey = frame.maskKey
-
-        if let maskingKey = maskingKey {
-            frameData.webSocketUnmask(maskingKey)
-        }
-
-        let responseFrame = WebSocketFrame(fin: true, opcode: .pong, data: frameData)
-        context.write(self.wrapOutboundOut(responseFrame), promise: nil)
-    }
-    
-    private func handlePong(context: ChannelHandlerContext, frame: WebSocketFrame) {
-        print("Pong")
-        var frameData = frame.data
-        if let indexStr = frameData.readString(length: 1) {
-            if let index = Int(String(indexStr)) {
-                delegate.didConnect(index: index)
-            }
-        }
-    }
-    
-    private func closeOnError(context: ChannelHandlerContext) {
-        // We have hit an error, we want to close. We do that by sending a close frame and then
-        // shutting down the write side of the connection. The server will respond with a close of its own.
-        var data = context.channel.allocator.buffer(capacity: 2)
-        data.write(webSocketErrorCode: .protocolError)
-        let frame = WebSocketFrame(fin: true, opcode: .connectionClose, data: data)
-        context.write(self.wrapOutboundOut(frame)).whenComplete { (_: Result<Void, Error>) in
-            context.close(mode: .output, promise: nil)
         }
     }
 }

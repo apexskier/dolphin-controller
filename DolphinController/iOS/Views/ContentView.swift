@@ -102,7 +102,7 @@ struct Light: View {
 }
 
 struct PressButton<Label>: View where Label: View {
-    @EnvironmentObject var client: Client
+    @EnvironmentObject private var client: Client
     
     private let haptic = UIImpactFeedbackGenerator(style: .rigid)
     var label: Label
@@ -127,17 +127,19 @@ struct PressButton<Label>: View where Label: View {
 private var grayColor = Color(red: 221/256, green: 218/256, blue: 231/256)
 
 struct ContentView: View {
-    @EnvironmentObject var client: Client
+    @EnvironmentObject private var client: Client
     @State private var hostCode: String = ""
     @State private var error: Error? = nil
     @State private var clientConnectionCancellable: AnyCancellable? = nil
     @State private var clientDisconnectionCancellable: AnyCancellable? = nil
+    @State private var choosingConnection = false
     
     var body: some View {
         VStack {
             HStack {
                 VStack(alignment: .center) {
                     Joystick(
+//                        client: self.client,
                         identifier: "MAIN",
                         color: Color(red: 221/256, green: 218/256, blue: 231/256),
                         diameter: 150,
@@ -247,18 +249,9 @@ struct ContentView: View {
                     
                     Spacer()
                     
-                    if (client.channel == nil) {
+                    if self.client.connection == nil {
                         Button("Connect") {
-                            self.clientConnectionCancellable = client.connect()
-                                .receive(on: RunLoop.main)
-                                .sink(receiveCompletion: { completion in
-                                    if case .failure(let error) = completion {
-                                        self.error = error
-                                    }
-                                    self.clientConnectionCancellable = nil
-                                }, receiveValue: { _ in
-                                    fatalError()
-                                })
+                            self.choosingConnection = true
                         }
                             .buttonStyle(GCCButton(
                                 color: grayColor,
@@ -327,6 +320,7 @@ struct ContentView: View {
                     Spacer()
                     
                     Joystick(
+//                        client: self.client,
                         identifier: "C",
                         color: Color(red: 254/256, green: 217/256, blue: 39/256),
                         diameter: 150,
@@ -349,6 +343,11 @@ struct ContentView: View {
               maxHeight: .infinity,
               alignment: .center
             )
+            .sheet(isPresented: $choosingConnection) {
+                ServerBrowserView(shown: $choosingConnection) { connection in
+                    self.client.connect(connection: connection)
+                }
+            }
             .alert(isPresented: Binding(get: {
                 self.error != nil
             }, set: { (val: Bool) in

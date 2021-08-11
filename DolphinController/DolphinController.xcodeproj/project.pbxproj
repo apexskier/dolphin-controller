@@ -13,6 +13,8 @@
 		C50E761C26B83F2400FB8C2C /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E761B26B83F2400FB8C2C /* Haptics.swift */; };
 		C50E761E26C4424D00FB8C2C /* ControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E761D26C4424D00FB8C2C /* ControllerProtocol.swift */; };
 		C50E761F26C4424D00FB8C2C /* ControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E761D26C4424D00FB8C2C /* ControllerProtocol.swift */; };
+		C52CD4BA26C44C970081ABF5 /* ServerBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4B926C44C970081ABF5 /* ServerBrowserView.swift */; };
+		C52CD4BC26C459920081ABF5 /* ControllerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4BB26C459920081ABF5 /* ControllerConnection.swift */; };
 		C53D555D26B43D4F00E1F75B /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D555C26B43D4F00E1F75B /* Tests_iOS.swift */; };
 		C53D556826B43D4F00E1F75B /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D556726B43D4F00E1F75B /* Tests_macOS.swift */; };
 		C53D556D26B43D4F00E1F75B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D554226B43D4C00E1F75B /* ContentView.swift */; };
@@ -57,6 +59,8 @@
 		C50E761626B7CA6B00FB8C2C /* JoystickView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoystickView.swift; sourceTree = "<group>"; };
 		C50E761B26B83F2400FB8C2C /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		C50E761D26C4424D00FB8C2C /* ControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerProtocol.swift; sourceTree = "<group>"; };
+		C52CD4B926C44C970081ABF5 /* ServerBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerBrowserView.swift; sourceTree = "<group>"; };
+		C52CD4BB26C459920081ABF5 /* ControllerConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerConnection.swift; sourceTree = "<group>"; };
 		C53D554126B43D4C00E1F75B /* DolphinControllerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DolphinControllerApp.swift; sourceTree = "<group>"; };
 		C53D554226B43D4C00E1F75B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C53D554326B43D4E00E1F75B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -123,6 +127,7 @@
 				C53D558C26B4402E00E1F75B /* ContentView.swift */,
 				C50E761626B7CA6B00FB8C2C /* JoystickView.swift */,
 				C50E761B26B83F2400FB8C2C /* Haptics.swift */,
+				C52CD4B926C44C970081ABF5 /* ServerBrowserView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -181,6 +186,7 @@
 				C53D55A026B5311900E1F75B /* Server.swift */,
 				C53D555226B43D4F00E1F75B /* Info.plist */,
 				C53D555326B43D4F00E1F75B /* macOS.entitlements */,
+				C52CD4BB26C459920081ABF5 /* ControllerConnection.swift */,
 			);
 			path = macOS;
 			sourceTree = "<group>";
@@ -396,6 +402,7 @@
 				C50E761426B7C71900FB8C2C /* Comparable.swift in Sources */,
 				C50E761E26C4424D00FB8C2C /* ControllerProtocol.swift in Sources */,
 				C53D558726B43F3C00E1F75B /* ObservableObject.swift in Sources */,
+				C52CD4BA26C44C970081ABF5 /* ServerBrowserView.swift in Sources */,
 				C50E761726B7CA6B00FB8C2C /* JoystickView.swift in Sources */,
 				C53D55AB26B5362700E1F75B /* Client.swift in Sources */,
 			);
@@ -406,6 +413,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C53D558826B43F3C00E1F75B /* ObservableObject.swift in Sources */,
+				C52CD4BC26C459920081ABF5 /* ControllerConnection.swift in Sources */,
 				C50E761F26C4424D00FB8C2C /* ControllerProtocol.swift in Sources */,
 				C53D557F26B43E2500E1F75B /* DolphinControllerApp.swift in Sources */,
 				C50E761526B7C71900FB8C2C /* Comparable.swift in Sources */,
