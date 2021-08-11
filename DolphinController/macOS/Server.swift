@@ -41,10 +41,11 @@ public class Server: ObservableObject {
         let port = try! findFreePort()
         self.host = host
         self.port = port
-        self.netService = try! NWListener(using: .tcp)
+    
+        self.netService = try! NWListener(using: .custom())
         netService.service = NWListener.Service(
             name: "\(Host.current().localizedName ?? Host.current().name ?? "Unknown computer") - new",
-            type: "_dolphinC._tcp.",
+            type: "_\(serviceType)._tcp.",
             domain: nil,
             txtRecord: nil
         )
@@ -63,11 +64,19 @@ public class Server: ObservableObject {
         }
         netService.newConnectionHandler = { connection in
             print("NWListener connection \(connection.debugDescription)")
-            connection.receiveMessage { data, context, complete, error in
-                if let data = data, complete {
-                    print("RECEIVE", String(data: data, encoding: .utf8))
-                }
+            connection.pathUpdateHandler = { path in
+                print("connection path update", path)
             }
+            connection.stateUpdateHandler = { state in
+                print("connection state update", state)
+            }
+            connection.viabilityUpdateHandler = { viability in
+                print("connection viability update", viability)
+            }
+            connection.betterPathUpdateHandler = { betterPath in
+                print("connection better path update", betterPath)
+            }
+            connection.start(queue: .global(qos: .userInitiated))
         }
         
         self.upgrader = NIOWebSocketServerUpgrader(
@@ -106,44 +115,44 @@ public class Server: ObservableObject {
     
     func run() throws {
         netService.start(queue: .global(qos: .userInitiated))
-        
-        DispatchQueue.global(qos: .userInitiated).async {
-            do {
-                print("binding to \(self.port)")
-                let channel = try self.serverBootstrap.bind(host: self.host, port: Int(self.port)).wait()
-                print("\(channel.localAddress!) is now open")
-                try channel.closeFuture.wait()
-            } catch {
-                print("Error: ", error)
-            }
-        }
+//
+//        DispatchQueue.global(qos: .userInitiated).async {
+//            do {
+//                print("binding to \(self.port)")
+//                let channel = try self.serverBootstrap.bind(host: self.host, port: Int(self.port)).wait()
+//                print("\(channel.localAddress!) is now open")
+//                try channel.closeFuture.wait()
+//            } catch {
+//                print("Error: ", error)
+//            }
+//        }
     }
     
     func shutdown() throws {
         netService.cancel()
-        try group.syncShutdownGracefully()
+//        try group.syncShutdownGracefully()
         print("Server closed")
     }
     
-    private var serverBootstrap: ServerBootstrap {
-        ServerBootstrap(group: group)
-            .serverChannelOption(ChannelOptions.backlog, value: 256)
-            .serverChannelOption(ChannelOptions.socketOption(.so_reuseaddr), value: 1)
-            .childChannelInitializer { channel in
-                let httpHandler = WebsocketUpgradeHandler(isFull: self.controllers.count >= 4)
-                let config: NIOHTTPServerUpgradeConfiguration = (
-                    upgraders: [self.upgrader!],
-                    completionHandler: { _ in
-                        channel.pipeline.removeHandler(httpHandler, promise: nil)
-                    }
-                )
-                return channel.pipeline.configureHTTPServerPipeline(withServerUpgrade: config).flatMap {
-                    channel.pipeline.addHandler(httpHandler)
-                }
-            }
-            .childChannelOption(ChannelOptions.socketOption(.tcp_nodelay), value: 1)
-            .childChannelOption(ChannelOptions.recvAllocator, value: AdaptiveRecvByteBufferAllocator())
-    }
+//    private var serverBootstrap: ServerBootstrap {
+//        ServerBootstrap(group: group)
+//            .serverChannelOption(ChannelOptions.backlog, value: 256)
+//            .serverChannelOption(ChannelOptions.socketOption(.so_reuseaddr), value: 1)
+//            .childChannelInitializer { channel in
+//                let httpHandler = WebsocketUpgradeHandler(isFull: self.controllers.count >= 4)
+//                let config: NIOHTTPServerUpgradeConfiguration = (
+//                    upgraders: [self.upgrader!],
+//                    completionHandler: { _ in
+//                        channel.pipeline.removeHandler(httpHandler, promise: nil)
+//                    }
+//                )
+//                return channel.pipeline.configureHTTPServerPipeline(withServerUpgrade: config).flatMap {
+//                    channel.pipeline.addHandler(httpHandler)
+//                }
+//            }
+//            .childChannelOption(ChannelOptions.socketOption(.tcp_nodelay), value: 1)
+//            .childChannelOption(ChannelOptions.recvAllocator, value: AdaptiveRecvByteBufferAllocator())
+//    }
 }
 
 public class WebsocketUpgradeHandler: ChannelInboundHandler, RemovableChannelHandler {

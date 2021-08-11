@@ -127,9 +127,7 @@ struct PressButton<Label>: View where Label: View {
 private var grayColor = Color(red: 221/256, green: 218/256, blue: 231/256)
 
 struct ContentView: View {
-    @EnvironmentObject var controllerService: ControllerService
     @EnvironmentObject var client: Client
-    @State private var desiredHost: KnownPeer? = nil
     @State private var hostCode: String = ""
     @State private var error: Error? = nil
     @State private var clientConnectionCancellable: AnyCancellable? = nil
@@ -351,21 +349,6 @@ struct ContentView: View {
               maxHeight: .infinity,
               alignment: .center
             )
-            .sheet(item: $desiredHost, content: { host in
-                TextField("Enter code", text: $hostCode)
-                    .keyboardType(.numberPad)
-                HStack {
-                    Button("Cancel") {
-                        hostCode = ""
-                        desiredHost = nil
-                    }
-                    Button("Connect") {
-                        controllerService.connect(to: host, code: hostCode)
-                        desiredHost = nil
-                    }
-                    .disabled(hostCode.count != 4)
-                }
-            })
             .alert(isPresented: Binding(get: {
                 self.error != nil
             }, set: { (val: Bool) in

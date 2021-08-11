@@ -27,25 +27,45 @@ struct DolphinControllerApp: App {
                     List(test.servers) { server in
                         Text(server.name)
                         Button("Connect") {
-                            let connection = NWConnection(to: server.endpoint, using: .tcp)
+                            let tlsOptions = NWProtocolTLS.Options()
+                            let allowInsecure = true
+                            sec_protocol_options_set_verify_block(tlsOptions.securityProtocolOptions, { (sec_protocol_metadata, sec_trust, sec_protocol_verify_complete) in
+                                let trust = sec_trust_copy_ref(sec_trust).takeRetainedValue()
+                                var error: CFError?
+                                if SecTrustEvaluateWithError(trust, &error) {
+                                    sec_protocol_verify_complete(true)
+                                } else {
+                                    if allowInsecure == true {
+                                        sec_protocol_verify_complete(true)
+                                    } else {
+                                        sec_protocol_verify_complete(false)
+                                    }
+                                }
+                            }, DispatchQueue.global(qos: .userInitiated))
+                            let connection = NWConnection(to: server.endpoint, using: .custom())
 
                             connection.stateUpdateHandler = { state in
+                                print("Connection state", state)
                                 if let innerEndpoint = connection.currentPath?.localEndpoint,
                                    case .hostPort(let host, let port) = innerEndpoint {
                                     print(state, "connected on", "\(host):\(port)")
                                 }
+//                                let message = NWProtocolWebSocket.Metadata(opcode: .ping)
+//                                let context = NWConnection.ContentContext(identifier: "send", metadata: [message])
+//                                connection.send(
+//                                    content: "HELLO".data(using: .utf8),
+//                                    contentContext: context,
+//                                    isComplete: true,
+//                                    completion: .contentProcessed { err in
+//                                        if let error = err {
+//                                            print("ERROR", error)
+//                                        } else {
+//                                            print("SENT")
+//                                        }
+//                                    }
+//                                )
                                 switch state {
                                 case .ready:
-                                    connection.send(
-                                        content: "HELLO".data(using: .utf8),
-                                        completion: .contentProcessed({ err in
-                                            if let error = err {
-                                                print("ERROR", error)
-                                            } else {
-                                                print("SENT")
-                                            }
-                                        })
-                                    )
                                     break
                                 default:
                                     break
@@ -77,9 +97,11 @@ class ServerFinder: NSObject, ObservableObject {
     private var serversSinks = [AnyCancellable]()
     
     override init() {
+        let parameters = NWParameters()
+        parameters.includePeerToPeer = true
         self.serviceBrowser = NWBrowser(
-            for: .bonjour(type: "_dolphinC._tcp.", domain: nil),
-            using: .tcp
+            for: .bonjour(type: "_\(serviceType)._tcp.", domain: nil),
+            using: parameters
         )
         
         super.init()
