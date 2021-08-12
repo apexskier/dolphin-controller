@@ -67,7 +67,8 @@ public class Server: ObservableObject {
             }
             connection.stateUpdateHandler = { state in
                 print("connection state update", state)
-                if state == .ready {
+                switch state {
+                case .ready:
                     // Create a message object to hold the command type.
                     let message = NWProtocolFramer.Message(controllerMessageType: .controllerNumberAssigned)
                     let context = NWConnection.ContentContext(
@@ -90,28 +91,43 @@ public class Server: ObservableObject {
                     
                     func receiveNextMessage() {
                         connection.receiveMessage { (content, context, isComplete, error) in
-                            guard let content = content else {
+                            if let error = error {
+                                if case .posix(let code) = error,
+                                   code == .ENODATA { // indicates a disconnect
+                                    connection.cancel()
+                                } else {
+                                    print("Error", error)
+                                    connection.cancel()
+                                }
                                 return
                             }
+                            
                             // Extract your message type from the received context.
                             if let message = context?.protocolMetadata(definition: ControllerProtocol.definition) as? NWProtocolFramer.Message {
                                 switch message.controllerMessageType {
                                 case .command:
+                                    guard let content = content else {
+                                        fatalError("missing content in command")
+                                    }
                                     try! controllerConnection.streamText(data: content)
                                 default:
                                     fatalError()
                                 }
                             }
-                            if error == nil {
-                                // Continue to receive more messages until you receive and error.
-                                receiveNextMessage()
-                            } else {
-                                fatalError(error!.debugDescription)
-                            }
+                            // Continue to receive more messages until you receive and error.
+                            receiveNextMessage()
                         }
                     }
                     
                     receiveNextMessage()
+                case .cancelled:
+                    DispatchQueue.main.async {
+                        self.controllers[index] = nil
+                    }
+                case .failed(let error):
+                    print("Error", error)
+                default:
+                    break
                 }
             }
             connection.viabilityUpdateHandler = { viability in

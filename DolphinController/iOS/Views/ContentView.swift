@@ -2,6 +2,11 @@ import Combine
 import CoreGraphics
 import SwiftUI
 
+extension Font {
+    // https://gist.github.com/tadija/cb4ec0cbf0a89886d488d1d8b595d0e9
+    static var gameCubeController = Self.custom("Futura-CondensedMedium", size: 30)
+}
+
 struct GCCButton<S>: ButtonStyle where S: Shape {
     var color: Color
     var width: CGFloat? = nil
@@ -14,8 +19,7 @@ struct GCCButton<S>: ButtonStyle where S: Shape {
             .frame(width: width, height: height)
             .background(color)
             .foregroundColor(.black.opacity(0.2))
-            // https://gist.github.com/tadija/cb4ec0cbf0a89886d488d1d8b595d0e9
-            .font(.custom("Futura-CondensedMedium", size: 30))
+            .font(.gameCubeController)
             .clipShape(shape)
             .brightness(configuration.isPressed ? -0.1 : 0)
     }
@@ -139,7 +143,6 @@ struct ContentView: View {
             HStack {
                 VStack(alignment: .center) {
                     Joystick(
-//                        client: self.client,
                         identifier: "MAIN",
                         color: Color(red: 221/256, green: 218/256, blue: 231/256),
                         diameter: 150,
@@ -259,16 +262,7 @@ struct ContentView: View {
                             ))
                     } else {
                         Button("Disconnect") {
-                            self.clientDisconnectionCancellable = client.disconnect()
-                                .receive(on: RunLoop.main)
-                                .sink(receiveCompletion: { completion in
-                                    if case .failure(let error) = completion {
-                                        self.error = error
-                                    }
-                                    self.clientDisconnectionCancellable = nil
-                                }, receiveValue: { _ in
-                                    fatalError()
-                                })
+                            self.client.disconnect()
                         }
                             .buttonStyle(GCCButton(
                                 color: grayColor,
@@ -320,15 +314,13 @@ struct ContentView: View {
                     Spacer()
                     
                     Joystick(
-//                        client: self.client,
                         identifier: "C",
                         color: Color(red: 254/256, green: 217/256, blue: 39/256),
                         diameter: 150,
                         knobDiameter: 80,
                         label: Text("C")
                             .foregroundColor(.black.opacity(0.2))
-                            // https://gist.github.com/tadija/cb4ec0cbf0a89886d488d1d8b595d0e9
-                            .font(.custom("Futura-CondensedMedium", size: 30)),
+                            .font(.gameCubeController),
                         hapticsSharpness: 0.8
                     )
                 }

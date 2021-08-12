@@ -20,21 +20,29 @@ public class Client: ObservableObject {
         }
 
         connection.receiveMessage { (content, context, isComplete, error) in
-            guard let content = content else {
+            if let error = error {
+                if case .posix(let code) = error,
+                   code == .ENODATA { // indicates a disconnect
+                    connection.cancel()
+                } else {
+                    print("Error", error)
+                    connection.cancel()
+                }
                 return
             }
+            
             // Extract your message type from the received context.
             if let message = context?.protocolMetadata(definition: ControllerProtocol.definition) as? NWProtocolFramer.Message {
                 switch message.controllerMessageType {
                 case .controllerNumberAssigned:
-                    let number = content.withUnsafeBytes { pointer in
-                        pointer.load(as: Int8.self)
+                    let number = content?.withUnsafeBytes { pointer in
+                        Int(pointer.load(as: Int8.self))
                     }
                     DispatchQueue.main.async {
-                        self.controllerIndex = Int(number)
+                        self.controllerIndex = number
                     }
                 default:
-                    fatalError()
+                    fatalError("Unexpected message type")
                 }
             }
             if error == nil {
@@ -50,12 +58,18 @@ public class Client: ObservableObject {
         self.connection = connection
         
         connection.stateUpdateHandler = { state in
+            print("connection state change", state)
             switch state {
             case .ready:
                 self.receiveNextMessage()
             case .failed(let error):
                 print("\(connection) failed with error", error)
                 connection.cancel()
+            case .cancelled:
+                self.connection = nil
+                DispatchQueue.main.async {
+                    self.controllerIndex = nil
+                }
             default:
                 break
             }
@@ -83,10 +97,8 @@ public class Client: ObservableObject {
         )
     }
     
-    func disconnect() -> AnyPublisher<Never, Error> {
-        let publisher = PassthroughSubject<Never, Error>()
+    func disconnect() {
         self.connection?.cancel()
-        return publisher.eraseToAnyPublisher()
     }
 }
 
