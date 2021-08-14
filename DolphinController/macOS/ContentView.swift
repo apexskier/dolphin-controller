@@ -11,13 +11,17 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-//            Image(systemName: server.broadcasting
-//                    ? "antenna.radiowaves.left.and.right"
-//                    : "antenna.radiowaves.left.and.right.slash")
-            if let name = server.name {
-                Text("Connect to \(name)")
-                    .padding(.bottom)
+            HStack {
+                Image(systemName: server.broadcasting
+                        ? "antenna.radiowaves.left.and.right"
+                        : "antenna.radiowaves.left.and.right.slash")
+                    .resizable()
+                    .frame(width: 14, height: 14)
+                    .padding(.trailing, 2)
+                Text("Connect to “\(server.name)”")
+                    .fixedSize()
             }
+                .padding(.bottom)
             HStack(alignment: .center, spacing: 20) {
                 ForEach(0..<server.controllerCount) { i in
                     LightView(on: server.controllers[i] != nil)

@@ -9,7 +9,8 @@ enum ServerError: Error {
 public class Server: ObservableObject {
     private let netService: NWListener
     
-    @Published var name: String? = nil
+    let name = "\(Host.current().localizedName ?? Host.current().name ?? "Unknown computer") Dolphin Controller"
+    @Published var broadcasting: Bool = false
     @Published var controllers: [Int: ControllerConnection?] = [:]
     var controllerCount = 4
     
@@ -25,7 +26,7 @@ public class Server: ObservableObject {
     init() {
         self.netService = try! NWListener(using: .custom())
         netService.service = NWListener.Service(
-            name: nil,
+            name: self.name,
             type: "_\(serviceType)._tcp.",
             domain: nil,
             txtRecord: nil
