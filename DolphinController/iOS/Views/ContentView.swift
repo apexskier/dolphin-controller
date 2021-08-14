@@ -132,6 +132,7 @@ private var grayColor = Color(red: 221/256, green: 218/256, blue: 231/256)
 
 struct ContentView: View {
     @EnvironmentObject private var client: Client
+    @Binding var shouldAutoReconnect: Bool
     @State private var hostCode: String = ""
     @State private var error: Error? = nil
     @State private var clientConnectionCancellable: AnyCancellable? = nil
@@ -273,6 +274,7 @@ struct ContentView: View {
                         }
                     } else {
                         Button("Disconnect") {
+                            self.shouldAutoReconnect = false
                             self.client.disconnect()
                         }
                             .buttonStyle(GCCButton(
@@ -349,6 +351,7 @@ struct ContentView: View {
             .sheet(isPresented: $choosingConnection) {
                 ServerBrowserView(shown: $choosingConnection) { endpoint in
                     self.client.connect(to: endpoint)
+                    self.shouldAutoReconnect = true
                 }
             }
             .alert(isPresented: Binding(get: {

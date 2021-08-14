@@ -23,7 +23,6 @@ struct ServerBrowserView: View {
                     ProgressView("Searching")
                 }
             }
-//            .animation(.default)
             .navigationBarTitle("Server Browser")
             .navigationBarItems(trailing: Button("Close", action: {
                 self.shown = false

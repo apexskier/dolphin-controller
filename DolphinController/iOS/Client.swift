@@ -3,27 +3,6 @@ import Foundation
 import UIKit
 import Network
 
-//extension Optional: RawRepresentable where Wrapped == NWEndpoint {
-//    public init?(rawValue: String) {
-//        guard let data = rawValue.data(using: .utf8),
-//              let result = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? Self else {
-//            return nil
-//        }
-//        self = result
-//    }
-//
-//    public var rawValue: String {
-//        guard let self = self else {
-//            return ""
-//        }
-//        let data = try! NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: false)
-//        guard let result = String(data: data, encoding: .utf8) else {
-//            return ""
-//        }
-//        return result
-//    }
-//}
-
 public class Client: ObservableObject {
     enum StorageKeys: String {
         case lastUsedServer = "lastUsedServer"
@@ -46,7 +25,7 @@ public class Client: ObservableObject {
     }
     @Published var hasLastServer: Bool = false
     @Published var controllerIndex: Int? = nil
-    
+        
     init() {
         if let endpointData = Self.storage.value(forKey: StorageKeys.lastUsedServer.rawValue) as? Data,
            let endpointWrapper = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(endpointData) as? EndpointWrapper {
@@ -57,49 +36,15 @@ public class Client: ObservableObject {
         hasLastServer = false
     }
     
-    private func receiveNextMessage() {
-        guard let connection = connection else {
-            return
-        }
-
-        connection.receiveMessage { (content, context, isComplete, error) in
-            if let error = error {
-                if case .posix(let code) = error,
-                   code == .ENODATA { // indicates a disconnect
-                    print("server closed?")
-                } else {
-                    print("Error", error)
-                }
-                connection.cancel()
-                self.reconnect()
-                return
-            }
-            
-            // Extract your message type from the received context.
-            if let message = context?.protocolMetadata(definition: ControllerProtocol.definition) as? NWProtocolFramer.Message {
-                switch message.controllerMessageType {
-                case .controllerNumberAssigned:
-                    let number = content?.withUnsafeBytes { pointer in
-                        Int(pointer.load(as: Int8.self))
-                    }
-                    DispatchQueue.main.async {
-                        self.controllerIndex = number
-                    }
-                default:
-                    fatalError("Unexpected message type")
-                }
-            }
-            if error == nil {
-                // Continue to receive more messages until you receive and error.
-                self.receiveNextMessage()
-            } else {
-                fatalError(error!.debugDescription)
-            }
-        }
-    }
+    private var attemptsToReconnect = 0
     
     func reconnect() {
+        if self.connection != nil {
+            print("Skipping reconnect, still have a connection")
+            return
+        }
         guard let endpoint = lastServer else {
+            print("Skipping reconnect, no last server")
             return
         }
         self.connect(to: endpoint)
@@ -107,13 +52,15 @@ public class Client: ObservableObject {
     
     func connect(to endpoint: Network.NWEndpoint) {
         let connection = NWConnection(to: endpoint, using: .custom())
-        self.connection = connection
+        
+        var hasBeenReplaced = false
         
         connection.stateUpdateHandler = { state in
-            print("connection state change", state)
+            print("Connection state change", state)
             switch state {
             case .ready:
-                self.receiveNextMessage()
+                self.connection = connection
+                self.attemptsToReconnect = 0
                 self.lastServer = endpoint
                 let wrappedEndpoint = EndpointWrapper(endpoint)
                 if let endpointData = try? NSKeyedArchiver.archivedData(withRootObject: wrappedEndpoint, requiringSecureCoding: false) {
@@ -122,18 +69,73 @@ public class Client: ObservableObject {
                         forKey: StorageKeys.lastUsedServer.rawValue
                     )
                 }
+                
+                func receiveNextMessage() {
+                    if hasBeenReplaced {
+                        return
+                    }
+                    
+                    connection.receiveMessage { (content, context, isComplete, error) in
+                        if let error = error {
+                            if case .posix(let code) = error {
+                                switch code {
+                                case .ENODATA:
+                                    print("Disconnected by server")
+                                case .ECONNABORTED:
+                                    print("Connection aborted")
+                                default:
+                                    print("error", error)
+                                }
+                            } else {
+                                print("Error", error)
+                            }
+                            return
+                        }
+                        
+                        // Extract your message type from the received context.
+                        if let message = context?.protocolMetadata(definition: ControllerProtocol.definition) as? NWProtocolFramer.Message {
+                            switch message.controllerMessageType {
+                            case .controllerNumberAssigned:
+                                let number = content?.withUnsafeBytes { pointer in
+                                    Int(pointer.load(as: Int8.self))
+                                }
+                                DispatchQueue.main.async {
+                                    self.controllerIndex = number
+                                }
+                            default:
+                                fatalError("Unexpected message type")
+                            }
+                        }
+                        
+                        receiveNextMessage()
+                    }
+                }
+                receiveNextMessage()
             case .failed(let error):
-                print("\(connection) failed with error", error)
+                print("Connection failed with error", error)
                 connection.cancel()
-                DispatchQueue.main.async {
-                    self.controllerIndex = nil
+                if !hasBeenReplaced {
+                    self.connection = nil
+                    if self.attemptsToReconnect < 3 {
+                        self.attemptsToReconnect += 1
+                        print("Attempting reconnect #\(self.attemptsToReconnect) after failure")
+                        self.reconnect()
+                    } else {
+                        DispatchQueue.main.async {
+                            self.controllerIndex = nil
+                        }
+                    }
                 }
-                self.reconnect()
+                hasBeenReplaced = true
             case .cancelled:
-                self.connection = nil
-                DispatchQueue.main.async {
-                    self.controllerIndex = nil
+                print("Connection cancelled, handling gracefully")
+                if !hasBeenReplaced {
+                    self.connection = nil
+                    DispatchQueue.main.async {
+                        self.controllerIndex = nil
+                    }
                 }
+                hasBeenReplaced = true
             default:
                 break
             }
@@ -166,21 +168,3 @@ public class Client: ObservableObject {
     }
 }
 
-protocol ControllerClientWebsocketHandlerDelegate {
-    func didConnect(index: Int)
-    func didDisconnect()
-}
-
-extension Client: ControllerClientWebsocketHandlerDelegate {
-    func didConnect(index: Int) {
-        DispatchQueue.main.sync {
-            self.controllerIndex = index
-        }
-    }
-    
-    func didDisconnect() {
-        DispatchQueue.main.sync {
-            self.controllerIndex = nil
-        }
-    }
-}

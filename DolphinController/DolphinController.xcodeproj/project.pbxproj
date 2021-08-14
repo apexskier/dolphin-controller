@@ -14,9 +14,10 @@
 		C50E761E26C4424D00FB8C2C /* ControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E761D26C4424D00FB8C2C /* ControllerProtocol.swift */; };
 		C50E761F26C4424D00FB8C2C /* ControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E761D26C4424D00FB8C2C /* ControllerProtocol.swift */; };
 		C52CD4BA26C44C970081ABF5 /* ServerBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4B926C44C970081ABF5 /* ServerBrowserView.swift */; };
-		C52CD4BC26C459920081ABF5 /* ControllerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4BB26C459920081ABF5 /* ControllerConnection.swift */; };
+		C52CD4BC26C459920081ABF5 /* ControllerFilePipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4BB26C459920081ABF5 /* ControllerFilePipe.swift */; };
 		C52CD4BE26C7E2350081ABF5 /* EndpointWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4BD26C7E2350081ABF5 /* EndpointWrapper.swift */; };
 		C52CD4BF26C7E2350081ABF5 /* EndpointWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4BD26C7E2350081ABF5 /* EndpointWrapper.swift */; };
+		C52CD4C226C7F6DB0081ABF5 /* ControllerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4C026C7F6DB0081ABF5 /* ControllerConnection.swift */; };
 		C53D555D26B43D4F00E1F75B /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D555C26B43D4F00E1F75B /* Tests_iOS.swift */; };
 		C53D556826B43D4F00E1F75B /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D556726B43D4F00E1F75B /* Tests_macOS.swift */; };
 		C53D556D26B43D4F00E1F75B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D554226B43D4C00E1F75B /* ContentView.swift */; };
@@ -56,8 +57,9 @@
 		C50E761B26B83F2400FB8C2C /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		C50E761D26C4424D00FB8C2C /* ControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerProtocol.swift; sourceTree = "<group>"; };
 		C52CD4B926C44C970081ABF5 /* ServerBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerBrowserView.swift; sourceTree = "<group>"; };
-		C52CD4BB26C459920081ABF5 /* ControllerConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerConnection.swift; sourceTree = "<group>"; };
+		C52CD4BB26C459920081ABF5 /* ControllerFilePipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerFilePipe.swift; sourceTree = "<group>"; };
 		C52CD4BD26C7E2350081ABF5 /* EndpointWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointWrapper.swift; sourceTree = "<group>"; };
+		C52CD4C026C7F6DB0081ABF5 /* ControllerConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerConnection.swift; sourceTree = "<group>"; };
 		C53D554126B43D4C00E1F75B /* DolphinControllerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DolphinControllerApp.swift; sourceTree = "<group>"; };
 		C53D554226B43D4C00E1F75B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C53D554326B43D4E00E1F75B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -117,7 +119,6 @@
 			children = (
 				C53D558C26B4402E00E1F75B /* ContentView.swift */,
 				C50E761626B7CA6B00FB8C2C /* JoystickView.swift */,
-				C50E761B26B83F2400FB8C2C /* Haptics.swift */,
 				C52CD4B926C44C970081ABF5 /* ServerBrowserView.swift */,
 			);
 			path = Views;
@@ -164,8 +165,9 @@
 			children = (
 				C50E761926B7CA8100FB8C2C /* Views */,
 				C53D554126B43D4C00E1F75B /* DolphinControllerApp.swift */,
-				C53D554B26B43D4E00E1F75B /* Info.plist */,
+				C50E761B26B83F2400FB8C2C /* Haptics.swift */,
 				C53D55AA26B5362700E1F75B /* Client.swift */,
+				C53D554B26B43D4E00E1F75B /* Info.plist */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -176,9 +178,10 @@
 				C53D554226B43D4C00E1F75B /* ContentView.swift */,
 				C53D557E26B43E1F00E1F75B /* DolphinControllerApp.swift */,
 				C53D55A026B5311900E1F75B /* Server.swift */,
+				C52CD4C026C7F6DB0081ABF5 /* ControllerConnection.swift */,
+				C52CD4BB26C459920081ABF5 /* ControllerFilePipe.swift */,
 				C53D555226B43D4F00E1F75B /* Info.plist */,
 				C53D555326B43D4F00E1F75B /* macOS.entitlements */,
-				C52CD4BB26C459920081ABF5 /* ControllerConnection.swift */,
 			);
 			path = macOS;
 			sourceTree = "<group>";
@@ -399,7 +402,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C53D558826B43F3C00E1F75B /* ObservableObject.swift in Sources */,
-				C52CD4BC26C459920081ABF5 /* ControllerConnection.swift in Sources */,
+				C52CD4BC26C459920081ABF5 /* ControllerFilePipe.swift in Sources */,
 				C50E761F26C4424D00FB8C2C /* ControllerProtocol.swift in Sources */,
 				C53D557F26B43E2500E1F75B /* DolphinControllerApp.swift in Sources */,
 				C50E761526B7C71900FB8C2C /* Comparable.swift in Sources */,
@@ -407,6 +410,7 @@
 				C53D556D26B43D4F00E1F75B /* ContentView.swift in Sources */,
 				C53D55A226B5311900E1F75B /* Server.swift in Sources */,
 				C53D559126B443D500E1F75B /* Networking.swift in Sources */,
+				C52CD4C226C7F6DB0081ABF5 /* ControllerConnection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

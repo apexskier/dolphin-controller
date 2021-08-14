@@ -1,23 +1,16 @@
 import Foundation
+import Combine
 import Network
 
 enum ServerError: Error {
     case noOpenControllerPorts
 }
 
-class Controller: ObservableObject, Identifiable {
-    var connection: NWConnection
-    
-    init(connection: NWConnection) {
-        self.connection = connection
-    }
-}
-
 public class Server: ObservableObject {
     private let netService: NWListener
     
     @Published var broadcasting: Bool = false
-    @Published var controllers: [Int: Controller?] = [:]
+    @Published var controllers: [Int: ControllerConnection?] = [:]
     var controllerCount = 4
     
     var nextControllerIndex: Int? {
@@ -56,89 +49,18 @@ public class Server: ObservableObject {
                 return
             }
             
-            let controller = Controller(connection: connection)
-            DispatchQueue.main.async {
-                self.controllers[index] = controller
-            }
-            print("NWListener connection \(connection.debugDescription)")
-            connection.pathUpdateHandler = { path in
-                print("connection path update", path)
-            }
-            connection.stateUpdateHandler = { state in
-                print("connection state update", state)
-                switch state {
-                case .ready:
-                    // Create a message object to hold the command type.
-                    let message = NWProtocolFramer.Message(controllerMessageType: .controllerNumberAssigned)
-                    let context = NWConnection.ContentContext(
-                        identifier: "Command",
-                        metadata: [message]
-                    )
-
-                    // Send the application content along with the message.
-                    var i = Int8(index)
-                    connection.send(
-                        content: Data(bytes: &i, count: MemoryLayout<Int8>.size),
-                        contentContext: context,
-                        isComplete: true,
-                        completion: .idempotent
-                    )
-                    
-                    let controllerConnection = try! ControllerConnection(index: index) {
-                        print("Close")
-                    }
-                    
-                    func receiveNextMessage() {
-                        connection.receiveMessage { (content, context, isComplete, error) in
-                            if let error = error {
-                                if case .posix(let code) = error,
-                                   code == .ENODATA || code == .ECONNRESET {
-                                    connection.cancel()
-                                } else {
-                                    print("Error", error)
-                                    connection.cancel()
-                                }
-                                return
-                            }
-                            
-                            // Extract your message type from the received context.
-                            if let message = context?.protocolMetadata(definition: ControllerProtocol.definition) as? NWProtocolFramer.Message {
-                                switch message.controllerMessageType {
-                                case .command:
-                                    guard let content = content else {
-                                        fatalError("missing content in command")
-                                    }
-                                    try! controllerConnection.streamText(data: content)
-                                default:
-                                    fatalError()
-                                }
-                            }
-                            // Continue to receive more messages until you receive and error.
-                            receiveNextMessage()
-                        }
-                    }
-                    
-                    receiveNextMessage()
-                case .cancelled:
-                    DispatchQueue.main.async {
-                        self.controllers[index] = nil
-                    }
-                case .failed(let error):
-                    print("Error", error)
-                    DispatchQueue.main.async {
-                        self.controllers[index] = nil
-                    }
-                default:
-                    break
+            let controllerConnection = try! ControllerConnection(
+                index: index,
+                connection: connection
+            ) { error in
+                DispatchQueue.main.async {
+                    self.controllers[index] = nil
                 }
             }
-            connection.viabilityUpdateHandler = { viability in
-                print("connection viability update", viability)
+            
+            DispatchQueue.main.async {
+                self.controllers[index] = controllerConnection
             }
-            connection.betterPathUpdateHandler = { betterPath in
-                print("connection better path update", betterPath)
-            }
-            connection.start(queue: .global(qos: .userInitiated))
         }
     }
     
