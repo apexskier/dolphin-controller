@@ -9,7 +9,7 @@ enum ServerError: Error {
 public class Server: ObservableObject {
     private let netService: NWListener
     
-    @Published var broadcasting: Bool = false
+    @Published var name: String? = nil
     @Published var controllers: [Int: ControllerConnection?] = [:]
     var controllerCount = 4
     
@@ -30,9 +30,6 @@ public class Server: ObservableObject {
             domain: nil,
             txtRecord: nil
         )
-        netService.serviceRegistrationUpdateHandler = { change in
-            print("NWListener service change: \(change)")
-        }
         netService.stateUpdateHandler = { state in
             DispatchQueue.main.async {
                 switch state {

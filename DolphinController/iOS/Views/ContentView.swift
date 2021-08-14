@@ -89,22 +89,6 @@ extension View {
     }
 }
 
-struct Light: View {
-    let on: Bool
-    
-    var body: some View {
-        if on {
-            return Rectangle()
-                .fill(Color(red: 103/256, green: 197/256, blue: 209/256))
-                .frame(width: 12, height: 12)
-        } else {
-            return Rectangle()
-                .fill(Color(red: 107/256, green: 111/256, blue: 116/256))
-                .frame(width: 12, height: 12)
-        }
-    }
-}
-
 struct PressButton<Label>: View where Label: View {
     @EnvironmentObject private var client: Client
     
@@ -235,10 +219,10 @@ struct ContentView: View {
                     Spacer()
                     
                     HStack(alignment: .center, spacing: 20) {
-                        Light(on: client.controllerIndex == 0)
-                        Light(on: client.controllerIndex == 1)
-                        Light(on: client.controllerIndex == 2)
-                        Light(on: client.controllerIndex == 3)
+                        LightView(on: client.controllerIndex == 0)
+                        LightView(on: client.controllerIndex == 1)
+                        LightView(on: client.controllerIndex == 2)
+                        LightView(on: client.controllerIndex == 3)
                     }
                     
                     Spacer()

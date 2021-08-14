@@ -4,12 +4,10 @@ import SwiftUI
 struct DolphinControllerApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate: AppDelegate
 
-//    let hostService = HostService()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
-//                .environmentObject(hostService)
                 .environmentObject(appDelegate.server)
         }
             .commands {

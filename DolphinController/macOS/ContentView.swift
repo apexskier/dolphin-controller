@@ -11,13 +11,21 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            if server.broadcasting {
-                ProgressView("Broadcasting")
+//            Image(systemName: server.broadcasting
+//                    ? "antenna.radiowaves.left.and.right"
+//                    : "antenna.radiowaves.left.and.right.slash")
+            if let name = server.name {
+                Text("Connect to \(name)")
+                    .padding(.bottom)
             }
-//            Text("Code: \(hostService.hostCode)")
-            Text("\(connectedControllerCount) controller\(connectedControllerCount == 1 ? "" : "s") connected")
-                .padding()
+            HStack(alignment: .center, spacing: 20) {
+                ForEach(0..<server.controllerCount) { i in
+                    LightView(on: server.controllers[i] != nil)
+                }
+            }
+                .padding(.bottom)
         }
+        .padding()
     }
 }
 
