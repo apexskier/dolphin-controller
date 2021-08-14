@@ -32,7 +32,6 @@ public class Server: ObservableObject {
     init() {
         self.netService = try! NWListener(using: .custom())
         netService.service = NWListener.Service(
-//            name: "\(Host.current().localizedName ?? Host.current().name ?? "Unknown computer") - new",
             name: nil,
             type: "_\(serviceType)._tcp.",
             domain: nil,
@@ -93,7 +92,7 @@ public class Server: ObservableObject {
                         connection.receiveMessage { (content, context, isComplete, error) in
                             if let error = error {
                                 if case .posix(let code) = error,
-                                   code == .ENODATA { // indicates a disconnect
+                                   code == .ENODATA || code == .ECONNRESET {
                                     connection.cancel()
                                 } else {
                                     print("Error", error)
@@ -126,6 +125,9 @@ public class Server: ObservableObject {
                     }
                 case .failed(let error):
                     print("Error", error)
+                    DispatchQueue.main.async {
+                        self.controllers[index] = nil
+                    }
                 default:
                     break
                 }

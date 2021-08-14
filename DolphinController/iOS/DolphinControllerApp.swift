@@ -1,12 +1,13 @@
 import SwiftUI
 import CoreHaptics
 import Combine
-import Network
 import Foundation
+import Network
+import NetworkExtension
 
 @main
 struct DolphinControllerApp: App {
-    let client = Client()
+    @ObservedObject var client = Client()
     
     var body: some Scene {
         WindowGroup {

@@ -6,7 +6,7 @@ struct ServerBrowserView: View {
     @Binding var shown: Bool
     @ObservedObject private var serverBrowser = ServerBrowser()
     
-    var didConnect: (NWConnection) -> Void
+    var didConnect: (NWEndpoint) -> Void
     
     var body: some View {
         NavigationView {
@@ -14,7 +14,7 @@ struct ServerBrowserView: View {
                 if !serverBrowser.servers.isEmpty {
                     List(serverBrowser.servers) { server in
                         Button(server.name) {
-                            self.didConnect(NWConnection(to: server.endpoint, using: .custom()))
+                            self.didConnect(server.endpoint)
                             self.shown = false
                         }
                     }

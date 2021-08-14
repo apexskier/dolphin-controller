@@ -253,13 +253,24 @@ struct ContentView: View {
                     Spacer()
                     
                     if self.client.connection == nil {
-                        Button("Connect") {
-                            self.choosingConnection = true
+                        HStack {
+                            if self.client.hasLastServer {
+                                Button("Reconnect") {
+                                    self.client.reconnect()
+                                }
+                                .buttonStyle(GCCButton(
+                                    color: grayColor,
+                                    shape: Capsule(style: .continuous)
+                                ))
+                            }
+                            Button(self.client.hasLastServer ? "New" : "Connect") {
+                                self.choosingConnection = true
+                            }
+                                .buttonStyle(GCCButton(
+                                    color: grayColor,
+                                    shape: Capsule(style: .continuous)
+                                ))
                         }
-                            .buttonStyle(GCCButton(
-                                color: grayColor,
-                                shape: Capsule(style: .continuous)
-                            ))
                     } else {
                         Button("Disconnect") {
                             self.client.disconnect()
@@ -336,8 +347,8 @@ struct ContentView: View {
               alignment: .center
             )
             .sheet(isPresented: $choosingConnection) {
-                ServerBrowserView(shown: $choosingConnection) { connection in
-                    self.client.connect(connection: connection)
+                ServerBrowserView(shown: $choosingConnection) { endpoint in
+                    self.client.connect(to: endpoint)
                 }
             }
             .alert(isPresented: Binding(get: {
