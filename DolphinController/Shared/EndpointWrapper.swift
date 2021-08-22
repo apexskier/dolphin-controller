@@ -1,6 +1,7 @@
 import Foundation
 import Network
 
+/// EndpointWrapper provides a type wrapping a NWEndpoint that that can be serialized and deserialized.
 class EndpointWrapper: NSObject, NSCoding {
     private enum EndpointType: UInt8 {
         case hostPort

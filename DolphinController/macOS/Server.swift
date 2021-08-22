@@ -12,6 +12,7 @@ public class Server: ObservableObject {
     let name = "\(Host.current().localizedName ?? Host.current().name ?? "Unknown computer") Dolphin Controller"
     @Published var broadcasting: Bool = false
     @Published var controllers: [Int: ControllerConnection?] = [:]
+    @Published var port: NWEndpoint.Port? = nil
     var controllerCount = 4
     
     var nextControllerIndex: Int? {
@@ -33,12 +34,37 @@ public class Server: ObservableObject {
         )
         netService.stateUpdateHandler = { state in
             DispatchQueue.main.async {
+                self.port = self.netService.port
                 switch state {
                 case .ready:
                     self.broadcasting = true
                 default:
                     self.broadcasting = false
                 }
+            }
+        }
+        netService.serviceRegistrationUpdateHandler = { change in
+            DispatchQueue.main.async {
+                self.port = self.netService.port
+            }
+            switch change {
+            case .add(let endpoint):
+                switch (endpoint) {
+                case .hostPort(host: let host, port: let port):
+                    print("Added host/port", host, port)
+                case .service(name: let name, type: let type, domain: let domain, interface: let interface):
+                    print("Added service", name, type, domain, interface)
+                case .unix(path: let path):
+                    print("Added unix", path)
+                case .url(let url):
+                    print("Added url", url)
+                @unknown default:
+                    fatalError()
+                }
+            case .remove(let endpoint):
+                print("Removed \(endpoint)")
+            @unknown default:
+                fatalError()
             }
         }
         netService.newConnectionHandler = { connection in

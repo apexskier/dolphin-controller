@@ -4,17 +4,19 @@ import CryptoKit
 let serviceType = "dolphinC"
 
 extension NWParameters {
-    static func custom() -> Self {
+    static func custom() -> NWParameters {
         // Customize TCP options to enable keepalives.
         let tcpOptions = NWProtocolTCP.Options()
         tcpOptions.enableKeepalive = true
         tcpOptions.keepaliveIdle = 2
 
         // Create parameters with custom TLS and TCP options.
-        let params = Self(tls: NWParameters.tlsOptions(passcode: "passcode"), tcp: tcpOptions)
+        let params = NWParameters(tls: NWParameters.tlsOptions(passcode: "passcode"), tcp: tcpOptions)
 
         // Enable using a peer-to-peer link.
         params.includePeerToPeer = true
+        params.acceptLocalOnly = false
+        params.serviceClass = .interactiveVideo // not really, but I want this fast, and it's low size
 
         // Add your custom game protocol to support game messages.
         let controllerProtocolOptions = NWProtocolFramer.Options(definition: ControllerProtocol.definition)
@@ -49,7 +51,7 @@ extension NWParameters {
         return tlsOptions
     }
     
-    // Create a utility function to encode strings as pre-shared key data.
+    // Utility function to encode strings as pre-shared key data.
     private static func stringToDispatchData(_ string: String) -> DispatchData? {
         guard let stringData = string.data(using: .unicode) else {
             return nil

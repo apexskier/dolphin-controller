@@ -15,6 +15,7 @@
 		C50E761F26C4424D00FB8C2C /* ControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E761D26C4424D00FB8C2C /* ControllerProtocol.swift */; };
 		C51271B726D2B14300820249 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271B626D2B14300820249 /* Colors.swift */; };
 		C51271B826D2B14300820249 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271B626D2B14300820249 /* Colors.swift */; };
+		C51271BA26D2E61C00820249 /* NetworkingSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271B926D2E61C00820249 /* NetworkingSheet.swift */; };
 		C52CD4BA26C44C970081ABF5 /* ServerBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4B926C44C970081ABF5 /* ServerBrowserView.swift */; };
 		C52CD4BC26C459920081ABF5 /* ControllerFilePipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4BB26C459920081ABF5 /* ControllerFilePipe.swift */; };
 		C52CD4BE26C7E2350081ABF5 /* EndpointWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4BD26C7E2350081ABF5 /* EndpointWrapper.swift */; };
@@ -61,6 +62,7 @@
 		C50E761B26B83F2400FB8C2C /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		C50E761D26C4424D00FB8C2C /* ControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerProtocol.swift; sourceTree = "<group>"; };
 		C51271B626D2B14300820249 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		C51271B926D2E61C00820249 /* NetworkingSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingSheet.swift; sourceTree = "<group>"; };
 		C52CD4B926C44C970081ABF5 /* ServerBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerBrowserView.swift; sourceTree = "<group>"; };
 		C52CD4BB26C459920081ABF5 /* ControllerFilePipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerFilePipe.swift; sourceTree = "<group>"; };
 		C52CD4BD26C7E2350081ABF5 /* EndpointWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointWrapper.swift; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 		C53D555126B43D4F00E1F75B /* macOS */ = {
 			isa = PBXGroup;
 			children = (
+				C51271B926D2E61C00820249 /* NetworkingSheet.swift */,
 				C53D554226B43D4C00E1F75B /* ContentView.swift */,
 				C53D557E26B43E1F00E1F75B /* DolphinControllerApp.swift */,
 				C53D55A026B5311900E1F75B /* Server.swift */,
@@ -414,6 +417,7 @@
 				C53D558826B43F3C00E1F75B /* ObservableObject.swift in Sources */,
 				C51271B826D2B14300820249 /* Colors.swift in Sources */,
 				C52CD4BC26C459920081ABF5 /* ControllerFilePipe.swift in Sources */,
+				C51271BA26D2E61C00820249 /* NetworkingSheet.swift in Sources */,
 				C50E761F26C4424D00FB8C2C /* ControllerProtocol.swift in Sources */,
 				C53D557F26B43E2500E1F75B /* DolphinControllerApp.swift in Sources */,
 				C50E761526B7C71900FB8C2C /* Comparable.swift in Sources */,

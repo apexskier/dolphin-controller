@@ -158,28 +158,23 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Image(systemName: server.broadcasting
-                        ? "antenna.radiowaves.left.and.right"
-                        : "antenna.radiowaves.left.and.right.slash")
-                    .resizable()
-                    .frame(width: 14, height: 14)
-                    .padding(.trailing, 2)
-                Text("Connect to “\(server.name)”")
-                    .fixedSize()
-            }
-                .foregroundColor(GameCubeColors.lightGray)
-                .padding(.bottom)
-            
+            Spacer(minLength: 0)
+            Text("Connect to\n“\(server.name)”")
+                .multilineTextAlignment(.center)
+                .fixedSize()
+            Spacer(minLength: 16)
             HStack(spacing: 30) {
                 ForEach(0..<server.controllerCount) { i in
-                    ControllerPlug(number: i+1, connected: server.controllers[i] != nil || i == 0)
+                    ControllerPlug(number: i+1, connected: server.controllers[i] != nil)
                 }
             }
                 .padding(EdgeInsets(top: dotVerticalSpace, leading: 24, bottom: 20, trailing: 24))
-                .background(FaceplateShape().fill(GameCubeColors.lightGray)) // background, not clipshape, to not obscure cord
-                .padding()
+                // background, not clipshape, to not obscure cord
+                .background(FaceplateShape().fill(GameCubeColors.lightGray))
+            Spacer(minLength: 0)
         }
+        .padding()
+        .navigationTitle(Text(server.name))
     }
 }
 
