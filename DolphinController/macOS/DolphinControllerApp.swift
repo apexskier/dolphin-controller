@@ -3,16 +3,19 @@ import SwiftUI
 @main
 struct DolphinControllerApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate: AppDelegate
-
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(appDelegate.server)
+            ZStack {
+                GameCubeColors.purple.ignoresSafeArea()
+                ContentView()
+                    .environmentObject(appDelegate.server)
+            }
         }
             .commands {
                 CommandGroup(replacing: .newItem) {}
             }
+            .windowStyle(HiddenTitleBarWindowStyle())
     }
 }
 

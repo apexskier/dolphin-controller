@@ -112,8 +112,6 @@ struct PressButton<Label>: View where Label: View {
     }
 }
 
-private var grayColor = Color(red: 221/256, green: 218/256, blue: 231/256)
-
 struct ContentView: View {
     @EnvironmentObject private var client: Client
     @Binding var shouldAutoReconnect: Bool
@@ -144,7 +142,7 @@ struct ContentView: View {
                     ZStack {
                         PressButton(label: Image(systemName: "arrowtriangle.up.fill"), identifier: "D_UP")
                             .buttonStyle(GCCButton(
-                                color: grayColor,
+                                color: GameCubeColors.lightGray,
                                 width: 42,
                                 height: 42,
                                 shape: RoundedRectangle(cornerRadius: 4)
@@ -152,7 +150,7 @@ struct ContentView: View {
                             .position(x: 42*1.5, y: 42*0.5)
                         PressButton(label: Image(systemName: "arrowtriangle.down.fill"), identifier: "D_DOWN")
                             .buttonStyle(GCCButton(
-                                color: grayColor,
+                                color: GameCubeColors.lightGray,
                                 width: 42,
                                 height: 42,
                                 shape: RoundedRectangle(cornerRadius: 4)
@@ -160,7 +158,7 @@ struct ContentView: View {
                             .position(x: 42*1.5, y: 42*2.5)
                         PressButton(label: Image(systemName: "arrowtriangle.left.fill"), identifier: "D_LEFT")
                             .buttonStyle(GCCButton(
-                                color: grayColor,
+                                color: GameCubeColors.lightGray,
                                 width: 42,
                                 height: 42,
                                 shape: RoundedRectangle(cornerRadius: 4)
@@ -168,7 +166,7 @@ struct ContentView: View {
                             .position(x: 42*0.5, y: 42*1.5)
                         PressButton(label: Image(systemName: "arrowtriangle.right.fill"), identifier: "D_RIGHT")
                             .buttonStyle(GCCButton(
-                                color: grayColor,
+                                color: GameCubeColors.lightGray,
                                 width: 42,
                                 height: 42,
                                 shape: RoundedRectangle(cornerRadius: 4)
@@ -188,7 +186,7 @@ struct ContentView: View {
                         HStack {
                             PressButton(label: Text("L"), identifier: "L")
                                 .buttonStyle(GCCButton(
-                                    color: grayColor,
+                                    color: GameCubeColors.lightGray,
                                     width: 100,
                                     height: 42,
                                     shape: RoundedRectangle(cornerRadius: 4, style: .continuous)
@@ -196,7 +194,7 @@ struct ContentView: View {
                             Spacer()
                             PressButton(label: Text("R"), identifier: "R")
                                 .buttonStyle(GCCButton(
-                                    color: grayColor,
+                                    color: GameCubeColors.lightGray,
                                     width: 100,
                                     height: 42,
                                     shape: RoundedRectangle(cornerRadius: 4, style: .continuous)
@@ -204,7 +202,7 @@ struct ContentView: View {
                         }
                         PressButton(label: Text("Z"), identifier: "Z")
                             .buttonStyle(GCCButton(
-                                color: Color(red: 72/256, green: 100/256, blue: 226/256),
+                                color: GameCubeColors.zColor,
                                 width: 100,
                                 height: 42,
                                 shape: RoundedRectangle(cornerRadius: 4, style: .continuous)
@@ -229,7 +227,7 @@ struct ContentView: View {
                     
                     PressButton(label: Text(""), identifier: "START")
                         .buttonStyle(GCCButton(
-                            color: grayColor,
+                            color: GameCubeColors.lightGray,
                             width: 34,
                             height: 34,
                             shape: Circle()
@@ -244,7 +242,7 @@ struct ContentView: View {
                                     self.client.reconnect()
                                 }
                                 .buttonStyle(GCCButton(
-                                    color: grayColor,
+                                    color: GameCubeColors.lightGray,
                                     shape: Capsule(style: .continuous)
                                 ))
                             }
@@ -252,7 +250,7 @@ struct ContentView: View {
                                 self.choosingConnection = true
                             }
                                 .buttonStyle(GCCButton(
-                                    color: grayColor,
+                                    color: GameCubeColors.lightGray,
                                     shape: Capsule(style: .continuous)
                                 ))
                         }
@@ -262,7 +260,7 @@ struct ContentView: View {
                             self.client.disconnect()
                         }
                             .buttonStyle(GCCButton(
-                                color: grayColor,
+                                color: GameCubeColors.lightGray,
                                 shape: Capsule(style: .continuous)
                             ))
                     }
@@ -274,30 +272,30 @@ struct ContentView: View {
                     ZStack {
                         PressButton(label: Text("A"), identifier: "A")
                             .buttonStyle(GCCButton(
-                                color: Color(red: 55/256, green: 199/256, blue: 195/256),
+                                color: GameCubeColors.green,
                                 width: 120,
                                 height: 120
                             ))
-                        PressButton(label: Text("B"), identifier: "B")
+                        PressButton(label: Text("B").rotationEffect(.degrees(-60)), identifier: "B")
                             .buttonStyle(GCCButton(
-                                color: Color(red: 232/256, green: 16/256, blue: 39/256),
+                                color: GameCubeColors.red,
                                 width: 60,
                                 height: 60
                             ))
                             .offset(x: 0, y: 60 + 12 + 30)
                             .rotationEffect(.degrees(60))
-                        PressButton(label: Text("Y"), identifier: "Y")
+                        PressButton(label: Text("Y").rotationEffect(.degrees(-175)), identifier: "Y")
                             .buttonStyle(GCCButton(
-                                color: grayColor,
+                                color: GameCubeColors.lightGray,
                                 width: 80,
                                 height: 42,
                                 shape: Capsule(style: .continuous)
                             ))
                             .offset(x: 0, y: 60 + 12 + 21)
                             .rotationEffect(.degrees(175))
-                        PressButton(label: Text("X"), identifier: "X")
+                        PressButton(label: Text("X").rotationEffect(.degrees(-260)), identifier: "X")
                             .buttonStyle(GCCButton(
-                                color: grayColor,
+                                color: GameCubeColors.lightGray,
                                 width: 80,
                                 height: 42,
                                 shape: Capsule(style: .continuous)
@@ -312,7 +310,7 @@ struct ContentView: View {
                     
                     Joystick(
                         identifier: "C",
-                        color: Color(red: 254/256, green: 217/256, blue: 39/256),
+                        color: GameCubeColors.yellow,
                         diameter: 150,
                         knobDiameter: 80,
                         label: Text("C")
