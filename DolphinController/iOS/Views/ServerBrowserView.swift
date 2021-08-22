@@ -3,29 +3,60 @@ import Network
 import SwiftUI
 
 struct ServerBrowserView: View {
-    @Binding var shown: Bool
+    @Environment(\.presentationMode) private var presentationMode
     @ObservedObject private var serverBrowser = ServerBrowser()
+    @State private var choosingManualConnection = false
+    @AppStorage(StorageKeys.lastManualAddress.rawValue) private var manualServer = ""
+    @State private var validatedServerParts: (host: String, portInt: UInt16)? = nil
     
     var didConnect: (NWEndpoint) -> Void
     
     var body: some View {
         NavigationView {
             VStack {
-                if !serverBrowser.servers.isEmpty {
-                    List(serverBrowser.servers) { server in
-                        Button(server.name) {
-                            self.didConnect(server.endpoint)
-                            self.shown = false
+                List {
+                    Section(header: Text("Local \(Image(systemName: "bonjour"))")) {
+                        if !serverBrowser.servers.isEmpty {
+                            ForEach(serverBrowser.servers) { server in
+                                Button(server.name) {
+                                    self.didConnect(server.endpoint)
+                                    self.presentationMode.wrappedValue.dismiss()
+                                }
+                            }
+                        } else if (serverBrowser.loading) {
+                            ProgressView("Browsing").frame(maxWidth: .infinity)
                         }
                     }
-                }
-                if serverBrowser.loading {
-                    ProgressView("Searching")
+                    Section(header: Text("Manual \(Image(systemName: "network"))")) {
+                        HStack {
+                            TextField("192.168.0.123:12345", text: $manualServer)
+                                .disableAutocorrection(true)
+                                .accessibilityLabel("Manually entered server address")
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                            Button("Connect") {
+                                guard let (host, portInt) = self.validatedServerParts else {
+                                    return
+                                }
+                                self.didConnect(
+                                    NWEndpoint.hostPort(
+                                        host: .init(host),
+                                        port: NWEndpoint.Port(integerLiteral: portInt)
+                                    )
+                                )
+                                self.presentationMode.wrappedValue.dismiss()
+                            }
+                                .disabled(validatedServerParts == nil)
+                                .onChange(of: manualServer, perform: self.validateManualServer)
+                                .onAppear {
+                                    self.validateManualServer(newManualServer: manualServer)
+                                }
+                        }
+                    }
                 }
             }
             .navigationBarTitle("Server Browser")
             .navigationBarItems(trailing: Button("Close", action: {
-                self.shown = false
+                self.presentationMode.wrappedValue.dismiss()
             }))
         }
         .onAppear {
@@ -35,15 +66,25 @@ struct ServerBrowserView: View {
             serverBrowser.stop()
         }
     }
+    
+    func validateManualServer(newManualServer: String) {
+        let parts = newManualServer.split(separator: ":")
+        if parts.count != 2 {
+            self.validatedServerParts = nil
+            return
+        }
+        let host = String(parts[0])
+        guard let portInt = UInt16(parts[1]) else {
+            self.validatedServerParts = nil
+            return
+        }
+        self.validatedServerParts = (host, portInt)
+    }
 }
 
 struct ServerBrowser_Previews: PreviewProvider {
     static var previews: some View {
-        ServerBrowserView(shown: Binding<Bool>(get: {
-            true
-        }, set: { _ in
-            // noops
-        })) { connection in
+        ServerBrowserView { connection in
             print(connection)
         }
     }

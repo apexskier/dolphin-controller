@@ -9,7 +9,7 @@ enum ServerError: Error {
 public class Server: ObservableObject {
     private let netService: NWListener
     
-    let name = "\(Host.current().localizedName ?? Host.current().name ?? "Unknown computer") Dolphin Controller"
+    let name = "\(Host.current().localizedName ?? Host.current().name ?? "Unknown computer") - Dolphin Controller Server"
     @Published var broadcasting: Bool = false
     @Published var controllers: [Int: ControllerConnection?] = [:]
     @Published var port: NWEndpoint.Port? = nil

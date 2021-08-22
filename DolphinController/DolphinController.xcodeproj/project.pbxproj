@@ -16,6 +16,7 @@
 		C51271B726D2B14300820249 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271B626D2B14300820249 /* Colors.swift */; };
 		C51271B826D2B14300820249 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271B626D2B14300820249 /* Colors.swift */; };
 		C51271BA26D2E61C00820249 /* NetworkingSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271B926D2E61C00820249 /* NetworkingSheet.swift */; };
+		C51271C026D2F9B200820249 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271BE26D2F9AF00820249 /* Storage.swift */; };
 		C52CD4BA26C44C970081ABF5 /* ServerBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4B926C44C970081ABF5 /* ServerBrowserView.swift */; };
 		C52CD4BC26C459920081ABF5 /* ControllerFilePipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4BB26C459920081ABF5 /* ControllerFilePipe.swift */; };
 		C52CD4BE26C7E2350081ABF5 /* EndpointWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4BD26C7E2350081ABF5 /* EndpointWrapper.swift */; };
@@ -63,6 +64,7 @@
 		C50E761D26C4424D00FB8C2C /* ControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerProtocol.swift; sourceTree = "<group>"; };
 		C51271B626D2B14300820249 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		C51271B926D2E61C00820249 /* NetworkingSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingSheet.swift; sourceTree = "<group>"; };
+		C51271BE26D2F9AF00820249 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		C52CD4B926C44C970081ABF5 /* ServerBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerBrowserView.swift; sourceTree = "<group>"; };
 		C52CD4BB26C459920081ABF5 /* ControllerFilePipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerFilePipe.swift; sourceTree = "<group>"; };
 		C52CD4BD26C7E2350081ABF5 /* EndpointWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointWrapper.swift; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 			children = (
 				C50E761926B7CA8100FB8C2C /* Views */,
 				C53D554126B43D4C00E1F75B /* DolphinControllerApp.swift */,
+				C51271BE26D2F9AF00820249 /* Storage.swift */,
 				C50E761B26B83F2400FB8C2C /* Haptics.swift */,
 				C53D55AA26B5362700E1F75B /* Client.swift */,
 				C53D554B26B43D4E00E1F75B /* Info.plist */,
@@ -403,6 +406,7 @@
 				C52CD4BE26C7E2350081ABF5 /* EndpointWrapper.swift in Sources */,
 				C50E761E26C4424D00FB8C2C /* ControllerProtocol.swift in Sources */,
 				C51271B726D2B14300820249 /* Colors.swift in Sources */,
+				C51271C026D2F9B200820249 /* Storage.swift in Sources */,
 				C53D558726B43F3C00E1F75B /* ObservableObject.swift in Sources */,
 				C52CD4BA26C44C970081ABF5 /* ServerBrowserView.swift in Sources */,
 				C50E761726B7CA6B00FB8C2C /* JoystickView.swift in Sources */,

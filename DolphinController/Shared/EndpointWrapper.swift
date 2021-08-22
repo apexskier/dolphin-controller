@@ -19,8 +19,12 @@ class EndpointWrapper: NSObject, NSCoding {
             coder.encode(name, forKey: "name")
             coder.encode(type, forKey: "type")
             coder.encode(domain, forKey: "domain")
+        case .hostPort(host: let host, port: let port):
+            coder.encode(EndpointType.hostPort.rawValue, forKey: Self._typeKey)
+            coder.encode(host.debugDescription, forKey: "host")
+            coder.encode(port.rawValue, forKey: "port")
         default:
-            fatalError("unknown NWEndpoint case")
+            fatalError("unknown NWEndpoint type")
         }
     }
     
@@ -37,6 +41,13 @@ class EndpointWrapper: NSObject, NSCoding {
                 return nil
             }
             self.init(NWEndpoint.service(name: name, type: type, domain: domain, interface: nil))
+        case .hostPort:
+            guard let host = coder.decodeObject(forKey: "host") as? String,
+                  let portInt = coder.decodeObject(forKey: "port") as? UInt16,
+                  let port = NWEndpoint.Port(rawValue: portInt) else {
+                return nil
+            }
+            self.init(NWEndpoint.hostPort(host: .init(host), port: port))
         default:
             return nil
         }

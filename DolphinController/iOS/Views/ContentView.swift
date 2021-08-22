@@ -331,7 +331,7 @@ struct ContentView: View {
               alignment: .center
             )
             .sheet(isPresented: $choosingConnection) {
-                ServerBrowserView(shown: $choosingConnection) { endpoint in
+                ServerBrowserView { endpoint in
                     self.client.connect(to: endpoint)
                     self.shouldAutoReconnect = true
                 }

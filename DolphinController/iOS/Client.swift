@@ -4,10 +4,6 @@ import UIKit
 import Network
 
 public class Client: ObservableObject {
-    enum StorageKeys: String {
-        case lastUsedServer = "lastUsedServer"
-    }
-    
     static let storage = UserDefaults.standard
     
     public var connection: NWConnection? = nil {
