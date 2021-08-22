@@ -27,9 +27,10 @@ public class Client: ObservableObject {
            let endpointWrapper = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(endpointData) as? EndpointWrapper {
             lastServer = endpointWrapper.endpoint
             hasLastServer = true
+        } else {
+            lastServer = nil
+            hasLastServer = false
         }
-        lastServer = nil
-        hasLastServer = false
     }
     
     private var attemptsToReconnect = 0
