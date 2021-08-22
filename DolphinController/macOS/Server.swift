@@ -47,25 +47,6 @@ public class Server: ObservableObject {
             DispatchQueue.main.async {
                 self.port = self.netService.port
             }
-            switch change {
-            case .add(let endpoint):
-                switch (endpoint) {
-                case .hostPort(host: let host, port: let port):
-                    print("Added host/port", host, port)
-                case .service(name: let name, type: let type, domain: let domain, interface: let interface):
-                    print("Added service", name, type, domain, interface)
-                case .unix(path: let path):
-                    print("Added unix", path)
-                case .url(let url):
-                    print("Added url", url)
-                @unknown default:
-                    fatalError()
-                }
-            case .remove(let endpoint):
-                print("Removed \(endpoint)")
-            @unknown default:
-                fatalError()
-            }
         }
         netService.newConnectionHandler = { connection in
             guard let index = self.nextControllerIndex else {
