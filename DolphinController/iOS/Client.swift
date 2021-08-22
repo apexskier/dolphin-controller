@@ -86,6 +86,7 @@ public class Client: ObservableObject {
                             } else {
                                 print("Error", error)
                             }
+                            connection.cancel()
                             return
                         }
                         

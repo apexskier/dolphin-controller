@@ -13,6 +13,7 @@ struct DolphinControllerApp: App {
             ZStack {
                 GameCubeColors.purple.ignoresSafeArea()
                 ContentView()
+                    .padding([.horizontal, .bottom])
             }
             .toolbar {
                 ToolbarItem(placement: ToolbarItemPlacement.automatic) {

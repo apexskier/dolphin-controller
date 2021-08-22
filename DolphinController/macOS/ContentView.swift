@@ -166,6 +166,10 @@ struct ContentView: View {
             HStack(spacing: 30) {
                 ForEach(0..<server.controllerCount) { i in
                     ControllerPlug(number: i+1, connected: server.controllers[i] != nil)
+                        .accessibilityLabel("Tap to disconnect controller \(i+1)")
+                        .onTapGesture {
+                            server.controllers[i]??.disconnect()
+                        }
                 }
             }
                 .padding(EdgeInsets(top: dotVerticalSpace, leading: 24, bottom: 20, trailing: 24))
@@ -173,7 +177,6 @@ struct ContentView: View {
                 .background(FaceplateShape().fill(GameCubeColors.lightGray))
             Spacer(minLength: 0)
         }
-        .padding()
         .navigationTitle(Text(server.name))
     }
 }

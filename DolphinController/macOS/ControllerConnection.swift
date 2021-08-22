@@ -21,6 +21,10 @@ final class ControllerConnection {
         connection.start(queue: .global(qos: .userInitiated))
     }
     
+    func disconnect() {
+        connection.cancel()
+    }
+    
     private func handleStateUpdate(state: NWConnection.State) {
         print("connection state update", state)
         switch state {
