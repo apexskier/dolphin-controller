@@ -6,6 +6,11 @@ Video games were meant to be played together. All you need to launch a gaming se
 
 1. [Download the latest version of Dolphin emulator](https://dolphin-emu.org)
 2. Build and run the macOS server and iOS client from XCode
+3. From the iOS app, tap "Connect" and find your server
+
+![Server UI](https://user-images.githubusercontent.com/329222/130376826-e01d3d13-fc0c-4b8e-a97f-29ce20eaa50f.png)
+
+![App UI](https://user-images.githubusercontent.com/329222/130376843-1877f15f-4fbd-471c-a542-5e62b350ab11.PNG)
 
 ## Setup
 
