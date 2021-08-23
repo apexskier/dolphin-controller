@@ -1,16 +1,16 @@
 # Dolphin Controller
 
-Video games were meant to be played together. All you need to launch a gaming session with friends via Dolphin is your laptop and this repository.
+Video games were meant to be played together. All you need to play a game with friends on Dolphin is your laptop and this app, over bluetooth or Wi-Fi.
+
+| macOS Server | iOS Client |
+| ------------ | ---------- |
+| <img src="https://user-images.githubusercontent.com/329222/130376826-e01d3d13-fc0c-4b8e-a97f-29ce20eaa50f.png" alt="Server UI" height="240" /> | <img src="https://user-images.githubusercontent.com/329222/130376843-1877f15f-4fbd-471c-a542-5e62b350ab11.PNG" alt="App UI" height="240" /> |
 
 ## Installation
 
 1. [Download the latest version of Dolphin emulator](https://dolphin-emu.org)
 2. Build and run the macOS server and iOS client from XCode
 3. From the iOS app, tap "Connect" and find your server
-
-| macOS Server | iOS Client |
-| ------------ | ---------- |
-| ![Server UI](https://user-images.githubusercontent.com/329222/130376826-e01d3d13-fc0c-4b8e-a97f-29ce20eaa50f.png) | ![App UI](https://user-images.githubusercontent.com/329222/130376843-1877f15f-4fbd-471c-a542-5e62b350ab11.PNG) |
 
 ## Setup
 
@@ -31,3 +31,7 @@ You can verify the controller is connected by clicking "Configure" and ensuring 
 ## Tips
 
 * Turn off auto display lock on your iOS device (Settings > Display & Brightness > Auto-Lock > Never) (at least until I get persistent controller numbers)
+* The iOS app will attempt to auto-reconnect if it looses a connection (if your screen locks or the app backgrounds). Your controller number is first come, first served, so reconnect in order if multiple people loose connections.
+* The iOS app will remember the last server you connected to, tap "Reconnect" to jump back in, or "New" to find a new server.
+* Servers are advertised automatically with Bonjour, so no need to enter manual information if everyone's in the same room.
+* For remote play, tap the Network icon in the macOS app's toolbar to find the port, forward to a public IP address, and enter the address manually.
