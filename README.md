@@ -22,7 +22,7 @@ From the Dolphin app, open the controller settings (Options > Controller Setting
 
 ![Dolphin Controller Settings](https://user-images.githubusercontent.com/329222/130376541-ca943da6-963d-4706-b2a0-74b6e4516f1c.png)
 
-## Verification
+### Verification
 
 You can verify the controller is connected by clicking "Configure" and ensuring "Device" is connected to "Pipe/0/ctrlN". From the configure window, you can also verify that the UI responds to interactions on your iOS device.
 
