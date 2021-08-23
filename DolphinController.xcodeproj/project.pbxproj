@@ -38,7 +38,7 @@
 		C53D559126B443D500E1F75B /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D558F26B443D500E1F75B /* Networking.swift */; };
 		C53D55A226B5311900E1F75B /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D55A026B5311900E1F75B /* Server.swift */; };
 		C53D55AB26B5362700E1F75B /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D55AA26B5362700E1F75B /* Client.swift */; };
-		C57A2CD226D30930006066D6 /* GCPadNew.ini in Resources */ = {isa = PBXBuildFile; fileRef = C57A2CD126D30930006066D6 /* GCPadNew.ini */; };
+		C5624F2626D3292B00ECD78A /* GCPadNew.ini in Resources */ = {isa = PBXBuildFile; fileRef = C5624F2526D3292B00ECD78A /* GCPadNew.ini */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,7 +91,7 @@
 		C53D558F26B443D500E1F75B /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		C53D55A026B5311900E1F75B /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		C53D55AA26B5362700E1F75B /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
-		C57A2CD126D30930006066D6 /* GCPadNew.ini */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = GCPadNew.ini; path = ../../GCPadNew.ini; sourceTree = "<group>"; };
+		C5624F2526D3292B00ECD78A /* GCPadNew.ini */ = {isa = PBXFileReference; lastKnownFileType = file; path = GCPadNew.ini; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,7 +190,6 @@
 		C53D555126B43D4F00E1F75B /* macOS */ = {
 			isa = PBXGroup;
 			children = (
-				C57A2CD126D30930006066D6 /* GCPadNew.ini */,
 				C51271B926D2E61C00820249 /* NetworkingSheet.swift */,
 				C53D554226B43D4C00E1F75B /* ContentView.swift */,
 				C53D557E26B43E1F00E1F75B /* DolphinControllerApp.swift */,
@@ -198,6 +197,7 @@
 				C52CD4C026C7F6DB0081ABF5 /* ControllerConnection.swift */,
 				C52CD4BB26C459920081ABF5 /* ControllerFilePipe.swift */,
 				C53D555226B43D4F00E1F75B /* Info.plist */,
+				C5624F2526D3292B00ECD78A /* GCPadNew.ini */,
 				C53D555326B43D4F00E1F75B /* macOS.entitlements */,
 			);
 			path = macOS;
@@ -376,7 +376,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C53D556F26B43D4F00E1F75B /* Assets.xcassets in Resources */,
-				C57A2CD226D30930006066D6 /* GCPadNew.ini in Resources */,
+				C5624F2626D3292B00ECD78A /* GCPadNew.ini in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

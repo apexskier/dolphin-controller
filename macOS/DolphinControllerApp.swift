@@ -61,11 +61,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 .appendingPathComponent("Dolphin")
                 .appendingPathComponent("Config")
                 .appendingPathComponent("GCPadNew.ini")
-            let requiredConfigUrl = Bundle.main.url(forResource: "GCPadNew", withExtension: "ini")!
-            if !FileManager.default.contentsEqual(atPath: requiredConfigUrl.path, andPath: actualConfigUrl.path) {
-                if FileManager.default.isWritableFile(atPath: actualConfigUrl.path) {
-                    try FileManager.default.removeItem(at: actualConfigUrl)
-                    try FileManager.default.copyItem(at: requiredConfigUrl, to: actualConfigUrl)
+            if let requiredConfigUrl = Bundle.main.url(forResource: "GCPadNew", withExtension: "ini") {
+                if !FileManager.default.contentsEqual(atPath: requiredConfigUrl.path, andPath: actualConfigUrl.path) {
+                    if FileManager.default.isWritableFile(atPath: actualConfigUrl.path) {
+                        try FileManager.default.removeItem(at: actualConfigUrl)
+                        try FileManager.default.copyItem(at: requiredConfigUrl, to: actualConfigUrl)
+                    }
                 }
             }
         } catch {
