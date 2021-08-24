@@ -35,3 +35,5 @@ You can verify the controller is connected by clicking "Configure" and ensuring 
 * The iOS app will remember the last server you connected to, tap "Reconnect" to jump back in, or "New" to find a new server.
 * Servers are advertised automatically with Bonjour, so no need to enter manual information if everyone's in the same room.
 * For remote play, tap the Network icon in the macOS app's toolbar to find the port, forward to a public IP address, and enter the address manually.
+
+❤️ inspired by (and originally forked from, but since rewritten) https://github.com/ajaymerchia/dolphin-controller
