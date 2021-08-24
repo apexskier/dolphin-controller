@@ -29,6 +29,8 @@
 		<string>_dolphinC._tcp</string>
 		<string>_dolphinC._udp</string>
 	</array>
+	<key>NSHumanReadableCopyright</key>
+	<string>2021 Cameron Little</string>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>Connects to mobile devices as GameCube controllers.</string>
 </dict>
