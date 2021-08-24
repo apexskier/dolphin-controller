@@ -38,6 +38,8 @@
 		C53D559126B443D500E1F75B /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D558F26B443D500E1F75B /* Networking.swift */; };
 		C53D55A226B5311900E1F75B /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D55A026B5311900E1F75B /* Server.swift */; };
 		C53D55AB26B5362700E1F75B /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D55AA26B5362700E1F75B /* Client.swift */; };
+		C54BE4AA26D495D500530927 /* PolygonShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54BE4A926D495D500530927 /* PolygonShape.swift */; };
+		C54BE4AB26D495D500530927 /* PolygonShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54BE4A926D495D500530927 /* PolygonShape.swift */; };
 		C5624F2626D3292B00ECD78A /* GCPadNew.ini in Resources */ = {isa = PBXBuildFile; fileRef = C5624F2526D3292B00ECD78A /* GCPadNew.ini */; };
 /* End PBXBuildFile section */
 
@@ -91,7 +93,8 @@
 		C53D558F26B443D500E1F75B /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		C53D55A026B5311900E1F75B /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		C53D55AA26B5362700E1F75B /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
-		C5624F2526D3292B00ECD78A /* GCPadNew.ini */ = {isa = PBXFileReference; lastKnownFileType = file; path = GCPadNew.ini; sourceTree = SOURCE_ROOT; };
+		C54BE4A926D495D500530927 /* PolygonShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonShape.swift; sourceTree = "<group>"; };
+		C5624F2526D3292B00ECD78A /* GCPadNew.ini */ = {isa = PBXFileReference; lastKnownFileType = text; path = GCPadNew.ini; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +162,7 @@
 				C52CD4BD26C7E2350081ABF5 /* EndpointWrapper.swift */,
 				C52CD4C326C80B850081ABF5 /* LightView.swift */,
 				C51271B626D2B14300820249 /* Colors.swift */,
+				C54BE4A926D495D500530927 /* PolygonShape.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -406,6 +410,7 @@
 				C53D559026B443D500E1F75B /* Networking.swift in Sources */,
 				C50E761C26B83F2400FB8C2C /* Haptics.swift in Sources */,
 				C53D558D26B4402E00E1F75B /* ContentView.swift in Sources */,
+				C54BE4AA26D495D500530927 /* PolygonShape.swift in Sources */,
 				C50E761426B7C71900FB8C2C /* Comparable.swift in Sources */,
 				C52CD4BE26C7E2350081ABF5 /* EndpointWrapper.swift in Sources */,
 				C50E761E26C4424D00FB8C2C /* ControllerProtocol.swift in Sources */,
@@ -423,6 +428,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C53D558826B43F3C00E1F75B /* ObservableObject.swift in Sources */,
+				C54BE4AB26D495D500530927 /* PolygonShape.swift in Sources */,
 				C51271B826D2B14300820249 /* Colors.swift in Sources */,
 				C52CD4BC26C459920081ABF5 /* ControllerFilePipe.swift in Sources */,
 				C51271BA26D2E61C00820249 /* NetworkingSheet.swift in Sources */,

@@ -23,6 +23,7 @@ struct DolphinControllerApp: App {
                 }
             }
             .foregroundColor(GameCubeColors.lightGray)
+            .frame(idealWidth: 380, idealHeight: 280)
             .sheet(isPresented: self.$showAdvancedNetworking) {
                 NetworkingSheet()
                     .padding()

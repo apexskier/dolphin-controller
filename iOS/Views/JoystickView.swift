@@ -89,7 +89,7 @@ struct Joystick<Label>: View where Label: View {
     }
     
     private var target: some View {
-        Circle()
+        Polygon(corners: 8)
             .fill(color.opacity(0.2))
             .frame(width: diameter, height: diameter)
     }
