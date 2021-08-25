@@ -28,7 +28,7 @@
 		<string>_dolphinC._udp</string>
 	</array>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>Connect to a host computer as a GameCube controller</string>
+	<string>Connect to a host computer as a GameCube controller.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
