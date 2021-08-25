@@ -15,7 +15,7 @@
 		C50E761F26C4424D00FB8C2C /* ControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E761D26C4424D00FB8C2C /* ControllerProtocol.swift */; };
 		C51271B726D2B14300820249 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271B626D2B14300820249 /* Colors.swift */; };
 		C51271B826D2B14300820249 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271B626D2B14300820249 /* Colors.swift */; };
-		C51271BA26D2E61C00820249 /* NetworkingSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271B926D2E61C00820249 /* NetworkingSheet.swift */; };
+		C51271BA26D2E61C00820249 /* NetworkingInstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271B926D2E61C00820249 /* NetworkingInstructionsView.swift */; };
 		C51271C026D2F9B200820249 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271BE26D2F9AF00820249 /* Storage.swift */; };
 		C518B0D426D5E8480042A931 /* ControllerPlugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C518B0D326D5E8480042A931 /* ControllerPlugView.swift */; };
 		C52CD4BA26C44C970081ABF5 /* ServerBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4B926C44C970081ABF5 /* ServerBrowserView.swift */; };
@@ -24,7 +24,6 @@
 		C52CD4BF26C7E2350081ABF5 /* EndpointWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4BD26C7E2350081ABF5 /* EndpointWrapper.swift */; };
 		C52CD4C226C7F6DB0081ABF5 /* ControllerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4C026C7F6DB0081ABF5 /* ControllerConnection.swift */; };
 		C52CD4C426C80B850081ABF5 /* LightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4C326C80B850081ABF5 /* LightView.swift */; };
-		C52CD4C526C80B850081ABF5 /* LightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4C326C80B850081ABF5 /* LightView.swift */; };
 		C53D555D26B43D4F00E1F75B /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D555C26B43D4F00E1F75B /* Tests_iOS.swift */; };
 		C53D556826B43D4F00E1F75B /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D556726B43D4F00E1F75B /* Tests_macOS.swift */; };
 		C53D556D26B43D4F00E1F75B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D554226B43D4C00E1F75B /* ContentView.swift */; };
@@ -67,7 +66,7 @@
 		C50E761B26B83F2400FB8C2C /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		C50E761D26C4424D00FB8C2C /* ControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerProtocol.swift; sourceTree = "<group>"; };
 		C51271B626D2B14300820249 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
-		C51271B926D2E61C00820249 /* NetworkingSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingSheet.swift; sourceTree = "<group>"; };
+		C51271B926D2E61C00820249 /* NetworkingInstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingInstructionsView.swift; sourceTree = "<group>"; };
 		C51271BE26D2F9AF00820249 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		C518B0D326D5E8480042A931 /* ControllerPlugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerPlugView.swift; sourceTree = "<group>"; };
 		C52CD4B926C44C970081ABF5 /* ServerBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerBrowserView.swift; sourceTree = "<group>"; };
@@ -134,9 +133,20 @@
 		C50E761926B7CA8100FB8C2C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C52CD4C326C80B850081ABF5 /* LightView.swift */,
 				C53D558C26B4402E00E1F75B /* ContentView.swift */,
 				C50E761626B7CA6B00FB8C2C /* JoystickView.swift */,
 				C52CD4B926C44C970081ABF5 /* ServerBrowserView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C518B0D526D5EA620042A931 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C51271B926D2E61C00820249 /* NetworkingInstructionsView.swift */,
+				C518B0D326D5E8480042A931 /* ControllerPlugView.swift */,
+				C53D554226B43D4C00E1F75B /* ContentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -157,12 +167,11 @@
 		C53D554026B43D4C00E1F75B /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				C53D558526B43F2C00E1F75B /* Extensions */,
 				C53D554326B43D4E00E1F75B /* Assets.xcassets */,
+				C53D558526B43F2C00E1F75B /* Extensions */,
 				C53D558F26B443D500E1F75B /* Networking.swift */,
 				C50E761D26C4424D00FB8C2C /* ControllerProtocol.swift */,
 				C52CD4BD26C7E2350081ABF5 /* EndpointWrapper.swift */,
-				C52CD4C326C80B850081ABF5 /* LightView.swift */,
 				C51271B626D2B14300820249 /* Colors.swift */,
 				C54BE4A926D495D500530927 /* PolygonShape.swift */,
 			);
@@ -196,9 +205,7 @@
 		C53D555126B43D4F00E1F75B /* macOS */ = {
 			isa = PBXGroup;
 			children = (
-				C51271B926D2E61C00820249 /* NetworkingSheet.swift */,
-				C518B0D326D5E8480042A931 /* ControllerPlugView.swift */,
-				C53D554226B43D4C00E1F75B /* ContentView.swift */,
+				C518B0D526D5EA620042A931 /* Views */,
 				C53D557E26B43E1F00E1F75B /* DolphinControllerApp.swift */,
 				C53D55A026B5311900E1F75B /* Server.swift */,
 				C52CD4C026C7F6DB0081ABF5 /* ControllerConnection.swift */,
@@ -434,7 +441,7 @@
 				C54BE4AB26D495D500530927 /* PolygonShape.swift in Sources */,
 				C51271B826D2B14300820249 /* Colors.swift in Sources */,
 				C52CD4BC26C459920081ABF5 /* ControllerFilePipe.swift in Sources */,
-				C51271BA26D2E61C00820249 /* NetworkingSheet.swift in Sources */,
+				C51271BA26D2E61C00820249 /* NetworkingInstructionsView.swift in Sources */,
 				C50E761F26C4424D00FB8C2C /* ControllerProtocol.swift in Sources */,
 				C53D557F26B43E2500E1F75B /* DolphinControllerApp.swift in Sources */,
 				C50E761526B7C71900FB8C2C /* Comparable.swift in Sources */,
@@ -443,7 +450,6 @@
 				C53D55A226B5311900E1F75B /* Server.swift in Sources */,
 				C53D559126B443D500E1F75B /* Networking.swift in Sources */,
 				C518B0D426D5E8480042A931 /* ControllerPlugView.swift in Sources */,
-				C52CD4C526C80B850081ABF5 /* LightView.swift in Sources */,
 				C52CD4C226C7F6DB0081ABF5 /* ControllerConnection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

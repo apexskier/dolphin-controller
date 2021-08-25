@@ -1,13 +1,6 @@
-//
-//  NetworkingSheet.swift
-//  DolphinController (macOS)
-//
-//  Created by Cameron Little on 2021-08-22.
-//
-
 import SwiftUI
 
-struct NetworkingSheet: View {
+struct NetworkingInstructionsView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject private var server: Server
     
@@ -54,8 +47,8 @@ struct NetworkingSheet: View {
     }
 }
 
-struct NetworkingSheet_Previews: PreviewProvider {
+struct NetworkingInstructionsView_Previews: PreviewProvider {
     static var previews: some View {
-        NetworkingSheet()
+        NetworkingInstructionsView()
     }
 }
