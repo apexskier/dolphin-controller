@@ -20,7 +20,7 @@ public class Client: ObservableObject {
         }
     }
     @Published var hasLastServer: Bool = false
-    @Published var controllerIndex: Int? = nil
+    @Published var controllerInfo: ClientControllerInfo? = nil
         
     init() {
         if let endpointData = Self.storage.value(forKey: StorageKeys.lastUsedServer.rawValue) as? Data,
@@ -66,6 +66,10 @@ public class Client: ObservableObject {
                         forKey: StorageKeys.lastUsedServer.rawValue
                     )
                 }
+
+                if let index = self.controllerInfo?.assignedController {
+                    self.pickController(index: index)
+                }
                 
                 func receiveNextMessage() {
                     if hasBeenReplaced {
@@ -93,13 +97,19 @@ public class Client: ObservableObject {
                         // Extract your message type from the received context.
                         if let message = context?.protocolMetadata(definition: ControllerProtocol.definition) as? NWProtocolFramer.Message {
                             switch message.controllerMessageType {
-                            case .controllerNumberAssigned:
-                                let number = content?.withUnsafeBytes { pointer in
-                                    Int(pointer.load(as: Int8.self))
+                            case .controllerInfo:
+                                guard let content = content else {
+                                    fatalError("missing content in controllerInfo")
+                                }
+
+                                let controllerInfo = content.withUnsafeBytes { pointer in
+                                    pointer.load(as: ClientControllerInfo.self)
                                 }
                                 DispatchQueue.main.async {
-                                    self.controllerIndex = number
+                                    self.controllerInfo = controllerInfo
                                 }
+                            case .invalid:
+                                print("Error: ", content)
                             default:
                                 fatalError("Unexpected message type")
                             }
@@ -120,7 +130,7 @@ public class Client: ObservableObject {
                         self.reconnect()
                     } else {
                         DispatchQueue.main.async {
-                            self.controllerIndex = nil
+                            self.controllerInfo = nil
                         }
                     }
                 }
@@ -130,7 +140,7 @@ public class Client: ObservableObject {
                 if !hasBeenReplaced {
                     self.connection = nil
                     DispatchQueue.main.async {
-                        self.controllerIndex = nil
+                        self.controllerInfo = nil
                     }
                 }
                 hasBeenReplaced = true
@@ -141,7 +151,23 @@ public class Client: ObservableObject {
         
         connection.start(queue: .main)
     }
-    
+
+    func pickController(index: UInt8) {
+        let message = NWProtocolFramer.Message(controllerMessageType: .pickController)
+        let context = NWConnection.ContentContext(
+            identifier: "PickController",
+            metadata: [message]
+        )
+
+        var value = index
+        self.connection?.send(
+            content: Data(bytes: &value, count: MemoryLayout<UInt8>.size),
+            contentContext: context,
+            isComplete: true,
+            completion: .idempotent
+        )
+    }
+
     func send(_ content: String) {
         guard let connection = self.connection else { return }
         

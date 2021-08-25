@@ -3,20 +3,26 @@ import Network
 import Combine
 
 final class ControllerConnection {
-    private let index: Int
     private let connection: NWConnection
-    private let pipe: ControllerFilePipe
+    private var pipe: ControllerFilePipe? = nil
     private let didClose: (Error?) -> Void
-    
+    private let connectionReady: () -> Void
+    private let didPickControllerNumber: (UInt8) -> Void
+
     let errorPublisher = PassthroughSubject<Error, Never>()
     
-    init(index: Int, connection: NWConnection, didClose: @escaping (Error?) -> Void) throws {
-        print("Creating controller connection \(index): \(connection.debugDescription)")
-        self.index = index
+    init(
+        connection: NWConnection,
+        didClose: @escaping (Error?) -> Void,
+        connectionReady: @escaping () -> Void,
+        didPickControllerIndex: @escaping (UInt8) -> Void
+    ) throws {
+        print("Creating controller connection: \(connection.debugDescription)")
         self.connection = connection
         self.didClose = didClose
-        self.pipe = try ControllerFilePipe(index: index)
-        
+        self.connectionReady = connectionReady
+        self.didPickControllerNumber = didPickControllerIndex
+
         connection.stateUpdateHandler = self.handleStateUpdate
         connection.start(queue: .global(qos: .userInitiated))
     }
@@ -29,22 +35,7 @@ final class ControllerConnection {
         print("connection state update", state)
         switch state {
         case .ready:
-            // Create a message object to hold the command type.
-            let message = NWProtocolFramer.Message(controllerMessageType: .controllerNumberAssigned)
-            let context = NWConnection.ContentContext(
-                identifier: "Command",
-                metadata: [message]
-            )
-
-            // Send the application content along with the message.
-            var i = Int8(index)
-            connection.send(
-                content: Data(bytes: &i, count: MemoryLayout<Int8>.size),
-                contentContext: context,
-                isComplete: true,
-                completion: .idempotent
-            )
-            
+            self.connectionReady()
             receiveNextMessage()
         case .cancelled:
             didClose(nil)
@@ -75,8 +66,27 @@ final class ControllerConnection {
                     guard let content = content else {
                         fatalError("missing content in command")
                     }
+                    guard let pipe = self.pipe else {
+                        print("no controller number chosen")
+                        return
+                    }
                     do {
-                        try self.pipe.streamText(data: content)
+                        try pipe.streamText(data: content)
+                    } catch {
+                        self.errorPublisher.send(error)
+                    }
+                case .pickController:
+                    guard let content = content else {
+                        fatalError("missing content in pickController")
+                    }
+
+                    let controllerNumber = content.withUnsafeBytes { pointer in
+                        pointer.load(as: UInt8.self)
+                    }
+
+                    do {
+                        self.pipe = try ControllerFilePipe(index: controllerNumber)
+                        self.didPickControllerNumber(controllerNumber)
                     } catch {
                         self.errorPublisher.send(error)
                     }

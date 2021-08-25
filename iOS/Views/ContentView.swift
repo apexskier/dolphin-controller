@@ -217,10 +217,34 @@ struct ContentView: View {
                     Spacer()
                     
                     HStack(alignment: .center, spacing: 20) {
-                        LightView(on: client.controllerIndex == 0)
-                        LightView(on: client.controllerIndex == 1)
-                        LightView(on: client.controllerIndex == 2)
-                        LightView(on: client.controllerIndex == 3)
+                        LightView(
+                            assigned: client.controllerInfo?.assignedController == 0,
+                            available: client.controllerInfo?.availableControllers.contains(.one)
+                        )
+                            .onTapGesture {
+                                client.pickController(index: 0)
+                            }
+                        LightView(
+                            assigned: client.controllerInfo?.assignedController == 1,
+                            available: client.controllerInfo?.availableControllers.contains(.two)
+                        )
+                            .onTapGesture {
+                                client.pickController(index: 1)
+                            }
+                        LightView(
+                            assigned: client.controllerInfo?.assignedController == 2,
+                            available: client.controllerInfo?.availableControllers.contains(.three)
+                        )
+                            .onTapGesture {
+                                client.pickController(index: 2)
+                            }
+                        LightView(
+                            assigned: client.controllerInfo?.assignedController == 3,
+                            available: client.controllerInfo?.availableControllers.contains(.four)
+                        )
+                            .onTapGesture {
+                                client.pickController(index: 3)
+                            }
                     }
                     
                     Spacer()

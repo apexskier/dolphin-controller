@@ -1,12 +1,21 @@
 import SwiftUI
 
 struct LightView: View {
-    let on: Bool
+    let assigned: Bool
+    let available: Bool?
     
     var body: some View {
-        if on {
+        if assigned {
             return Rectangle()
                 .fill(Color(red: 103/256, green: 197/256, blue: 209/256))
+                .frame(width: 12, height: 12)
+        } else if available == true {
+            return Rectangle()
+                .fill(Color.blue)
+                .frame(width: 12, height: 12)
+        } else if available == false {
+            return Rectangle()
+                .fill(Color.red)
                 .frame(width: 12, height: 12)
         } else {
             return Rectangle()

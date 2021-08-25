@@ -1,17 +1,17 @@
 import SwiftUI
 
 private struct ControllerDots: View {
-    var number: Int
+    var index: UInt8
 
     var body: some View {
         HStack(spacing: 3) {
-            ForEach(0..<number) { _ in
+            ForEach(0..<Int(index+1)) { _ in
                 Circle()
                     .fill(Color.gray)
                     .frame(width: 4, height: 4)
             }
         }
-            .accessibility(label: Text("Controller \(number)"))
+            .accessibility(label: Text("Controller \(index+1)"))
     }
 }
 
@@ -34,12 +34,12 @@ private struct PlugShape: Shape {
 }
 
 struct ControllerPlugView: View {
-    var number: Int
+    var index: UInt8
     var connected: Bool
 
     var body: some View {
         VStack(spacing: dotVerticalSpace) {
-            ControllerDots(number: number)
+            ControllerDots(index: index)
             ZStack {
                 Circle()
                     .fill(Color(white: 0.3))
@@ -67,6 +67,6 @@ struct ControllerPlugView: View {
 
 struct ControllerPlugView_Previews: PreviewProvider {
     static var previews: some View {
-        ControllerPlugView(number: 1, connected: true)
+        ControllerPlugView(index: 1, connected: true)
     }
 }

@@ -6,24 +6,31 @@ enum ServerError: Error {
     case noOpenControllerPorts
 }
 
+struct ConnectionWrapper: Hashable, Identifiable {
+    internal var id = UUID()
+
+    static func == (lhs: ConnectionWrapper, rhs: ConnectionWrapper) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into: inout Hasher) {
+        into.combine(id)
+    }
+
+    let connection: NWConnection
+}
+
 public class Server: ObservableObject {
     private let netService: NWListener
     
     let name = "\(Host.current().localizedName ?? Host.current().name ?? "Unknown computer") - Dolphin Controller Server"
+    let controllerCount: UInt8 = 4
+
     @Published var broadcasting: Bool = false
-    @Published var controllers: [Int: ControllerConnection?] = [:]
+    @Published var controllers: [UInt8: ConnectionWrapper?] = [:]
     @Published var port: NWEndpoint.Port? = nil
-    var controllerCount = 4
-    
-    var nextControllerIndex: Int? {
-        for i in 0...controllerCount {
-            if controllers[i] == nil {
-                return i
-            }
-        }
-        return nil
-    }
-    
+    private var allControllers: [ConnectionWrapper] = []
+
     init() {
         self.netService = try! NWListener(using: .custom())
         netService.service = NWListener.Service(
@@ -49,26 +56,76 @@ public class Server: ObservableObject {
             }
         }
         netService.newConnectionHandler = { connection in
-            guard let index = self.nextControllerIndex else {
-                connection.cancel()
-                return
-            }
-            
-            let controllerConnection = try! ControllerConnection(
-                index: index,
+            var index: UInt8? = nil
+
+            let connectionWrapper = ConnectionWrapper(connection: connection)
+
+            self.allControllers.append(connectionWrapper)
+
+            _ = try! ControllerConnection(
                 connection: connection
             ) { error in
                 DispatchQueue.main.async {
-                    self.controllers[index] = nil
+                    if let i = index {
+                        self.controllers[i] = nil
+                    }
+                    index = nil
+                    self.sendControllerInfo()
                 }
-            }
-            
-            DispatchQueue.main.async {
-                self.controllers[index] = controllerConnection
+            } connectionReady: {
+                self.sendControllerInfo()
+            } didPickControllerIndex: { newIndex in
+                if self.controllers[newIndex] != nil {
+                    // TODO send error back
+                    connection.cancel()
+                }
+                DispatchQueue.main.async {
+                    if let i = index {
+                        self.controllers[i] = nil
+                    }
+                    index = newIndex
+                    self.controllers[newIndex] = connectionWrapper
+                    self.sendControllerInfo()
+                }
             }
         }
     }
-    
+
+    private func getAvailableControllers() -> AvailableControllers {
+        var availableControllers = AvailableControllers()
+        for i in 0..<self.controllerCount {
+            if self.controllers[i] == nil {
+                availableControllers.insert(AvailableControllers[i])
+            }
+        }
+        return availableControllers
+    }
+
+    private func sendControllerInfo() {
+        let availableControllers = getAvailableControllers()
+        let message = NWProtocolFramer.Message(controllerMessageType: .controllerInfo)
+        let context = NWConnection.ContentContext(
+            identifier: "ControllerInfo",
+            metadata: [message]
+        )
+        for controller in self.allControllers {
+            var controllerInfo = ClientControllerInfo(
+                availableControllers: availableControllers,
+                assignedController: controllers.first(where: { $0.value == controller })?.key
+            )
+            if controller.connection.state == .ready {
+                DispatchQueue.global(qos: .userInitiated).async {
+                    controller.connection.send(
+                        content: Data(bytes: &controllerInfo, count: MemoryLayout<ClientControllerInfo>.size),
+                        contentContext: context,
+                        isComplete: true,
+                        completion: .idempotent
+                    )
+                }
+            }
+        }
+    }
+
     func start() throws {
         netService.start(queue: .global(qos: .userInitiated))
     }
@@ -83,7 +140,7 @@ enum PipeError: Error {
     case openFailed
 }
 
-func createPipe(index: Int) throws -> OutputStream {
+func createPipe(index: UInt8) throws -> OutputStream {
     let applicationSupport = try FileManager.default.url(
         for: .applicationSupportDirectory,
         in: .userDomainMask,

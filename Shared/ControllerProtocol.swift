@@ -4,8 +4,53 @@ import Network
 // Define the types of commands your game will use.
 enum ControllerMessageType: UInt32 {
     case invalid = 0
-    case command = 1
-    case controllerNumberAssigned = 2
+
+    // sent from client to server
+    // data: a string, to be passed to dolphin's pipe as a command (doesn't include newline)
+    case command
+
+    // sent from server to client
+    // data: a single Int8
+//    case controllerNumberAssigned
+
+    // sent from server to client
+    // send the available controller numbers
+    // data: bitmask of available controller
+    case controllerInfo
+
+    // sent from client to server
+    // request a specific controller number
+    // data:
+    case pickController
+}
+
+struct ClientControllerInfo {
+    let availableControllers: AvailableControllers
+    let assignedController: UInt8?
+}
+
+struct AvailableControllers: OptionSet {
+    let rawValue: UInt8
+
+    static let one = AvailableControllers(rawValue: 1 << 0)
+    static let two = AvailableControllers(rawValue: 1 << 1)
+    static let three = AvailableControllers(rawValue: 1 << 2)
+    static let four = AvailableControllers(rawValue: 1 << 3)
+
+    static subscript(index: UInt8) -> Self {
+        switch index {
+        case 0:
+            return Self.one
+        case 1:
+            return Self.two
+        case 2:
+            return Self.three
+        case 3:
+            return Self.four
+        default:
+            fatalError("Index of out range for available controllers")
+        }
+    }
 }
 
 // Create a class that implements a framing protocol.
@@ -39,7 +84,7 @@ class ControllerProtocol: NWProtocolFramerImplementation {
         do {
             try framer.writeOutputNoCopy(length: messageLength)
         } catch let error {
-            print("Hit error writing \(error)")
+            print("Error writing \(error)")
         }
     }
 
