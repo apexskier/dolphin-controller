@@ -127,7 +127,7 @@ public class Server: ObservableObject {
             print("Connection not ready to send error on")
             return
         }
-        let message = NWProtocolFramer.Message(controllerMessageType: .invalid)
+        let message = NWProtocolFramer.Message(controllerMessageType: .errorMessage)
         let context = NWConnection.ContentContext(
             identifier: "Invalid",
             metadata: [message]

@@ -3,15 +3,11 @@ import Network
 
 // Define the types of commands your game will use.
 enum ControllerMessageType: UInt32 {
-    case invalid = 0
+    case errorMessage = 0
 
     // sent from client to server
     // data: a string, to be passed to dolphin's pipe as a command (doesn't include newline)
     case command
-
-    // sent from server to client
-    // data: a single Int8
-//    case controllerNumberAssigned
 
     // sent from server to client
     // send the available controller numbers
@@ -20,7 +16,7 @@ enum ControllerMessageType: UInt32 {
 
     // sent from client to server
     // request a specific controller number
-    // data:
+    // data: a single UInt8
     case pickController
 }
 
@@ -114,7 +110,7 @@ class ControllerProtocol: NWProtocolFramerImplementation {
             }
 
             // Create an object to deliver the message.
-            var messageType = ControllerMessageType.invalid
+            var messageType = ControllerMessageType.errorMessage
             if let parsedMessageType = ControllerMessageType(rawValue: header.type) {
                 messageType = parsedMessageType
             }
@@ -139,7 +135,7 @@ extension NWProtocolFramer.Message {
         if let type = self["ControllerMessageType"] as? ControllerMessageType {
             return type
         } else {
-            return .invalid
+            return .errorMessage
         }
     }
 }

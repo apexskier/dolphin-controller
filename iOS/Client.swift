@@ -47,8 +47,13 @@ public class Client: ObservableObject {
     }
     
     private var attemptsToReconnect = 0
+    private var justAttemptedReconnect = false
     
     func reconnect() {
+        justAttemptedReconnect = true
+        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 1) {
+            self.justAttemptedReconnect = false
+        }
         if self.connection != nil {
             print("Skipping reconnect, still have a connection")
             return
@@ -73,7 +78,10 @@ public class Client: ObservableObject {
                 self.attemptsToReconnect = 0
                 self.lastServer = endpoint
                 let wrappedEndpoint = EndpointWrapper(endpoint)
-                if let endpointData = try? NSKeyedArchiver.archivedData(withRootObject: wrappedEndpoint, requiringSecureCoding: false) {
+                if let endpointData = try? NSKeyedArchiver.archivedData(
+                    withRootObject: wrappedEndpoint,
+                    requiringSecureCoding: false
+                ) {
                     Self.storage.setValue(
                         endpointData,
                         forKey: StorageKeys.lastUsedServer.rawValue
@@ -107,7 +115,6 @@ public class Client: ObservableObject {
                             return
                         }
                         
-                        // Extract your message type from the received context.
                         if let message = context?.protocolMetadata(definition: ControllerProtocol.definition) as? NWProtocolFramer.Message {
                             switch message.controllerMessageType {
                             case .controllerInfo:
@@ -121,7 +128,7 @@ public class Client: ObservableObject {
                                 DispatchQueue.main.async {
                                     self.controllerInfo = controllerInfo
                                 }
-                            case .invalid:
+                            case .errorMessage:
                                 guard let content = content else {
                                     fatalError("missing content in controllerInfo")
                                 }
@@ -157,8 +164,15 @@ public class Client: ObservableObject {
                 print("Connection cancelled, handling gracefully")
                 if !hasBeenReplaced {
                     self.connection = nil
-                    DispatchQueue.main.async {
-                        self.controllerInfo = nil
+                    // there's an edge case where the connection is cancelled,
+                    // but the app doesn't get the message until after it's
+                    // resumed
+                    if self.justAttemptedReconnect {
+                        self.reconnect()
+                    } else {
+                        DispatchQueue.main.async {
+                            self.controllerInfo = nil
+                        }
                     }
                 }
                 hasBeenReplaced = true
@@ -188,15 +202,11 @@ public class Client: ObservableObject {
 
     func send(_ content: String) {
         guard let connection = self.connection else { return }
-        
-        // Create a message object to hold the command type.
         let message = NWProtocolFramer.Message(controllerMessageType: .command)
         let context = NWConnection.ContentContext(
             identifier: "Command",
             metadata: [message]
         )
-
-        // Send the application content along with the message.
         connection.send(
             content: Data(content.utf8),
             contentContext: context,

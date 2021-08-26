@@ -250,7 +250,7 @@ struct ContentView: View {
                     if self.client.connection == nil {
                         HStack {
                             if self.client.hasLastServer {
-                                Button("Reconnect") {
+                                Button("Rejoin") {
                                     self.client.reconnect()
                                 }
                                 .buttonStyle(GCCButton(
@@ -258,7 +258,7 @@ struct ContentView: View {
                                     shape: Capsule(style: .continuous)
                                 ))
                             }
-                            Button(self.client.hasLastServer ? "New" : "Connect") {
+                            Button("Join") {
                                 self.choosingConnection = true
                             }
                                 .buttonStyle(GCCButton(
@@ -267,7 +267,7 @@ struct ContentView: View {
                                 ))
                         }
                     } else {
-                        Button("Disconnect") {
+                        Button("Leave") {
                             self.shouldAutoReconnect = false
                             self.client.disconnect()
                         }

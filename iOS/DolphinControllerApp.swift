@@ -8,7 +8,7 @@ import NetworkExtension
 @main
 struct DolphinControllerApp: App {
     @ObservedObject var client = Client()
-    @State var shouldAutoReconnect: Bool = false
+    @State var shouldAutoReconnect: Bool = true
     
     var body: some Scene {
         WindowGroup {

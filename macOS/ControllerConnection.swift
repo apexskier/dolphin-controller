@@ -28,7 +28,9 @@ final class ControllerConnection {
     }
     
     func disconnect() {
-        connection.cancel()
+        if connection.state != .cancelled {
+            connection.cancel()
+        }
     }
     
     private func handleStateUpdate(state: NWConnection.State) {
@@ -52,7 +54,9 @@ final class ControllerConnection {
                 if case .posix(let code) = error,
                    code == .ENODATA || code == .ECONNRESET {
                     print("Disconnected")
-                    self.connection.cancel()
+                    if self.connection.state != .cancelled {
+                        self.connection.cancel()
+                    }
                 } else {
                     print("Error", error)
                 }
