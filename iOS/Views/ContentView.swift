@@ -220,7 +220,7 @@ struct ContentView: View {
                     Spacer()
                     
                     HStack(alignment: .center, spacing: 0) {
-                        ForEach(0..<Int(4)) { (i: Int) in
+                        ForEach(0..<Int(AvailableControllers.numberOfControllers)) { (i: Int) in
                             LightView(
                                 assigned: client.controllerInfo?.assignedController == UInt8(i),
                                 available: client.controllerInfo?.availableControllers.contains(AvailableControllers[UInt8(i)])

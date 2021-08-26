@@ -28,24 +28,15 @@ struct ClientControllerInfo {
 struct AvailableControllers: OptionSet {
     let rawValue: UInt8
 
-    static let one = AvailableControllers(rawValue: 1 << 0)
-    static let two = AvailableControllers(rawValue: 1 << 1)
-    static let three = AvailableControllers(rawValue: 1 << 2)
-    static let four = AvailableControllers(rawValue: 1 << 3)
+    static let numberOfControllers: UInt8 = 4
+    static let range = 0..<numberOfControllers
 
     static subscript(index: UInt8) -> Self {
-        switch index {
-        case 0:
-            return Self.one
-        case 1:
-            return Self.two
-        case 2:
-            return Self.three
-        case 3:
-            return Self.four
-        default:
+        guard range.contains(index) else {
             fatalError("Index of out range for available controllers")
         }
+
+        return AvailableControllers(rawValue: 1 << index)
     }
 }
 

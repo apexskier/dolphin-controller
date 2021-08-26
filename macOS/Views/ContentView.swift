@@ -44,7 +44,7 @@ struct ContentView: View {
                 .fixedSize()
             Spacer(minLength: 16)
             HStack(spacing: 30) {
-                ForEach(0..<Int(server.controllerCount)) { (i: Int) in
+                ForEach(0..<Int(AvailableControllers.numberOfControllers)) { (i: Int) in
                     ControllerPlugView(index: UInt8(i), connected: server.controllers[UInt8(i)] != nil)
                         .accessibilityLabel("Tap to disconnect controller \(i+1)")
                         .onTapGesture {

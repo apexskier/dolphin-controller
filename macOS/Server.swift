@@ -20,7 +20,6 @@ public class Server: ObservableObject {
     private let netService: NWListener
     
     let name = "\(Host.current().localizedName ?? Host.current().name ?? "Unknown computer") - Dolphin Controller Server"
-    let controllerCount: UInt8 = 4
 
     @Published var broadcasting: Bool = false
     @Published var controllers: [UInt8: ConnectionWrapper?] = [:]
@@ -89,7 +88,7 @@ public class Server: ObservableObject {
 
     private func getAvailableControllers() -> AvailableControllers {
         var availableControllers = AvailableControllers()
-        for i in 0..<self.controllerCount {
+        for i in 0..<AvailableControllers.numberOfControllers {
             if self.controllers[i] == nil {
                 availableControllers.insert(AvailableControllers[i])
             }
