@@ -2,10 +2,6 @@ import Foundation
 import Combine
 import Network
 
-enum ServerError: Error {
-    case noOpenControllerPorts
-}
-
 struct ConnectionWrapper: Hashable, Identifiable {
     internal var id = UUID()
 
@@ -75,9 +71,9 @@ public class Server: ObservableObject {
             } connectionReady: {
                 self.sendControllerInfo()
             } didPickControllerIndex: { newIndex in
-                if self.controllers[newIndex] != nil {
-                    // TODO send error back
-                    connection.cancel()
+                if newIndex != index && self.controllers[newIndex] != nil {
+                    self.sendError(error: "That controller is already taken.", to: connection)
+                    return
                 }
                 DispatchQueue.main.async {
                     if let i = index {
@@ -124,6 +120,24 @@ public class Server: ObservableObject {
                 }
             }
         }
+    }
+
+    private func sendError(error: String, to connection: NWConnection) {
+        guard connection.state == .ready else {
+            print("Connection not ready to send error on")
+            return
+        }
+        let message = NWProtocolFramer.Message(controllerMessageType: .invalid)
+        let context = NWConnection.ContentContext(
+            identifier: "Invalid",
+            metadata: [message]
+        )
+        connection.send(
+            content: error.data(using: .utf8),
+            contentContext: context,
+            isComplete: true,
+            completion: .idempotent
+        )
     }
 
     func start() throws {

@@ -117,9 +117,12 @@ struct ContentView: View {
     @Binding var shouldAutoReconnect: Bool
     @State private var hostCode: String = ""
     @State private var error: Error? = nil
+    @State private var errorStr: String? = nil
     @State private var clientConnectionCancellable: AnyCancellable? = nil
     @State private var clientDisconnectionCancellable: AnyCancellable? = nil
     @State private var choosingConnection = false
+
+
     
     var body: some View {
         VStack {
@@ -216,35 +219,20 @@ struct ContentView: View {
                     
                     Spacer()
                     
-                    HStack(alignment: .center, spacing: 20) {
-                        LightView(
-                            assigned: client.controllerInfo?.assignedController == 0,
-                            available: client.controllerInfo?.availableControllers.contains(.one)
-                        )
-                            .onTapGesture {
-                                client.pickController(index: 0)
-                            }
-                        LightView(
-                            assigned: client.controllerInfo?.assignedController == 1,
-                            available: client.controllerInfo?.availableControllers.contains(.two)
-                        )
-                            .onTapGesture {
-                                client.pickController(index: 1)
-                            }
-                        LightView(
-                            assigned: client.controllerInfo?.assignedController == 2,
-                            available: client.controllerInfo?.availableControllers.contains(.three)
-                        )
-                            .onTapGesture {
-                                client.pickController(index: 2)
-                            }
-                        LightView(
-                            assigned: client.controllerInfo?.assignedController == 3,
-                            available: client.controllerInfo?.availableControllers.contains(.four)
-                        )
-                            .onTapGesture {
-                                client.pickController(index: 3)
-                            }
+                    HStack(alignment: .center, spacing: 0) {
+                        ForEach(0..<Int(4)) { (i: Int) in
+                            LightView(
+                                assigned: client.controllerInfo?.assignedController == UInt8(i),
+                                available: client.controllerInfo?.availableControllers.contains(AvailableControllers[UInt8(i)])
+                            )
+                                .frame(width: 48, height: 48)
+                                .onTapGesture {
+                                    let available = client.controllerInfo?.availableControllers.contains(AvailableControllers[UInt8(i)])
+                                    if available == true {
+                                        client.pickController(index: UInt8(i))
+                                    }
+                                }
+                        }
                     }
                     
                     Spacer()
@@ -348,12 +336,15 @@ struct ContentView: View {
         }
             .padding()
             .frame(
-              minWidth: 0,
-              maxWidth: .infinity,
-              minHeight: 0,
-              maxHeight: .infinity,
-              alignment: .center
+                minWidth: 0,
+                maxWidth: .infinity,
+                minHeight: 0,
+                maxHeight: .infinity,
+                alignment: .center
             )
+            .onReceive(client.errorPublisher, perform: { error in
+                self.error = error
+            })
             .sheet(isPresented: $choosingConnection) {
                 ServerBrowserView { endpoint in
                     self.client.connect(to: endpoint)
@@ -367,7 +358,7 @@ struct ContentView: View {
             })) {
                 Alert(
                     title: Text("Error"),
-                    message: Text("An error occurred: \(error?.localizedDescription ?? "<unknown>")"),
+                    message: Text(error?.localizedDescription ?? "An unknown error occurred"),
                     dismissButton: .default(Text("Dismiss"))
                 )
             }

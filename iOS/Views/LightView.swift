@@ -5,22 +5,22 @@ struct LightView: View {
     let available: Bool?
     
     var body: some View {
+        var color = GameCubeColors.lightGray.opacity(0.6)
+        var icon = "circle.dashed"
         if assigned {
-            return Rectangle()
-                .fill(Color(red: 103/256, green: 197/256, blue: 209/256))
-                .frame(width: 12, height: 12)
+            icon = "circle.fill" // iOS 15 "circle.inset.filled"
+            color = Color(red: 163/255, green: 252/255, blue: 255/255)
         } else if available == true {
-            return Rectangle()
-                .fill(Color.blue)
-                .frame(width: 12, height: 12)
+            icon = "circle"
+            color = GameCubeColors.lightGray
         } else if available == false {
-            return Rectangle()
-                .fill(Color.red)
-                .frame(width: 12, height: 12)
-        } else {
-            return Rectangle()
-                .fill(Color(red: 107/256, green: 111/256, blue: 116/256))
-                .frame(width: 12, height: 12)
+            icon = "slash.circle" // iOS 15 "circle.slash"
+            color = GameCubeColors.lightGray.opacity(0.5)
         }
+        let light = Image(systemName: icon)
+            .resizable()
+            .foregroundColor(color)
+            .frame(width: 18, height: 18)
+        return light
     }
 }

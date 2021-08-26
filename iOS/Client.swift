@@ -13,6 +13,19 @@ public class Client: ObservableObject {
             }
         }
     }
+
+    enum ClientError: LocalizedError {
+        case serverError(String) // i know... weird naming
+
+        public var errorDescription: String? {
+            switch self {
+            case .serverError(let str):
+                return str
+            }
+        }
+    }
+
+    let errorPublisher = PassthroughSubject<ClientError, Never>()
     
     private var lastServer: NWEndpoint? {
         didSet {
@@ -109,7 +122,12 @@ public class Client: ObservableObject {
                                     self.controllerInfo = controllerInfo
                                 }
                             case .invalid:
-                                print("Error: ", content)
+                                guard let content = content else {
+                                    fatalError("missing content in controllerInfo")
+                                }
+                                let errorStr = String(data: content, encoding: .utf8) ?? "Unknown error"
+
+                                self.errorPublisher.send(ClientError.serverError(errorStr))
                             default:
                                 fatalError("Unexpected message type")
                             }
