@@ -17,9 +17,11 @@ struct DolphinControllerApp: App {
             }
             .toolbar {
                 ToolbarItem(placement: ToolbarItemPlacement.automatic) {
-                    Image(systemName: "network").onTapGesture {
-                        self.showAdvancedNetworking = true
-                    }
+                    Image(systemName: "network")
+                        .accessibilityLabel("Show advanced networking information")
+                        .onTapGesture {
+                            self.showAdvancedNetworking = true
+                        }
                 }
             }
             .foregroundColor(GameCubeColors.lightGray)

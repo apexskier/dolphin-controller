@@ -221,11 +221,17 @@ struct ContentView: View {
                     
                     HStack(alignment: .center, spacing: 0) {
                         ForEach(0..<Int(AvailableControllers.numberOfControllers)) { (i: Int) in
-                            LightView(
-                                assigned: client.controllerInfo?.assignedController == UInt8(i),
-                                available: client.controllerInfo?.availableControllers.contains(AvailableControllers[UInt8(i)])
-                            )
+                            VStack(spacing: 4) {
+                                LightView(
+                                    assigned: client.controllerInfo?.assignedController == UInt8(i),
+                                    available: client.controllerInfo?.availableControllers.contains(AvailableControllers[UInt8(i)])
+                                )
+                                Text("P\(i+1)")
+                                    .font(.custom("Futura-CondensedMedium", size: 16))
+                                    .foregroundColor(GameCubeColors.lightGray)
+                            }
                                 .frame(width: 48, height: 48)
+                                .accessibilityLabel("Pick player \(i+1)")
                                 .onTapGesture {
                                     let available = client.controllerInfo?.availableControllers.contains(AvailableControllers[UInt8(i)])
                                     if available == true {
@@ -253,10 +259,10 @@ struct ContentView: View {
                                 Button("Rejoin") {
                                     self.client.reconnect()
                                 }
-                                .buttonStyle(GCCButton(
-                                    color: GameCubeColors.lightGray,
-                                    shape: Capsule(style: .continuous)
-                                ))
+                                    .buttonStyle(GCCButton(
+                                        color: GameCubeColors.lightGray,
+                                        shape: Capsule(style: .continuous)
+                                    ))
                             }
                             Button("Join") {
                                 self.choosingConnection = true

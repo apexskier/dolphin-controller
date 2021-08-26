@@ -15,7 +15,7 @@ struct LightView: View {
             color = GameCubeColors.lightGray
         } else if available == false {
             icon = "slash.circle" // iOS 15 "circle.slash"
-            color = GameCubeColors.lightGray.opacity(0.5)
+            color = GameCubeColors.lightGray
         }
         let light = Image(systemName: icon)
             .resizable()
