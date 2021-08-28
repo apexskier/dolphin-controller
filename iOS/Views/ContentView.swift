@@ -4,7 +4,9 @@ import SwiftUI
 
 extension Font {
     // https://gist.github.com/tadija/cb4ec0cbf0a89886d488d1d8b595d0e9
-    static var gameCubeController = Self.custom("Futura-CondensedMedium", size: 30)
+    static func gameCubeController(size: CGFloat = 30) -> Font {
+        Self.custom("Futura-CondensedMedium", size: size)
+    }
 }
 
 struct GCCButton<S>: ButtonStyle where S: Shape {
@@ -12,6 +14,7 @@ struct GCCButton<S>: ButtonStyle where S: Shape {
     var width: CGFloat? = nil
     var height: CGFloat? = nil
     var shape: S
+    var fontSize: CGFloat = 30
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -19,15 +22,15 @@ struct GCCButton<S>: ButtonStyle where S: Shape {
             .frame(width: width, height: height)
             .background(color)
             .foregroundColor(.black.opacity(0.2))
-            .font(.gameCubeController)
+            .font(.gameCubeController(size: fontSize))
             .clipShape(shape)
             .brightness(configuration.isPressed ? -0.1 : 0)
     }
 }
 
 extension GCCButton where S == Circle {
-    init(color: Color, width: CGFloat = 42, height: CGFloat = 42) {
-        self.init(color: color, width: width, height: height, shape: Circle())
+    init(color: Color, width: CGFloat = 42, height: CGFloat = 42, fontSize: CGFloat = 30) {
+        self.init(color: color, width: width, height: height, shape: Circle(), fontSize: fontSize)
     }
 }
 
@@ -121,9 +124,9 @@ struct ContentView: View {
     @State private var clientConnectionCancellable: AnyCancellable? = nil
     @State private var clientDisconnectionCancellable: AnyCancellable? = nil
     @State private var choosingConnection = false
+    @State private var showingSettings = false
 
 
-    
     var body: some View {
         VStack {
             HStack {
@@ -252,35 +255,40 @@ struct ContentView: View {
                         ))
                     
                     Spacer()
-                    
-                    if self.client.connection == nil {
-                        HStack {
-                            if self.client.hasLastServer {
-                                Button("Rejoin") {
-                                    self.client.reconnect()
-                                }
-                                    .buttonStyle(GCCButton(
-                                        color: GameCubeColors.lightGray,
-                                        shape: Capsule(style: .continuous)
-                                    ))
-                            }
-                            Button("Join") {
+
+                    HStack {
+                        if self.client.connection == nil {
+                            Button {
                                 self.choosingConnection = true
+                            } label: {
+                                Text("Join")
                             }
-                                .buttonStyle(GCCButton(
-                                    color: GameCubeColors.lightGray,
-                                    shape: Capsule(style: .continuous)
-                                ))
-                        }
-                    } else {
-                        Button("Leave") {
-                            self.shouldAutoReconnect = false
-                            self.client.disconnect()
-                        }
                             .buttonStyle(GCCButton(
                                 color: GameCubeColors.lightGray,
-                                shape: Capsule(style: .continuous)
+                                shape: Capsule(style: .continuous),
+                                fontSize: 20
                             ))
+                        } else {
+                            Button("Leave") {
+                                self.shouldAutoReconnect = false
+                                self.client.disconnect()
+                            }
+                            .buttonStyle(GCCButton(
+                                color: GameCubeColors.lightGray,
+                                shape: Capsule(style: .continuous),
+                                fontSize: 20
+                            ))
+                        }
+                        Button {
+                            self.showingSettings = true
+                        } label: {
+                            Text("Settings")
+                        }
+                        .buttonStyle(GCCButton(
+                            color: GameCubeColors.lightGray,
+                            shape: Capsule(style: .continuous),
+                            fontSize: 20
+                        ))
                     }
                 }
                 
@@ -333,7 +341,7 @@ struct ContentView: View {
                         knobDiameter: 80,
                         label: Text("C")
                             .foregroundColor(.black.opacity(0.2))
-                            .font(.gameCubeController),
+                            .font(.gameCubeController()),
                         hapticsSharpness: 0.8
                     )
                 }
@@ -356,6 +364,10 @@ struct ContentView: View {
                     self.client.connect(to: endpoint)
                     self.shouldAutoReconnect = true
                 }
+                    .environmentObject(client)
+            }
+            .sheet(isPresented: $showingSettings) {
+                SettingsView()
             }
             .alert(isPresented: Binding(get: {
                 self.error != nil

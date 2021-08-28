@@ -13,22 +13,34 @@ class Haptics {
     }()
     
     private let sharpness: Float
-    
-    init(sharpness: Float) {
-        self.sharpness = sharpness
-        if supportsHaptics {
-            createAndStartHapticEngine()
-            createContinuousHapticPlayer()
+    public var enabled: Bool = false {
+        didSet {
+            engine?.isMutedForHaptics = !enabled
         }
     }
     
-    private func createAndStartHapticEngine() {
+    init(sharpness: Float) {
+        self.sharpness = sharpness
+        
+        if supportsHaptics {
+            createHapticEngine()
+            startHapticEngine()
+            createContinuousHapticPlayer()
+        }
+    }
+
+    private func destroyHapticEngine() {
+    }
+    
+    private func createHapticEngine() {
         do {
             engine = try CHHapticEngine()
         } catch let error {
             print("haptic error", error)
         }
-        
+
+        engine?.isAutoShutdownEnabled = false
+
         // Mute audio to reduce latency for collision haptics.
         engine?.playsHapticsOnly = true
         
@@ -57,7 +69,6 @@ class Haptics {
         
         // The reset handler provides an opportunity to restart the engine.
         engine?.resetHandler = {
-            
             print("Reset Handler: Restarting the engine.")
             
             do {
@@ -69,13 +80,13 @@ class Haptics {
                 
                 // Recreate the continuous player.
                 self.createContinuousHapticPlayer()
-                
             } catch {
                 print("Failed to start the engine")
             }
         }
-        
-        // Start the haptic engine for the first time.
+    }
+
+    private func startHapticEngine() {
         do {
             try self.engine?.start()
         } catch {

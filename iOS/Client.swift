@@ -27,22 +27,15 @@ public class Client: ObservableObject {
 
     let errorPublisher = PassthroughSubject<ClientError, Never>()
     
-    private var lastServer: NWEndpoint? {
-        didSet {
-            hasLastServer = lastServer != nil
-        }
-    }
-    @Published var hasLastServer: Bool = false
+    @Published var lastServer: NWEndpoint?
     @Published var controllerInfo: ClientControllerInfo? = nil
         
     init() {
         if let endpointData = Self.storage.value(forKey: StorageKeys.lastUsedServer.rawValue) as? Data,
            let endpointWrapper = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(endpointData) as? EndpointWrapper {
             lastServer = endpointWrapper.endpoint
-            hasLastServer = true
         } else {
             lastServer = nil
-            hasLastServer = false
         }
     }
     
@@ -71,7 +64,6 @@ public class Client: ObservableObject {
         var hasBeenReplaced = false
         
         connection.stateUpdateHandler = { state in
-            print("Connection state change", state)
             switch state {
             case .ready:
                 self.connection = connection

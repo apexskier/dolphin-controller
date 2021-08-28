@@ -13,7 +13,9 @@ struct Joystick<Label>: View where Label: View {
     
     private let pressHaptic = UIImpactFeedbackGenerator(style: .rigid)
     private let haptics: Haptics
-    
+
+    @AppStorage("joystickHapticsEnabled") private var joystickHapticsEnabled = true
+
     init(
         identifier: String,
         color: Color,
@@ -126,6 +128,12 @@ struct Joystick<Label>: View where Label: View {
             .allowsHitTesting(false)
         }
         .frame(width: diameter, height: diameter) // ensure layout shifting won't happen when dragging
+        .onAppear(perform: {
+            self.haptics.enabled = self.joystickHapticsEnabled
+        })
+        .onChange(of: joystickHapticsEnabled) { newValue in
+            self.haptics.enabled = newValue
+        }
     }
     
     private func draggedKnob(drag: DragGesture.Value) -> some View {

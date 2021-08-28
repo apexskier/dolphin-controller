@@ -4,12 +4,17 @@ import SwiftUI
 
 struct ServerBrowserView: View {
     @Environment(\.presentationMode) private var presentationMode
+    @EnvironmentObject private var client: Client
     @ObservedObject private var serverBrowser = ServerBrowser()
     @State private var choosingManualConnection = false
     @AppStorage(StorageKeys.lastManualAddress.rawValue) private var manualServer = ""
     @State private var validatedServerParts: (host: String, portInt: UInt16)? = nil
     
     var didConnect: (NWEndpoint) -> Void
+
+    private func lastServerIndicator(server: NWEndpoint) -> Text {
+        Text(client.lastServer == server ? "\(Image(systemName: "star.fill")) " : "")
+    }
     
     var body: some View {
         NavigationView {
@@ -18,7 +23,7 @@ struct ServerBrowserView: View {
                     Section(header: Text("Local \(Image(systemName: "bonjour"))")) {
                         if !serverBrowser.servers.isEmpty {
                             ForEach(serverBrowser.servers) { server in
-                                Button(server.name) {
+                                Button("\(self.lastServerIndicator(server: server.endpoint))\(server.name)") {
                                     self.didConnect(server.endpoint)
                                     self.presentationMode.wrappedValue.dismiss()
                                 }
