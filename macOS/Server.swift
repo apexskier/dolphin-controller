@@ -2,29 +2,16 @@ import Foundation
 import Combine
 import Network
 
-struct ConnectionWrapper: Hashable, Identifiable {
-    internal var id = UUID()
-
-    static func == (lhs: ConnectionWrapper, rhs: ConnectionWrapper) -> Bool {
-        lhs.id == rhs.id
-    }
-
-    func hash(into: inout Hasher) {
-        into.combine(id)
-    }
-
-    let connection: NWConnection
-}
-
 public class Server: ObservableObject {
     private let netService: NWListener
     
     let name = "\(Host.current().localizedName ?? Host.current().name ?? "Unknown computer") - Dolphin Controller Server"
 
     @Published var broadcasting: Bool = false
-    @Published var controllers: [UInt8: ConnectionWrapper?] = [:]
+    @Published var controllers: [UInt8: ControllerConnection?] = [:]
+
     @Published var port: NWEndpoint.Port? = nil
-    private var allControllers: [ConnectionWrapper] = []
+    private var allControllers: [ControllerConnection] = []
 
     init() {
         self.netService = try! NWListener(using: .custom())
@@ -53,14 +40,15 @@ public class Server: ObservableObject {
         netService.newConnectionHandler = { connection in
             var index: UInt8? = nil
 
-            let connectionWrapper = ConnectionWrapper(connection: connection)
-
-            self.allControllers.append(connectionWrapper)
-
-            _ = try! ControllerConnection(
+            var controllerConnection: ControllerConnection? = nil
+            controllerConnection = try! ControllerConnection(
                 connection: connection
             ) { error in
                 DispatchQueue.main.async {
+                    if let controllerConnection = controllerConnection,
+                       let index = self.allControllers.firstIndex(of: controllerConnection) {
+                        self.allControllers.remove(at: index)
+                    }
                     if let i = index {
                         self.controllers[i] = nil
                     }
@@ -70,17 +58,23 @@ public class Server: ObservableObject {
             } connectionReady: {
                 self.sendControllerInfo()
             } didPickControllerIndex: { newIndex in
-                if newIndex != index && self.controllers[newIndex] != nil {
-                    self.sendError(error: "That controller is already taken.", to: connection)
-                    return
-                }
                 DispatchQueue.main.async {
+                    if newIndex != index && self.controllers[newIndex] != nil {
+                        self.sendError(error: "That controller is already taken.", to: connection)
+                        return
+                    }
                     if let i = index {
                         self.controllers[i] = nil
                     }
                     index = newIndex
-                    self.controllers[newIndex] = connectionWrapper
+                    self.controllers[newIndex] = controllerConnection
                     self.sendControllerInfo()
+                }
+            }
+
+            DispatchQueue.main.async {
+                if let controllerConnection = controllerConnection {
+                    self.allControllers.append(controllerConnection)
                 }
             }
         }
@@ -126,17 +120,11 @@ public class Server: ObservableObject {
             print("Connection not ready to send error on")
             return
         }
-        let message = NWProtocolFramer.Message(controllerMessageType: .errorMessage)
-        let context = NWConnection.ContentContext(
-            identifier: "Invalid",
-            metadata: [message]
-        )
-        connection.send(
-            content: error.data(using: .utf8),
-            contentContext: context,
-            isComplete: true,
-            completion: .idempotent
-        )
+        guard let data = error.data(using: .utf8) else {
+            print("Failed to utf8 encode error string")
+            return
+        }
+        connection.sendMessage(.errorMessage, data: data)
     }
 
     func start() throws {

@@ -1,4 +1,6 @@
 import SwiftUI
+import Foundation
+import Combine
 
 let dotVerticalSpace: CGFloat = 16
 
@@ -27,15 +29,22 @@ struct FaceplateShape: Shape {
     }
 }
 
+let pingFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .decimal
+    formatter.maximumFractionDigits = 0
+    return formatter
+}()
+
 struct ContentView: View {
-    @EnvironmentObject var server: Server
+    @EnvironmentObject private var server: Server
     
     var connectedControllerCount: Int {
         server.controllers
             .compactMap({ $0.value })
             .count
     }
-    
+
     var body: some View {
         VStack {
             Spacer(minLength: 0)
@@ -45,11 +54,17 @@ struct ContentView: View {
             Spacer(minLength: 16)
             HStack(spacing: 30) {
                 ForEach(0..<Int(AvailableControllers.numberOfControllers)) { (i: Int) in
-                    ControllerPlugView(index: UInt8(i), connected: server.controllers[UInt8(i)] != nil)
-                        .accessibilityLabel("Tap to disconnect controller \(i+1)")
-                        .onTapGesture {
-                            server.controllers[UInt8(i)]??.connection.cancel()
-                        }
+                    VStack {
+                        ControllerPlugView(
+                            index: UInt8(i),
+                            connected: server.controllers[UInt8(i)] != nil
+                        )
+                            .help("Controller number \(dotsHelpFormatter.string(for: i+1) ?? "unknown")")
+                            .accessibilityHint("Tap to disconnect controller \(i+1)")
+                            .onTapGesture {
+                                server.controllers[UInt8(i)]??.connection.cancel()
+                            }
+                    }
                 }
             }
                 .padding(EdgeInsets(top: dotVerticalSpace, leading: 24, bottom: 20, trailing: 24))

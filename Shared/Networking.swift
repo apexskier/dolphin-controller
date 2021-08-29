@@ -1,3 +1,4 @@
+import Foundation
 import Network
 import CryptoKit
 
@@ -60,5 +61,22 @@ extension NWParameters {
             DispatchData(bytes: UnsafeRawBufferPointer(start: ptr.baseAddress, count: stringData.count))
         }
         return dispatchData
+    }
+}
+
+extension NWConnection {
+    func sendMessage(_ type: ControllerMessageType, data: Data) {
+        let message = NWProtocolFramer.Message(controllerMessageType: type)
+        let context = NWConnection.ContentContext(
+            identifier: type.debugDescription,
+            metadata: [message]
+        )
+
+        self.send(
+            content: data,
+            contentContext: context,
+            isComplete: true,
+            completion: .idempotent
+        )
     }
 }

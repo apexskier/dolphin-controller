@@ -106,14 +106,14 @@ public class Client: ObservableObject {
                             connection.cancel()
                             return
                         }
-                        
+
                         if let message = context?.protocolMetadata(definition: ControllerProtocol.definition) as? NWProtocolFramer.Message {
+                            guard let content = content else {
+                                fatalError("missing content in \(message.controllerMessageType)")
+                            }
+
                             switch message.controllerMessageType {
                             case .controllerInfo:
-                                guard let content = content else {
-                                    fatalError("missing content in controllerInfo")
-                                }
-
                                 let controllerInfo = content.withUnsafeBytes { pointer in
                                     pointer.load(as: ClientControllerInfo.self)
                                 }
@@ -121,14 +121,10 @@ public class Client: ObservableObject {
                                     self.controllerInfo = controllerInfo
                                 }
                             case .errorMessage:
-                                guard let content = content else {
-                                    fatalError("missing content in controllerInfo")
-                                }
                                 let errorStr = String(data: content, encoding: .utf8) ?? "Unknown error"
-
                                 self.errorPublisher.send(ClientError.serverError(errorStr))
-                            default:
-                                fatalError("Unexpected message type")
+                            case .command, .pickController:
+                                fatalError("unexpected message in client \(message.controllerMessageType)")
                             }
                         }
                         
@@ -177,34 +173,13 @@ public class Client: ObservableObject {
     }
 
     func pickController(index: UInt8) {
-        let message = NWProtocolFramer.Message(controllerMessageType: .pickController)
-        let context = NWConnection.ContentContext(
-            identifier: "PickController",
-            metadata: [message]
-        )
-
         var value = index
-        self.connection?.send(
-            content: Data(bytes: &value, count: MemoryLayout<UInt8>.size),
-            contentContext: context,
-            isComplete: true,
-            completion: .idempotent
-        )
+        let data = Data(bytes: &value, count: MemoryLayout<UInt8>.size)
+        self.connection?.sendMessage(.pickController, data: data)
     }
 
     func send(_ content: String) {
-        guard let connection = self.connection else { return }
-        let message = NWProtocolFramer.Message(controllerMessageType: .command)
-        let context = NWConnection.ContentContext(
-            identifier: "Command",
-            metadata: [message]
-        )
-        connection.send(
-            content: Data(content.utf8),
-            contentContext: context,
-            isComplete: true,
-            completion: .idempotent
-        )
+        self.connection?.sendMessage(.command, data: Data(content.utf8))
     }
     
     func disconnect() {

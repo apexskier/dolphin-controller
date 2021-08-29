@@ -2,15 +2,24 @@ import Foundation
 import Network
 import Combine
 
-final class ControllerConnection {
-    private let connection: NWConnection
-    private var pipe: ControllerFilePipe? = nil
+let pingInterval: TimeInterval = 1
+
+final class ControllerConnection: Identifiable {
+    internal var id = UUID()
+
+    let connection: NWConnection
     private let didClose: (Error?) -> Void
     private let connectionReady: () -> Void
     private let didPickControllerNumber: (UInt8) -> Void
 
     let errorPublisher = PassthroughSubject<Error, Never>()
-    
+    var pingPublisher: AnyPublisher<TimeInterval?, Never> {
+        AnyPublisher(_pingPublisher)
+    }
+    let _pingPublisher = PassthroughSubject<TimeInterval?, Never>()
+
+    private var pipe: ControllerFilePipe? = nil
+
     init(
         connection: NWConnection,
         didClose: @escaping (Error?) -> Void,
@@ -34,7 +43,6 @@ final class ControllerConnection {
     }
     
     private func handleStateUpdate(state: NWConnection.State) {
-        print("connection state update", state)
         switch state {
         case .ready:
             self.connectionReady()
@@ -65,13 +73,15 @@ final class ControllerConnection {
             
             // Extract your message type from the received context.
             if let message = context?.protocolMetadata(definition: ControllerProtocol.definition) as? NWProtocolFramer.Message {
+                guard let content = content else {
+                    fatalError("missing content in \(message.controllerMessageType)")
+                }
                 switch message.controllerMessageType {
                 case .command:
-                    guard let content = content else {
-                        fatalError("missing content in command")
-                    }
                     guard let pipe = self.pipe else {
-                        print("no controller number chosen")
+                        if let errorData = "Controller number not chosen.".data(using: .utf8) {
+                            self.connection.sendMessage(.errorMessage, data: errorData)
+                        }
                         return
                     }
                     do {
@@ -80,10 +90,6 @@ final class ControllerConnection {
                         self.errorPublisher.send(error)
                     }
                 case .pickController:
-                    guard let content = content else {
-                        fatalError("missing content in pickController")
-                    }
-
                     let controllerNumber = content.withUnsafeBytes { pointer in
                         pointer.load(as: UInt8.self)
                     }
@@ -94,13 +100,23 @@ final class ControllerConnection {
                     } catch {
                         self.errorPublisher.send(error)
                     }
-                default:
-                    fatalError("unexpected message type on server")
+                case .errorMessage, .controllerInfo:
+                    fatalError("unexpected \(message.controllerMessageType) in server")
                 }
             }
             
             // recurse to continue receiving messages
             self.receiveNextMessage()
         }
+    }
+}
+
+extension ControllerConnection: Hashable {
+    func hash(into: inout Hasher) {
+        into.combine(id)
+    }
+
+    static func == (lhs: ControllerConnection, rhs: ControllerConnection) -> Bool {
+        lhs.id == rhs.id
     }
 }

@@ -33,6 +33,12 @@ private struct PlugShape: Shape {
     }
 }
 
+let dotsHelpFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .spellOut
+    return formatter
+}()
+
 struct ControllerPlugView: View {
     var index: UInt8
     var connected: Bool

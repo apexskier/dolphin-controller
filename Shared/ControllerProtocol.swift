@@ -1,23 +1,37 @@
 import Foundation
 import Network
 
-// Define the types of commands your game will use.
-enum ControllerMessageType: UInt32 {
+// Don't change the explicit values assigned to these, in order to avoid
+// accidental backwards incompatibility if order is changed in future
+enum ControllerMessageType: UInt32, CustomDebugStringConvertible {
     case errorMessage = 0
 
     // sent from client to server
     // data: a string, to be passed to dolphin's pipe as a command (doesn't include newline)
-    case command
+    case command = 1
 
     // sent from server to client
     // send the available controller numbers
     // data: bitmask of available controller
-    case controllerInfo
+    case controllerInfo = 2
 
     // sent from client to server
     // request a specific controller number
     // data: a single UInt8
-    case pickController
+    case pickController = 3
+
+    var debugDescription: String {
+        switch self {
+        case .errorMessage:
+            return "errorMessage"
+        case .command:
+            return "command"
+        case .controllerInfo:
+            return "controllerInfo"
+        case .pickController:
+            return "pickController"
+        }
+    }
 }
 
 struct ClientControllerInfo {
