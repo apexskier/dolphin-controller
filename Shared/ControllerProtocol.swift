@@ -20,6 +20,14 @@ enum ControllerMessageType: UInt32, CustomDebugStringConvertible {
     // data: a single UInt8
     case pickController = 3
 
+    // sent from either to other
+    // data: UUID
+    case ping = 4
+
+    // sent from other to either in response to a ping
+    // data: UUID (from ping)
+    case pong = 5
+
     var debugDescription: String {
         switch self {
         case .errorMessage:
@@ -30,6 +38,10 @@ enum ControllerMessageType: UInt32, CustomDebugStringConvertible {
             return "controllerInfo"
         case .pickController:
             return "pickController"
+        case .ping:
+            return "ping"
+        case .pong:
+            return "pong"
         }
     }
 }

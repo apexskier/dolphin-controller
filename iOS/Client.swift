@@ -123,7 +123,9 @@ public class Client: ObservableObject {
                             case .errorMessage:
                                 let errorStr = String(data: content, encoding: .utf8) ?? "Unknown error"
                                 self.errorPublisher.send(ClientError.serverError(errorStr))
-                            case .command, .pickController:
+                            case .ping:
+                                connection.sendMessage(.pong, data: content)
+                            case .pong, .command, .pickController:
                                 fatalError("unexpected message in client \(message.controllerMessageType)")
                             }
                         }

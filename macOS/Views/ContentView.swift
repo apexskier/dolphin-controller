@@ -45,6 +45,8 @@ struct ContentView: View {
             .count
     }
 
+    @State private var pings: [Int: TimeInterval] = [:]
+
     var body: some View {
         VStack {
             Spacer(minLength: 0)
@@ -57,13 +59,20 @@ struct ContentView: View {
                     VStack {
                         ControllerPlugView(
                             index: UInt8(i),
-                            connected: server.controllers[UInt8(i)] != nil
+                            connected: server.controllers[UInt8(i)] != nil,
+                            ping: self.pings[i]
                         )
                             .help("Controller number \(dotsHelpFormatter.string(for: i+1) ?? "unknown")")
                             .accessibilityHint("Tap to disconnect controller \(i+1)")
                             .onTapGesture {
                                 server.controllers[UInt8(i)]??.connection.cancel()
                             }
+                            .onReceive(
+                                server.controllers[UInt8(i)]??.pingPublisher ?? AnyPublisher(Empty(outputType: TimeInterval?.self, failureType: Never.self)),
+                                perform: { duration in
+                                    self.pings[i] = duration
+                                }
+                            )
                     }
                 }
             }
