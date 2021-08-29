@@ -115,6 +115,33 @@ struct PressButton<Label>: View where Label: View {
     }
 }
 
+struct PingView: View {
+    var ping: TimeInterval?
+
+    var body: some View {
+        guard let ping = self.ping else {
+            return AnyView(EmptyView())
+        }
+        let pingMilliseconds = ping.truncatingRemainder(dividingBy: 1) * 1000
+        guard let pingString = pingFormatter.string(from: NSNumber(value: pingMilliseconds)) else {
+            return AnyView(EmptyView())
+        }
+        return AnyView(
+            Text(pingString)
+                .font(.callout.monospacedDigit())
+                .foregroundColor(GameCubeColors.lightGray.opacity(0.6))
+                .help("Server ping in milliseconds")
+        )
+    }
+}
+
+let pingFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .decimal
+    formatter.maximumFractionDigits = 0
+    return formatter
+}()
+
 struct ContentView: View {
     @EnvironmentObject private var client: Client
     @Binding var shouldAutoReconnect: Bool
@@ -125,10 +152,17 @@ struct ContentView: View {
     @State private var clientDisconnectionCancellable: AnyCancellable? = nil
     @State private var choosingConnection = false
     @State private var showingSettings = false
-
+    @State private var ping: TimeInterval? = nil
 
     var body: some View {
-        VStack {
+        ZStack {
+            HStack(alignment: .top) {
+                VStack(alignment: .leading) {
+                    PingView(ping: self.ping)
+                    Spacer()
+                }
+                Spacer()
+            }
             HStack {
                 VStack(alignment: .center) {
                     Joystick(
@@ -358,6 +392,9 @@ struct ContentView: View {
             )
             .onReceive(client.errorPublisher, perform: { error in
                 self.error = error
+            })
+            .onReceive(client.pingPublisher, perform: { duration in
+                self.ping = duration
             })
             .sheet(isPresented: $choosingConnection) {
                 ServerBrowserView { endpoint in

@@ -3,6 +3,7 @@ import Network
 import Combine
 
 let pingInterval: TimeInterval = 1
+let maxPingCount = 5
 
 final class ControllerConnection: Identifiable {
     internal var id = UUID()
@@ -51,8 +52,13 @@ final class ControllerConnection: Identifiable {
             self.connectionReady()
             receiveNextMessage()
             DispatchQueue.main.async {
+                self.pingTimer?.invalidate()
                 let pingTimer = Timer.scheduledTimer(withTimeInterval: pingInterval, repeats: true) { [weak self] t in
                     guard let self = self else {
+                        return
+                    }
+                    if self.pings.count >= maxPingCount {
+                        print("Skipping ping, too many pending...")
                         return
                     }
                     var uuid = UUID()
@@ -143,6 +149,7 @@ final class ControllerConnection: Identifiable {
                         self.connection.sendMessage(.errorMessage, data: data)
                         return
                     }
+                    self.pings.removeValue(forKey: uuid)
 
                     let now = Date()
                     let pingDuration = pingStart.distance(to: now)

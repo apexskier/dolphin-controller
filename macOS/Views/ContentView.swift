@@ -29,13 +29,6 @@ struct FaceplateShape: Shape {
     }
 }
 
-let pingFormatter: NumberFormatter = {
-    let formatter = NumberFormatter()
-    formatter.numberStyle = .decimal
-    formatter.maximumFractionDigits = 0
-    return formatter
-}()
-
 struct ContentView: View {
     @EnvironmentObject private var server: Server
     

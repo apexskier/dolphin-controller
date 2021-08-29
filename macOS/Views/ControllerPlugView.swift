@@ -33,6 +33,13 @@ private struct PlugShape: Shape {
     }
 }
 
+let pingFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .decimal
+    formatter.maximumFractionDigits = 0
+    return formatter
+}()
+
 let dotsHelpFormatter: NumberFormatter = {
     let formatter = NumberFormatter()
     formatter.numberStyle = .spellOut
