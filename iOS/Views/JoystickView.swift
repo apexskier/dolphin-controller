@@ -1,6 +1,17 @@
 import SwiftUI
 import CoreHaptics
 
+// this avoids reinitializing the haptics object during the view's init
+class HapticContainer: ObservableObject {
+    private let sharpness: Float
+
+    init(sharpness: Float) {
+        self.sharpness = sharpness
+    }
+
+    lazy var haptics = Haptics(sharpness: sharpness)
+}
+
 struct Joystick<Label>: View where Label: View {
     @EnvironmentObject var client: Client
     
@@ -9,10 +20,9 @@ struct Joystick<Label>: View where Label: View {
     var diameter: CGFloat
     var knobDiameter: CGFloat
     var label: Label
-    var hapticsSharpness: Float
-    
+
     private let pressHaptic = UIImpactFeedbackGenerator(style: .rigid)
-    private let haptics: Haptics
+    @State private var hapticContainer: HapticContainer
 
     @AppStorage("joystickHapticsEnabled") private var joystickHapticsEnabled = true
 
@@ -29,9 +39,7 @@ struct Joystick<Label>: View where Label: View {
         self.diameter = diameter
         self.knobDiameter = knobDiameter
         self.label = label
-        self.hapticsSharpness = hapticsSharpness
-        
-        self.haptics = Haptics(sharpness: hapticsSharpness)
+        self._hapticContainer = .init(initialValue: HapticContainer(sharpness: hapticsSharpness))
     }
     
     @State private var inCenter: Bool = true {
@@ -59,12 +67,12 @@ struct Joystick<Label>: View where Label: View {
             guard let value = newValue else {
                 client.send("SET \(identifier) 0.5 0.5")
                 inCenter = true
-                haptics.stop()
+                hapticContainer.haptics.stop()
                 return
             }
             
             if dragValue == nil {
-                haptics.start()
+                hapticContainer.haptics.start()
                 pressHaptic.impactOccurred()
             }
             
@@ -76,7 +84,7 @@ struct Joystick<Label>: View where Label: View {
             inCenter = magnitude < 0.2
             outsideEdges = magnitude > 1
             
-            haptics.setIntensity(magnitude)
+            hapticContainer.haptics.setIntensity(magnitude)
         }
     }
     
@@ -129,10 +137,10 @@ struct Joystick<Label>: View where Label: View {
         }
         .frame(width: diameter, height: diameter) // ensure layout shifting won't happen when dragging
         .onAppear(perform: {
-            self.haptics.enabled = self.joystickHapticsEnabled
+            self.hapticContainer.haptics.enabled = self.joystickHapticsEnabled
         })
         .onChange(of: joystickHapticsEnabled) { newValue in
-            self.haptics.enabled = newValue
+            self.hapticContainer.haptics.enabled = newValue
         }
     }
     
