@@ -13,8 +13,8 @@
 		C50E761C26B83F2400FB8C2C /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E761B26B83F2400FB8C2C /* Haptics.swift */; };
 		C50E761E26C4424D00FB8C2C /* ControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E761D26C4424D00FB8C2C /* ControllerProtocol.swift */; };
 		C50E761F26C4424D00FB8C2C /* ControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E761D26C4424D00FB8C2C /* ControllerProtocol.swift */; };
-		C51271B726D2B14300820249 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271B626D2B14300820249 /* Colors.swift */; };
-		C51271B826D2B14300820249 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271B626D2B14300820249 /* Colors.swift */; };
+		C51271B726D2B14300820249 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271B626D2B14300820249 /* Theme.swift */; };
+		C51271B826D2B14300820249 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271B626D2B14300820249 /* Theme.swift */; };
 		C51271BA26D2E61C00820249 /* NetworkingInstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271B926D2E61C00820249 /* NetworkingInstructionsView.swift */; };
 		C51271C026D2F9B200820249 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271BE26D2F9AF00820249 /* Storage.swift */; };
 		C518B0D426D5E8480042A931 /* ControllerPlugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C518B0D326D5E8480042A931 /* ControllerPlugView.swift */; };
@@ -70,7 +70,7 @@
 		C50E761626B7CA6B00FB8C2C /* JoystickView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoystickView.swift; sourceTree = "<group>"; };
 		C50E761B26B83F2400FB8C2C /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		C50E761D26C4424D00FB8C2C /* ControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerProtocol.swift; sourceTree = "<group>"; };
-		C51271B626D2B14300820249 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		C51271B626D2B14300820249 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		C51271B926D2E61C00820249 /* NetworkingInstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingInstructionsView.swift; sourceTree = "<group>"; };
 		C51271BE26D2F9AF00820249 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		C518B0D326D5E8480042A931 /* ControllerPlugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerPlugView.swift; sourceTree = "<group>"; };
@@ -187,7 +187,7 @@
 				C53D558F26B443D500E1F75B /* Networking.swift */,
 				C50E761D26C4424D00FB8C2C /* ControllerProtocol.swift */,
 				C52CD4BD26C7E2350081ABF5 /* EndpointWrapper.swift */,
-				C51271B626D2B14300820249 /* Colors.swift */,
+				C51271B626D2B14300820249 /* Theme.swift */,
 				C54BE4A926D495D500530927 /* PolygonShape.swift */,
 			);
 			path = Shared;
@@ -444,7 +444,7 @@
 				C52A64C726DC199A001A39C7 /* PressAction.swift in Sources */,
 				C52528B326DAEFB000902B87 /* SettingsView.swift in Sources */,
 				C52A64C126DC02A1001A39C7 /* PingView.swift in Sources */,
-				C51271B726D2B14300820249 /* Colors.swift in Sources */,
+				C51271B726D2B14300820249 /* Theme.swift in Sources */,
 				C51271C026D2F9B200820249 /* Storage.swift in Sources */,
 				C53D558726B43F3C00E1F75B /* ObservableObject.swift in Sources */,
 				C52CD4BA26C44C970081ABF5 /* ServerBrowserView.swift in Sources */,
@@ -459,7 +459,7 @@
 			files = (
 				C53D558826B43F3C00E1F75B /* ObservableObject.swift in Sources */,
 				C54BE4AB26D495D500530927 /* PolygonShape.swift in Sources */,
-				C51271B826D2B14300820249 /* Colors.swift in Sources */,
+				C51271B826D2B14300820249 /* Theme.swift in Sources */,
 				C52CD4BC26C459920081ABF5 /* ControllerFilePipe.swift in Sources */,
 				C51271BA26D2E61C00820249 /* NetworkingInstructionsView.swift in Sources */,
 				C50E761F26C4424D00FB8C2C /* ControllerProtocol.swift in Sources */,

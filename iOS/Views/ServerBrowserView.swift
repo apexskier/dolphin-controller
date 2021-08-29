@@ -95,7 +95,7 @@ struct ServerBrowser_Previews: PreviewProvider {
     }
 }
 
-class Server: NSObject, ObservableObject, Identifiable {
+private class Server: NSObject, ObservableObject, Identifiable {
     var id: ObjectIdentifier {
         ObjectIdentifier("\(name)" as NSString)
     }
@@ -111,14 +111,14 @@ class Server: NSObject, ObservableObject, Identifiable {
     }
 }
 
-class ServerBrowser: NSObject, ObservableObject {
+private class ServerBrowser: NSObject, ObservableObject {
     private let browser: NWBrowser
     
     @Published
     var loading: Bool = false
     
     @Published
-    var servers = [Server]() {
+    fileprivate var servers = [Server]() {
         willSet {
             self.serversSinks = newValue.map({ value in
                 value.forwardChanges(to: self)

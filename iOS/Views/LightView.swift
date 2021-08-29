@@ -5,7 +5,7 @@ struct LightView: View {
     let available: Bool?
     
     var body: some View {
-        var color = GameCubeColors.lightGray.opacity(0.6)
+        var color = GameCubeColors.lightGray.opacity(0.5)
         var icon = "circle.dashed"
         if assigned {
             icon = "circle.fill" // iOS 15 "circle.inset.filled"

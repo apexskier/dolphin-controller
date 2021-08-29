@@ -21,7 +21,8 @@ struct PingView: View {
         return AnyView(
             Text(pingString)
                 .font(.callout.monospacedDigit())
-                .foregroundColor(GameCubeColors.lightGray.opacity(0.6))
+                .foregroundColor(.white.opacity(0.6))
+                .blendMode(.screen)
                 .help("Server ping in milliseconds")
         )
     }

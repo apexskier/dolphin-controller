@@ -2,7 +2,7 @@ import SwiftUI
 import CoreHaptics
 
 // this avoids reinitializing the haptics object during the view's init
-class HapticContainer: ObservableObject {
+private class HapticContainer: ObservableObject {
     private let sharpness: Float
 
     init(sharpness: Float) {
@@ -97,10 +97,14 @@ struct Joystick<Label>: View where Label: View {
         }
         .allowsHitTesting(false)
     }
+
+    private var transparentColor: Color {
+        color.opacity(0.2)
+    }
     
     private var target: some View {
         Polygon(corners: 8)
-            .fill(color.opacity(0.2))
+            .fill(transparentColor)
             .frame(width: diameter, height: diameter)
     }
     
@@ -121,7 +125,7 @@ struct Joystick<Label>: View where Label: View {
                 if let dragValue = self.dragValue {
                     ZStack {
                         Circle()
-                            .fill(color.opacity(0.2))
+                            .fill(transparentColor)
                             .frame(width: diameter*1.5, height: diameter*1.5)
                     }
                         .position(

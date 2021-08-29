@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct PressButton<Label>: View where Label: View {
+private struct PressButton<Label>: View where Label: View {
     @EnvironmentObject private var client: Client
 
     private let haptic = UIImpactFeedbackGenerator(style: .rigid)
@@ -37,8 +37,8 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
                     knobDiameter: 110,
                     label: Image(systemName: "target")
                         .resizable()
-                        .frame(width: 95, height: 95)
-                        .foregroundColor(.black.opacity(0.2)),
+                        .gcLabel()
+                        .frame(width: 95, height: 95),
                     hapticsSharpness: 0.8
                 )
 
@@ -125,13 +125,17 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
 
                 Spacer()
 
-                PressButton(label: Text(""), identifier: "START")
-                    .buttonStyle(GCCButton(
-                        color: GameCubeColors.lightGray,
-                        width: 34,
-                        height: 34,
-                        shape: Circle()
-                    ))
+                VStack(spacing: 4) {
+                    Text("START/PAUSE").gcLabel(size: 16)
+                    PressButton(label: Text(""), identifier: "START")
+                        .buttonStyle(GCCButton(
+                            color: GameCubeColors.lightGray,
+                            width: 34,
+                            height: 34,
+                            shape: Circle()
+                        ))
+                        .accessibilityLabel(Text("START/PAUSE"))
+                }
 
                 Spacer()
 
@@ -185,9 +189,7 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
                     color: GameCubeColors.yellow,
                     diameter: 150,
                     knobDiameter: 80,
-                    label: Text("C")
-                        .foregroundColor(.black.opacity(0.2))
-                        .font(.gameCubeController()),
+                    label: Text("C").gcLabel(),
                     hapticsSharpness: 0.8
                 )
             }
