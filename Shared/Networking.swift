@@ -79,4 +79,29 @@ extension NWConnection {
             completion: .idempotent
         )
     }
+
+    func handleReceiveError(error: NWError) {
+        var shouldCancel = true
+        if case .posix(let code) = error {
+            switch code {
+            case .ENODATA:
+                print("Disconnected (no data)")
+            case .ECONNABORTED:
+                print("Connection aborted")
+            case .ECANCELED:
+                shouldCancel = false
+                print("Connection cancelled")
+            default:
+                print("Posix error", error)
+            }
+        } else {
+            print("Error", error)
+        }
+        if shouldCancel {
+            // we explicitly cancel even if the connection has been aborted
+            // without this, the connection takes a bit to transition to its
+            // cancelled state, which is not a great UX
+            self.cancel()
+        }
+    }
 }

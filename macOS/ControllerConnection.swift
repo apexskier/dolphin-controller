@@ -56,15 +56,7 @@ final class ControllerConnection: Identifiable {
     private func receiveNextMessage() {
         connection.receiveMessage { (content, context, isComplete, error) in
             if let error = error {
-                if case .posix(let code) = error,
-                   code == .ENODATA || code == .ECONNRESET {
-                    print("Disconnected")
-                    if self.connection.state != .cancelled {
-                        self.connection.cancel()
-                    }
-                } else {
-                    print("Error", error)
-                }
+                connection.handleReceiveError(error: error)
                 return
             }
             

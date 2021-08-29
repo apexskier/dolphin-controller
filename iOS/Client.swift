@@ -117,19 +117,7 @@ public class Client: ObservableObject {
                     
                     connection.receiveMessage { (content, context, isComplete, error) in
                         if let error = error {
-                            if case .posix(let code) = error {
-                                switch code {
-                                case .ENODATA:
-                                    print("Disconnected by server")
-                                case .ECONNABORTED:
-                                    print("Connection aborted")
-                                default:
-                                    print("error", error)
-                                }
-                            } else {
-                                print("Error", error)
-                            }
-                            connection.cancel()
+                            connection.handleReceiveError(error: error)
                             return
                         }
 
@@ -184,7 +172,6 @@ public class Client: ObservableObject {
                 receiveNextMessage()
             case .failed(let error):
                 print("Connection failed with error", error)
-                connection.cancel()
                 if !hasBeenReplaced {
                     self.connection = nil
                     if self.attemptsToReconnect < 3 {
