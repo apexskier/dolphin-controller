@@ -6,11 +6,12 @@ Video games were meant to be played together. All you need to play a game with f
 | ------------ | ---------- |
 | <img src="https://user-images.githubusercontent.com/329222/130981252-d7fdad99-8b32-437f-aefd-eb1198613549.png" alt="Server UI" /> | ![IMG_1337](https://user-images.githubusercontent.com/329222/130981264-a7d8a701-060e-453d-aa4f-00e8d0614aff.jpeg) |
 
-## Installation
+## Installation & Usage
 
 1. [Download the latest version of Dolphin emulator](https://dolphin-emu.org)
 2. Build and run the macOS server and iOS client from XCode
-3. From the iOS app, tap "Connect" and find your server
+3. From the iOS app, tap "Join" and find your server
+4. Pick a controller number by tapping P1, P2, P3, or P4
 
 ## Setup
 
@@ -30,9 +31,8 @@ You can verify the controller is connected by clicking "Configure" and ensuring 
 
 ## Tips
 
-* Turn off auto display lock on your iOS device (Settings > Display & Brightness > Auto-Lock > Never) (at least until I get persistent controller numbers)
-* The iOS app will attempt to auto-reconnect if it looses a connection (if your screen locks or the app backgrounds). Your controller number is first come, first served, so reconnect in order if multiple people loose connections.
-* The iOS app will remember the last server you connected to, tap "Reconnect" to jump back in, or "New" to find a new server.
+* The iOS app will attempt to auto-reconnect with the same controller number if it looses a connection (if your screen locks or the app backgrounds).
+* In the server browser window (after tapping "Join") the ★'d server is the one last connected to.
 * Servers are advertised automatically with Bonjour, so no need to enter manual information if everyone's in the same room.
 * For remote play, tap the Network icon in the macOS app's toolbar to find the port, forward to a public IP address, and enter the address manually.
 
