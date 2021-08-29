@@ -49,7 +49,6 @@ let dotsHelpFormatter: NumberFormatter = {
 struct ControllerPlugView: View {
     var index: UInt8
     var connected: Bool
-    var ping: TimeInterval?
 
     var body: some View {
         VStack(spacing: dotVerticalSpace) {
@@ -73,15 +72,6 @@ struct ControllerPlugView: View {
                     PlugShape()
                         .fill(Color.black)
                         .frame(width: 24, height: 24)
-                }
-                if connected,
-                   let ping = self.ping,
-                   let formattedPing = pingFormatter.string(from: NSNumber(value: ping.truncatingRemainder(dividingBy: 1) * 1000)) {
-                    Text(formattedPing)
-                        .foregroundColor(Color(white: 0.7))
-                        .font(.system(size: 10))
-                        .help("Ping")
-                        .offset(x: 0, y: 2)
                 }
             }
         }
