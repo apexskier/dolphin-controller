@@ -42,35 +42,38 @@ public class Server: ObservableObject {
 
             var controllerConnection: ControllerConnection? = nil
             controllerConnection = try! ControllerConnection(
-                connection: connection
-            ) { error in
-                DispatchQueue.main.async {
-                    if let controllerConnection = controllerConnection,
-                       let index = self.allControllers.firstIndex(of: controllerConnection) {
-                        self.allControllers.remove(at: index)
+                connection: connection,
+                didClose: { error in
+                    DispatchQueue.main.async {
+                        if let controllerConnection = controllerConnection,
+                           let index = self.allControllers.firstIndex(of: controllerConnection) {
+                            self.allControllers.remove(at: index)
+                        }
+                        if let i = index {
+                            self.controllers[i] = nil
+                        }
+                        index = nil
+                        self.sendControllerInfo()
                     }
-                    if let i = index {
-                        self.controllers[i] = nil
-                    }
-                    index = nil
+                },
+                connectionReady: {
                     self.sendControllerInfo()
-                }
-            } connectionReady: {
-                self.sendControllerInfo()
-            } didPickControllerIndex: { newIndex in
-                DispatchQueue.main.async {
-                    if newIndex != index && self.controllers[newIndex] != nil {
-                        self.sendError(error: "That controller is already taken.", to: connection)
-                        return
+                },
+                didPickControllerIndex: { newIndex in
+                    DispatchQueue.main.async {
+                        if newIndex != index && self.controllers[newIndex] != nil {
+                            self.sendError(error: "That controller is already taken.", to: connection)
+                            return
+                        }
+                        if let i = index {
+                            self.controllers[i] = nil
+                        }
+                        index = newIndex
+                        self.controllers[newIndex] = controllerConnection
+                        self.sendControllerInfo()
                     }
-                    if let i = index {
-                        self.controllers[i] = nil
-                    }
-                    index = newIndex
-                    self.controllers[newIndex] = controllerConnection
-                    self.sendControllerInfo()
                 }
-            }
+            )
 
             DispatchQueue.main.async {
                 if let controllerConnection = controllerConnection {

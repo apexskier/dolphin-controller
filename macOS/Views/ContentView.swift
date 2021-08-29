@@ -31,7 +31,8 @@ struct FaceplateShape: Shape {
 
 struct ContentView: View {
     @EnvironmentObject private var server: Server
-    
+    @State private var error: Error? = nil
+
     var connectedControllerCount: Int {
         server.controllers
             .compactMap({ $0.value })
@@ -57,6 +58,13 @@ struct ContentView: View {
                             .onTapGesture {
                                 server.controllers[UInt8(i)]??.connection.cancel()
                             }
+                            .onReceive(
+                                server.controllers[UInt8(i)]??.errorPublisher
+                                ?? PassthroughSubject(),
+                                perform: { error in
+                                    self.error = error
+                                }
+                            )
                     }
                 }
             }
@@ -66,6 +74,17 @@ struct ContentView: View {
             Spacer(minLength: 0)
         }
         .navigationTitle(Text(server.name))
+        .alert(isPresented: Binding(get: {
+            self.error != nil
+        }, set: { (val: Bool) in
+            self.error = nil
+        })) {
+            Alert(
+                title: Text("Error"),
+                message: Text(error?.localizedDescription ?? "An unknown error occurred"),
+                dismissButton: .default(Text("Dismiss"))
+            )
+        }
     }
 }
 

@@ -6,7 +6,7 @@ let pingInterval: TimeInterval = 1
 let maxPingCount = 5
 
 final class ControllerConnection: Identifiable {
-    internal var id = UUID()
+    internal var id = UUID() // this allows using this in more swiftui places
 
     let connection: NWConnection
     private let didClose: (Error?) -> Void
@@ -23,7 +23,6 @@ final class ControllerConnection: Identifiable {
         connectionReady: @escaping () -> Void,
         didPickControllerIndex: @escaping (UInt8) -> Void
     ) throws {
-        print("Creating controller connection: \(connection.debugDescription)")
         self.connection = connection
         self.didClose = didClose
         self.connectionReady = connectionReady
@@ -56,7 +55,7 @@ final class ControllerConnection: Identifiable {
     private func receiveNextMessage() {
         connection.receiveMessage { (content, context, isComplete, error) in
             if let error = error {
-                connection.handleReceiveError(error: error)
+                self.connection.handleReceiveError(error: error)
                 return
             }
             
@@ -68,9 +67,7 @@ final class ControllerConnection: Identifiable {
                 switch message.controllerMessageType {
                 case .command:
                     guard let pipe = self.pipe else {
-                        if let errorData = "Controller number not chosen.".data(using: .utf8) {
-                            self.connection.sendMessage(.errorMessage, data: errorData)
-                        }
+                        // controller number hasn't been chosen
                         return
                     }
                     do {
