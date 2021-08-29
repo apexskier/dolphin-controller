@@ -153,15 +153,21 @@ struct ContentView: View {
     @State private var choosingConnection = false
     @State private var showingSettings = false
     @State private var ping: TimeInterval? = nil
+    @AppStorage("showPing") private var showPing = false
 
     var body: some View {
         ZStack {
-            HStack(alignment: .top) {
-                VStack(alignment: .leading) {
-                    PingView(ping: self.ping)
+            if showPing {
+                HStack(alignment: .top) {
+                    VStack(alignment: .leading) {
+                        PingView(ping: self.ping)
+                        Spacer()
+                    }
                     Spacer()
                 }
-                Spacer()
+                    .onReceive(client.pingPublisher, perform: { duration in
+                        self.ping = duration
+                    })
             }
             HStack {
                 VStack(alignment: .center) {
@@ -392,9 +398,6 @@ struct ContentView: View {
             )
             .onReceive(client.errorPublisher, perform: { error in
                 self.error = error
-            })
-            .onReceive(client.pingPublisher, perform: { duration in
-                self.ping = duration
             })
             .sheet(isPresented: $choosingConnection) {
                 ServerBrowserView { endpoint in
