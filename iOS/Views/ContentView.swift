@@ -34,30 +34,6 @@ extension GCCButton where S == Circle {
     }
 }
 
-struct CurvedPill: Shape {
-    var radius: CGFloat = 0.4
-    
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        
-        path.move(to: CGPoint(x: rect.minX + rect.width * 0.1, y: rect.minY))
-        path.addLine(to: CGPoint(x: rect.maxX - rect.width * 0.1, y: rect.minY))
-        path.addArc(
-            tangent1End: CGPoint(x: rect.maxX - rect.width * 0.1, y: rect.minY),
-            tangent2End: CGPoint(x: rect.maxX - rect.width * 0.1, y: rect.maxY),
-            radius: rect.width * 0.1
-        )
-        path.addLine(to: CGPoint(x: rect.minX + rect.width * 0.1, y: rect.maxY))
-        path.addArc(
-            tangent1End: CGPoint(x: rect.minX + rect.width * 0.1, y: rect.maxY),
-            tangent2End: CGPoint(x: rect.minX + rect.width * 0.1, y: rect.minY),
-            radius: rect.width * 0.1
-        )
-        
-        return path
-    }
-}
-
 struct PressActions: ViewModifier {
     var onPress: () -> Void
     var onRelease: () -> Void
@@ -114,33 +90,6 @@ struct PressButton<Label>: View where Label: View {
         })
     }
 }
-
-struct PingView: View {
-    var ping: TimeInterval?
-
-    var body: some View {
-        guard let ping = self.ping else {
-            return AnyView(EmptyView())
-        }
-        let pingMilliseconds = ping.truncatingRemainder(dividingBy: 1) * 1000
-        guard let pingString = pingFormatter.string(from: NSNumber(value: pingMilliseconds)) else {
-            return AnyView(EmptyView())
-        }
-        return AnyView(
-            Text(pingString)
-                .font(.callout.monospacedDigit())
-                .foregroundColor(GameCubeColors.lightGray.opacity(0.6))
-                .help("Server ping in milliseconds")
-        )
-    }
-}
-
-let pingFormatter: NumberFormatter = {
-    let formatter = NumberFormatter()
-    formatter.numberStyle = .decimal
-    formatter.maximumFractionDigits = 0
-    return formatter
-}()
 
 struct ContentView: View {
     @EnvironmentObject private var client: Client

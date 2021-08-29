@@ -19,6 +19,7 @@
 		C51271C026D2F9B200820249 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271BE26D2F9AF00820249 /* Storage.swift */; };
 		C518B0D426D5E8480042A931 /* ControllerPlugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C518B0D326D5E8480042A931 /* ControllerPlugView.swift */; };
 		C52528B326DAEFB000902B87 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52528B226DAEFB000902B87 /* SettingsView.swift */; };
+		C52A64C126DC02A1001A39C7 /* PingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52A64C026DC02A1001A39C7 /* PingView.swift */; };
 		C52CD4BA26C44C970081ABF5 /* ServerBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4B926C44C970081ABF5 /* ServerBrowserView.swift */; };
 		C52CD4BC26C459920081ABF5 /* ControllerFilePipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4BB26C459920081ABF5 /* ControllerFilePipe.swift */; };
 		C52CD4BE26C7E2350081ABF5 /* EndpointWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4BD26C7E2350081ABF5 /* EndpointWrapper.swift */; };
@@ -71,6 +72,7 @@
 		C51271BE26D2F9AF00820249 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		C518B0D326D5E8480042A931 /* ControllerPlugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerPlugView.swift; sourceTree = "<group>"; };
 		C52528B226DAEFB000902B87 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		C52A64C026DC02A1001A39C7 /* PingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PingView.swift; sourceTree = "<group>"; };
 		C52CD4B926C44C970081ABF5 /* ServerBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerBrowserView.swift; sourceTree = "<group>"; };
 		C52CD4BB26C459920081ABF5 /* ControllerFilePipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerFilePipe.swift; sourceTree = "<group>"; };
 		C52CD4BD26C7E2350081ABF5 /* EndpointWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointWrapper.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				C52CD4C326C80B850081ABF5 /* LightView.swift */,
+				C52A64C026DC02A1001A39C7 /* PingView.swift */,
 				C53D558C26B4402E00E1F75B /* ContentView.swift */,
 				C50E761626B7CA6B00FB8C2C /* JoystickView.swift */,
 				C52CD4B926C44C970081ABF5 /* ServerBrowserView.swift */,
@@ -428,6 +431,7 @@
 				C52CD4BE26C7E2350081ABF5 /* EndpointWrapper.swift in Sources */,
 				C50E761E26C4424D00FB8C2C /* ControllerProtocol.swift in Sources */,
 				C52528B326DAEFB000902B87 /* SettingsView.swift in Sources */,
+				C52A64C126DC02A1001A39C7 /* PingView.swift in Sources */,
 				C51271B726D2B14300820249 /* Colors.swift in Sources */,
 				C51271C026D2F9B200820249 /* Storage.swift in Sources */,
 				C53D558726B43F3C00E1F75B /* ObservableObject.swift in Sources */,
