@@ -17,18 +17,7 @@ public class Client: ObservableObject {
         }
     }
 
-    enum ClientError: LocalizedError {
-        case serverError(String) // i know... weird naming
-
-        public var errorDescription: String? {
-            switch self {
-            case .serverError(let str):
-                return str
-            }
-        }
-    }
-
-    let errorPublisher = PassthroughSubject<ClientError, Never>()
+    let errorPublisher = PassthroughSubject<ControllerProtocol.ProtocolError, Never>()
 
     private var ping: (UUID, Date)? = nil
     private lazy var pingTimer: Timer? = nil
@@ -136,7 +125,7 @@ public class Client: ObservableObject {
                                 }
                             case .errorMessage:
                                 let errorStr = String(data: content, encoding: .utf8) ?? "Unknown error"
-                                self.errorPublisher.send(ClientError.serverError(errorStr))
+                                self.errorPublisher.send(ControllerProtocol.ProtocolError.errorMessage(errorStr))
                             case .ping:
                                 connection.sendMessage(.pong, data: content)
                             case .pong:

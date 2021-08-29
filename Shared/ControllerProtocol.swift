@@ -139,6 +139,17 @@ class ControllerProtocol: NWProtocolFramerImplementation {
             }
         }
     }
+
+    enum ProtocolError: LocalizedError {
+        case errorMessage(String)
+
+        public var errorDescription: String? {
+            switch self {
+            case .errorMessage(let str):
+                return str
+            }
+        }
+    }
 }
 
 // Extend framer messages to handle storing your command types in the message metadata.

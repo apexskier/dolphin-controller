@@ -88,7 +88,10 @@ final class ControllerConnection: Identifiable {
                     }
                 case .ping:
                     self.connection.sendMessage(.pong, data: content)
-                case .pong, .errorMessage, .controllerInfo:
+                case .errorMessage:
+                    let errorStr = String(data: content, encoding: .utf8) ?? "Unknown error"
+                    self.errorPublisher.send(ControllerProtocol.ProtocolError.errorMessage(errorStr))
+                case .pong, .controllerInfo:
                     fatalError("unexpected \(message.controllerMessageType) in server")
                 }
             }
