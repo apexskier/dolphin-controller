@@ -93,6 +93,7 @@ struct Joystick<Label>: View where Label: View {
             Circle()
                 .fill(color)
                 .frame(width: knobDiameter, height: knobDiameter)
+                .shadow(color: Color.black.opacity(0.3), radius: 2, x: 0, y: 1)
             label
         }
         .allowsHitTesting(false)
@@ -126,7 +127,7 @@ struct Joystick<Label>: View where Label: View {
                     ZStack {
                         Circle()
                             .fill(transparentColor)
-                            .frame(width: diameter*1.5, height: diameter*1.5)
+                            .frame(width: diameter*1.3, height: diameter*1.3)
                     }
                         .position(
                             x: dragValue.startLocation.x,

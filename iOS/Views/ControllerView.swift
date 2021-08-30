@@ -23,6 +23,38 @@ private struct PressButton<Label>: View where Label: View {
     }
 }
 
+private struct MainJoystickRidge: View {
+    var width: CGFloat = 5
+
+    var body: some View {
+        GeometryReader { geometry in
+            let minDimension = min(geometry.size.height, geometry.size.width)
+            ZStack {
+                Circle().foregroundColor(GameCubeColors.lightGray)
+                RadialGradient(
+                    stops: [
+                        Gradient.Stop(color: Color(white: 0.1), location: 0),
+                        Gradient.Stop(color: Color(white: 0.5), location: 0.10),
+                        Gradient.Stop(color: Color(white: 0.7), location: 0.15),
+                        Gradient.Stop(color: Color(white: 0.7), location: 0.15),
+                        Gradient.Stop(color: Color(white: 0.5), location: 0.3),
+                        Gradient.Stop(color: Color(white: 0.5), location: 0.7),
+                        Gradient.Stop(color: Color(white: 0.7), location: 0.85),
+                        Gradient.Stop(color: Color(white: 0.5), location: 0.90),
+                        Gradient.Stop(color: Color(white: 0.1), location: 1),
+                    ],
+                    center: .center,
+                    startRadius: (minDimension / 2) - width,
+                    endRadius: minDimension / 2
+                )
+                    .blendMode(.overlay)
+            }
+                .mask(Circle().strokeBorder(lineWidth: width))
+                .shadow(color: Color.black.opacity(0.2), radius: 1, x: 0, y: 0.5)
+        }
+    }
+}
+
 struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators: View, AppButtons: View {
     var playerIndicators: PlayerIndicators
     var appButtons: AppButtons
@@ -35,10 +67,14 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
                     color: Color(red: 221/256, green: 218/256, blue: 231/256),
                     diameter: 150,
                     knobDiameter: 110,
-                    label: Image(systemName: "target")
-                        .resizable()
-                        .gcLabel()
-                        .frame(width: 95, height: 95),
+                    label: ZStack {
+                        MainJoystickRidge()
+                            .frame(width: 30, height: 30)
+                        MainJoystickRidge()
+                            .frame(width: 60, height: 60)
+                        MainJoystickRidge()
+                            .frame(width: 90, height: 90)
+                    },
                     hapticsSharpness: 0.8
                 )
 
@@ -153,31 +189,31 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
                             height: 120
                         ))
                     PressButton(label: Text("B").rotationEffect(.degrees(-60)), identifier: "B")
+                        .offset(x: 0, y: 60 + 12 + 30)
+                        .rotationEffect(.degrees(60))
                         .buttonStyle(GCCButton(
                             color: GameCubeColors.red,
                             width: 60,
                             height: 60
                         ))
-                        .offset(x: 0, y: 60 + 12 + 30)
-                        .rotationEffect(.degrees(60))
                     PressButton(label: Text("Y").rotationEffect(.degrees(-175)), identifier: "Y")
-                        .buttonStyle(GCCButton(
-                            color: GameCubeColors.lightGray,
-                            width: 80,
-                            height: 42,
-                            shape: Capsule(style: .continuous)
-                        ))
                         .offset(x: 0, y: 60 + 12 + 21)
                         .rotationEffect(.degrees(175))
-                    PressButton(label: Text("X").rotationEffect(.degrees(-260)), identifier: "X")
                         .buttonStyle(GCCButton(
                             color: GameCubeColors.lightGray,
                             width: 80,
                             height: 42,
                             shape: Capsule(style: .continuous)
                         ))
+                    PressButton(label: Text("X").rotationEffect(.degrees(-260)), identifier: "X")
                         .offset(x: 0, y: 60 + 12 + 21)
                         .rotationEffect(.degrees(260))
+                        .buttonStyle(GCCButton(
+                            color: GameCubeColors.lightGray,
+                            width: 80,
+                            height: 42,
+                            shape: Capsule(style: .continuous)
+                        ))
                 }
                 .offset(y: 20)
                 .frame(height: 120 + 60)
