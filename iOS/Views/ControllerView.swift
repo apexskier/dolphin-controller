@@ -32,7 +32,7 @@ private struct MainJoystickRidge: View {
             ZStack {
                 Circle().foregroundColor(GameCubeColors.lightGray)
                 RadialGradient(
-                    stops: [
+                    gradient: Gradient(stops: [
                         Gradient.Stop(color: Color(white: 0.1), location: 0),
                         Gradient.Stop(color: Color(white: 0.5), location: 0.10),
                         Gradient.Stop(color: Color(white: 0.7), location: 0.15),
@@ -42,7 +42,7 @@ private struct MainJoystickRidge: View {
                         Gradient.Stop(color: Color(white: 0.7), location: 0.85),
                         Gradient.Stop(color: Color(white: 0.5), location: 0.90),
                         Gradient.Stop(color: Color(white: 0.1), location: 1),
-                    ],
+                    ]),
                     center: .center,
                     startRadius: (minDimension / 2) - width,
                     endRadius: minDimension / 2
