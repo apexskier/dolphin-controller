@@ -4,7 +4,7 @@ Video games were meant to be played together. All you need to play a game with f
 
 | macOS Server | iOS Client |
 | ------------ | ---------- |
-| <img src="https://user-images.githubusercontent.com/329222/130981252-d7fdad99-8b32-437f-aefd-eb1198613549.png" alt="Server UI" /> | ![IMG_1337](https://user-images.githubusercontent.com/329222/130981264-a7d8a701-060e-453d-aa4f-00e8d0614aff.jpeg) |
+| <img src="https://user-images.githubusercontent.com/329222/130981252-d7fdad99-8b32-437f-aefd-eb1198613549.png" alt="Server UI" /> | ![Client UI](https://user-images.githubusercontent.com/329222/131947045-28fb3a63-58fe-47e7-a7b8-e3f4a365dee7.png) |
 
 ## Installation & Usage
 
