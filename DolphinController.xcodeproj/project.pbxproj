@@ -87,9 +87,9 @@
 		C53D554126B43D4C00E1F75B /* DolphinControllerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DolphinControllerApp.swift; sourceTree = "<group>"; };
 		C53D554226B43D4C00E1F75B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C53D554326B43D4E00E1F75B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C53D554826B43D4E00E1F75B /* Dolphin Controller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dolphin Controller.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C53D554826B43D4E00E1F75B /* Dolphin Ctrl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dolphin Ctrl.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C53D554B26B43D4E00E1F75B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C53D555026B43D4F00E1F75B /* Dolphin Controller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dolphin Controller.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C53D555026B43D4F00E1F75B /* Dolphin Ctrl Server.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dolphin Ctrl Server.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C53D555226B43D4F00E1F75B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C53D555326B43D4F00E1F75B /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		C53D555826B43D4F00E1F75B /* Tests iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -196,8 +196,8 @@
 		C53D554926B43D4E00E1F75B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C53D554826B43D4E00E1F75B /* Dolphin Controller.app */,
-				C53D555026B43D4F00E1F75B /* Dolphin Controller.app */,
+				C53D554826B43D4E00E1F75B /* Dolphin Ctrl.app */,
+				C53D555026B43D4F00E1F75B /* Dolphin Ctrl Server.app */,
 				C53D555826B43D4F00E1F75B /* Tests iOS.xctest */,
 				C53D556326B43D4F00E1F75B /* Tests macOS.xctest */,
 			);
@@ -285,7 +285,7 @@
 			packageProductDependencies = (
 			);
 			productName = "DolphinController (iOS)";
-			productReference = C53D554826B43D4E00E1F75B /* Dolphin Controller.app */;
+			productReference = C53D554826B43D4E00E1F75B /* Dolphin Ctrl.app */;
 			productType = "com.apple.product-type.application";
 		};
 		C53D554F26B43D4F00E1F75B /* DolphinController (macOS) */ = {
@@ -304,7 +304,7 @@
 			packageProductDependencies = (
 			);
 			productName = "DolphinController (macOS)";
-			productReference = C53D555026B43D4F00E1F75B /* Dolphin Controller.app */;
+			productReference = C53D555026B43D4F00E1F75B /* Dolphin Ctrl Server.app */;
 			productType = "com.apple.product-type.application";
 		};
 		C53D555726B43D4F00E1F75B /* Tests iOS */ = {
@@ -632,7 +632,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.camlittle.DolphinController;
-				PRODUCT_NAME = "Dolphin Controller";
+				PRODUCT_NAME = "Dolphin Ctrl";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -654,7 +654,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.camlittle.DolphinController;
-				PRODUCT_NAME = "Dolphin Controller";
+				PRODUCT_NAME = "Dolphin Ctrl";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -680,7 +680,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.camlittle.DolphinController;
-				PRODUCT_NAME = "Dolphin Controller";
+				PRODUCT_NAME = "Dolphin Ctrl Server";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
 			};
@@ -704,7 +704,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.camlittle.DolphinController;
-				PRODUCT_NAME = "Dolphin Controller";
+				PRODUCT_NAME = "Dolphin Ctrl Server";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
 			};

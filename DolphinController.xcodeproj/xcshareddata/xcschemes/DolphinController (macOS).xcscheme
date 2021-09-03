@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C53D554F26B43D4F00E1F75B"
-               BuildableName = "Dolphin Controller.app"
+               BuildableName = "Dolphin Ctrl Server.app"
                BlueprintName = "DolphinController (macOS)"
                ReferencedContainer = "container:DolphinController.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C53D554F26B43D4F00E1F75B"
-            BuildableName = "Dolphin Controller.app"
+            BuildableName = "Dolphin Ctrl Server.app"
             BlueprintName = "DolphinController (macOS)"
             ReferencedContainer = "container:DolphinController.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C53D554F26B43D4F00E1F75B"
-            BuildableName = "Dolphin Controller.app"
+            BuildableName = "Dolphin Ctrl Server.app"
             BlueprintName = "DolphinController (macOS)"
             ReferencedContainer = "container:DolphinController.xcodeproj">
          </BuildableReference>
