@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C502974C27190A0700F2A7CF /* CRC32.swift in Sources */ = {isa = PBXBuildFile; fileRef = C502974B27190A0700F2A7CF /* CRC32.swift */; };
+		C502974D27190A0700F2A7CF /* CRC32.swift in Sources */ = {isa = PBXBuildFile; fileRef = C502974B27190A0700F2A7CF /* CRC32.swift */; };
 		C50E761426B7C71900FB8C2C /* Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E761326B7C71900FB8C2C /* Comparable.swift */; };
 		C50E761526B7C71900FB8C2C /* Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E761326B7C71900FB8C2C /* Comparable.swift */; };
 		C50E761726B7CA6B00FB8C2C /* JoystickView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E761626B7CA6B00FB8C2C /* JoystickView.swift */; };
@@ -46,6 +48,8 @@
 		C54BE4AA26D495D500530927 /* PolygonShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54BE4A926D495D500530927 /* PolygonShape.swift */; };
 		C54BE4AB26D495D500530927 /* PolygonShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54BE4A926D495D500530927 /* PolygonShape.swift */; };
 		C5624F2626D3292B00ECD78A /* GCPadNew.ini in Resources */ = {isa = PBXBuildFile; fileRef = C5624F2526D3292B00ECD78A /* GCPadNew.ini */; };
+		C5E939F926EC3E4400E12E94 /* CemuhookProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E939F826EC3E4400E12E94 /* CemuhookProtocol.swift */; };
+		C5E939FA26EC3E4400E12E94 /* CemuhookProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E939F826EC3E4400E12E94 /* CemuhookProtocol.swift */; };
 		C59D538E28D6776B005AFEC8 /* IdleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59D538D28D6776B005AFEC8 /* IdleManager.swift */; };
 		C59D539028D69A9E005AFEC8 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59D538F28D69A9E005AFEC8 /* HelpView.swift */; };
 		C59D539228D781C9005AFEC8 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C59D539128D781C9005AFEC8 /* README.md */; };
@@ -69,6 +73,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C502974B27190A0700F2A7CF /* CRC32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRC32.swift; sourceTree = "<group>"; };
 		C50E761326B7C71900FB8C2C /* Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comparable.swift; sourceTree = "<group>"; };
 		C50E761626B7CA6B00FB8C2C /* JoystickView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoystickView.swift; sourceTree = "<group>"; };
 		C50E761B26B83F2400FB8C2C /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
@@ -109,6 +114,7 @@
 		C53D55AA26B5362700E1F75B /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		C54BE4A926D495D500530927 /* PolygonShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonShape.swift; sourceTree = "<group>"; };
 		C5624F2526D3292B00ECD78A /* GCPadNew.ini */ = {isa = PBXFileReference; lastKnownFileType = text; path = GCPadNew.ini; sourceTree = SOURCE_ROOT; };
+		C5E939F826EC3E4400E12E94 /* CemuhookProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CemuhookProtocol.swift; sourceTree = "<group>"; };
 		C59D538D28D6776B005AFEC8 /* IdleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdleManager.swift; sourceTree = "<group>"; };
 		C59D538F28D69A9E005AFEC8 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 		C59D539128D781C9005AFEC8 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -196,9 +202,11 @@
 				C53D558526B43F2C00E1F75B /* Extensions */,
 				C53D558F26B443D500E1F75B /* Networking.swift */,
 				C50E761D26C4424D00FB8C2C /* ControllerProtocol.swift */,
+				C5E939F826EC3E4400E12E94 /* CemuhookProtocol.swift */,
 				C52CD4BD26C7E2350081ABF5 /* EndpointWrapper.swift */,
 				C51271B626D2B14300820249 /* Theme.swift */,
 				C54BE4A926D495D500530927 /* PolygonShape.swift */,
+				C502974B27190A0700F2A7CF /* CRC32.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -447,7 +455,9 @@
 				C52A64C326DC1910001A39C7 /* ControllerView.swift in Sources */,
 				C53D559026B443D500E1F75B /* Networking.swift in Sources */,
 				C50E761C26B83F2400FB8C2C /* Haptics.swift in Sources */,
+				C502974C27190A0700F2A7CF /* CRC32.swift in Sources */,
 				C53D558D26B4402E00E1F75B /* ContentView.swift in Sources */,
+				C5E939F926EC3E4400E12E94 /* CemuhookProtocol.swift in Sources */,
 				C54BE4AA26D495D500530927 /* PolygonShape.swift in Sources */,
 				C50E761426B7C71900FB8C2C /* Comparable.swift in Sources */,
 				C52CD4BE26C7E2350081ABF5 /* EndpointWrapper.swift in Sources */,
@@ -474,6 +484,8 @@
 				C53D558826B43F3C00E1F75B /* ObservableObject.swift in Sources */,
 				C54BE4AB26D495D500530927 /* PolygonShape.swift in Sources */,
 				C51271B826D2B14300820249 /* Theme.swift in Sources */,
+				C502974D27190A0700F2A7CF /* CRC32.swift in Sources */,
+				C5E939FA26EC3E4400E12E94 /* CemuhookProtocol.swift in Sources */,
 				C52CD4BC26C459920081ABF5 /* ControllerFilePipe.swift in Sources */,
 				C51271BA26D2E61C00820249 /* NetworkingInstructionsView.swift in Sources */,
 				C50E761F26C4424D00FB8C2C /* ControllerProtocol.swift in Sources */,
@@ -637,6 +649,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 6D9DLTQJSN;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
@@ -659,6 +672,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 6D9DLTQJSN;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
@@ -684,6 +698,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 6D9DLTQJSN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -708,6 +723,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 6D9DLTQJSN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

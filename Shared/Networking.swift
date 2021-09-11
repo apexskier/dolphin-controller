@@ -64,6 +64,23 @@ extension NWParameters {
     }
 }
 
+extension NWParameters {
+    static func cemuhook() -> NWParameters {
+        let udpOptions = NWProtocolUDP.Options()
+        let params = NWParameters(dtls: nil, udp: udpOptions)
+
+        // Enable using a peer-to-peer link.
+        params.includePeerToPeer = true
+        params.acceptLocalOnly = false
+        params.serviceClass = .interactiveVideo // not really, but I want this fast, and it's low size
+
+        let controllerProtocolOptions = NWProtocolFramer.Options(definition: CemuhookProtocol.definition)
+        params.defaultProtocolStack.applicationProtocols.insert(controllerProtocolOptions, at: 0)
+
+        return params
+    }
+}
+
 extension NWConnection {
     func sendMessage(_ type: ControllerMessageType, data: Data) {
         let message = NWProtocolFramer.Message(controllerMessageType: type)
