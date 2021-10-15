@@ -4,7 +4,7 @@ import SwiftUI
 @main
 struct DolphinControllerApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate: AppDelegate
-    @EnvironmentObject var server: Server
+    @EnvironmentObject var server: ControllerServer
     
     @State var showAdvancedNetworking = false
     
@@ -30,7 +30,7 @@ struct DolphinControllerApp: App {
                 NetworkingInstructionsView()
                     .padding()
             }
-            .environmentObject(appDelegate.server)
+            .environmentObject(appDelegate.controllerServer)
         }
             .commands {
                 CommandGroup(replacing: .newItem) {}
@@ -41,7 +41,8 @@ struct DolphinControllerApp: App {
 }
 
 class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
-    let server = Server()
+    let controllerServer = ControllerServer()
+    let cemuHookServer = CEMUHookServer()
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSWindow.allowsAutomaticWindowTabbing = false
@@ -50,7 +51,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             // ignore sigpipes
         }
         
-        try! server.start()
+        try! controllerServer.start()
+        try! cemuHookServer.start()
         
         do {
             let applicationSupport = try FileManager.default.url(
@@ -78,6 +80,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
     
     func applicationWillTerminate(_ notification: Notification) {
-        try! server.stop()
+        try! controllerServer.stop()
+        try! cemuHookServer.stop()
     }
 }

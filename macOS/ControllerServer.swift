@@ -2,7 +2,7 @@ import Foundation
 import Combine
 import Network
 
-public class Server: ObservableObject {
+public class ControllerServer: ObservableObject {
     private let netService: NWListener
     
     let name = "\(Host.current().localizedName ?? Host.current().name ?? "Unknown computer") - Dolphin Controller Server"

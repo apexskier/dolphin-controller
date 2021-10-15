@@ -30,7 +30,7 @@ struct FaceplateShape: Shape {
 }
 
 struct ContentView: View {
-    @EnvironmentObject private var server: Server
+    @EnvironmentObject private var server: ControllerServer
     @State private var error: Error? = nil
 
     var connectedControllerCount: Int {

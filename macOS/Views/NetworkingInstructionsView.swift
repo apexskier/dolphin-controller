@@ -2,7 +2,7 @@ import SwiftUI
 
 struct NetworkingInstructionsView: View {
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject private var server: Server
+    @EnvironmentObject private var server: ControllerServer
     
     private let portFormatter: NumberFormatter = {
         let f = NumberFormatter()
