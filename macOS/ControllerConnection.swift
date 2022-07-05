@@ -16,13 +16,16 @@ final class ControllerConnection: Identifiable {
     let errorPublisher = PassthroughSubject<Error, Never>()
 
     private var pipe: ControllerFilePipe? = nil
+    private let cemuhookServer: CEMUHookServer
 
     init(
+        cemuhookServer: CEMUHookServer,
         connection: NWConnection,
         didClose: @escaping (Error?) -> Void,
         connectionReady: @escaping () -> Void,
         didPickControllerIndex: @escaping (UInt8) -> Void
     ) throws {
+        self.cemuhookServer = cemuhookServer
         self.connection = connection
         self.didClose = didClose
         self.connectionReady = connectionReady
@@ -70,6 +73,7 @@ final class ControllerConnection: Identifiable {
                         // controller number hasn't been chosen
                         return
                     }
+                    self.cemuhookServer.send(on: 0)
                     do {
                         try pipe.streamText(data: content)
                     } catch {

@@ -41,8 +41,8 @@ struct DolphinControllerApp: App {
 }
 
 class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
-    let controllerServer = ControllerServer()
-    let cemuHookServer = CEMUHookServer()
+    var controllerServer: ControllerServer!
+    var cemuHookServer: CEMUHookServer!
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSWindow.allowsAutomaticWindowTabbing = false
@@ -50,7 +50,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         signal(SIGPIPE) { _ in
             // ignore sigpipes
         }
-        
+
+        controllerServer = ControllerServer()
+        cemuHookServer = CEMUHookServer()
         try! controllerServer.start()
         try! cemuHookServer.start()
         
@@ -81,6 +83,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     
     func applicationWillTerminate(_ notification: Notification) {
         try! controllerServer.stop()
-        try! cemuHookServer.stop()
+        try! cemuHookServer .stop()
     }
 }

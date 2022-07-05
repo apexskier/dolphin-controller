@@ -12,8 +12,10 @@ public class ControllerServer: ObservableObject {
 
     @Published var port: NWEndpoint.Port? = nil
     private var allControllers: [ControllerConnection] = []
+    private var cemuhookServer: CEMUHookServer
 
-    init() {
+    init(cemuhookServer: CEMUHookServer) {
+        self.cemuhookServer = cemuhookServer
         self.netService = try! NWListener(using: .custom())
         netService.service = NWListener.Service(
             name: self.name,
@@ -42,6 +44,7 @@ public class ControllerServer: ObservableObject {
 
             var controllerConnection: ControllerConnection? = nil
             controllerConnection = try! ControllerConnection(
+                cemuhookServer: self.cemuhookServer,
                 connection: connection,
                 didClose: { error in
                     DispatchQueue.main.async {

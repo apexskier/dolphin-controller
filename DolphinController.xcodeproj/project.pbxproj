@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		C502974C27190A0700F2A7CF /* CRC32.swift in Sources */ = {isa = PBXBuildFile; fileRef = C502974B27190A0700F2A7CF /* CRC32.swift */; };
 		C502974D27190A0700F2A7CF /* CRC32.swift in Sources */ = {isa = PBXBuildFile; fileRef = C502974B27190A0700F2A7CF /* CRC32.swift */; };
-		C502974F271910F200F2A7CF /* CEMUHookServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C502974E271910F200F2A7CF /* CEMUHookServer.swift */; };
 		C5029750271910F200F2A7CF /* CEMUHookServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C502974E271910F200F2A7CF /* CEMUHookServer.swift */; };
 		C50E761426B7C71900FB8C2C /* Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E761326B7C71900FB8C2C /* Comparable.swift */; };
 		C50E761526B7C71900FB8C2C /* Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E761326B7C71900FB8C2C /* Comparable.swift */; };
@@ -33,6 +32,7 @@
 		C52CD4BF26C7E2350081ABF5 /* EndpointWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4BD26C7E2350081ABF5 /* EndpointWrapper.swift */; };
 		C52CD4C226C7F6DB0081ABF5 /* ControllerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4C026C7F6DB0081ABF5 /* ControllerConnection.swift */; };
 		C52CD4C426C80B850081ABF5 /* LightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4C326C80B850081ABF5 /* LightView.swift */; };
+		C531ADEE2873C703003B0134 /* CEMUHookServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C502974E271910F200F2A7CF /* CEMUHookServer.swift */; };
 		C53D555D26B43D4F00E1F75B /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D555C26B43D4F00E1F75B /* Tests_iOS.swift */; };
 		C53D556826B43D4F00E1F75B /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D556726B43D4F00E1F75B /* Tests_macOS.swift */; };
 		C53D556D26B43D4F00E1F75B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D554226B43D4C00E1F75B /* ContentView.swift */; };
@@ -454,7 +454,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C502974F271910F200F2A7CF /* CEMUHookServer.swift in Sources */,
 				C53D558026B43E2B00E1F75B /* DolphinControllerApp.swift in Sources */,
 				C52CD4C426C80B850081ABF5 /* LightView.swift in Sources */,
 				C52A64C326DC1910001A39C7 /* ControllerView.swift in Sources */,
@@ -519,6 +518,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C53D556826B43D4F00E1F75B /* Tests_macOS.swift in Sources */,
+				C531ADEE2873C703003B0134 /* CEMUHookServer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
