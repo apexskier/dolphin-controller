@@ -27,6 +27,9 @@ public class Client: ObservableObject {
     @Published var controllerInfo: ClientControllerInfo? = nil
         
     init() {
+        if let keepScreenAwake = Self.storage.value(forKey: "keepScreenAwake") as? Bool {
+            UIApplication.shared.isIdleTimerDisabled = keepScreenAwake
+        }
         if let endpointData = Self.storage.value(forKey: StorageKeys.lastUsedServer.rawValue) as? Data,
            let endpointWrapper = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(endpointData) as? EndpointWrapper {
             lastServer = endpointWrapper.endpoint
