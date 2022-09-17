@@ -10,7 +10,7 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             List {
-                Toggle("Keep Screen Awake", isOn: $keepScreenAwake)
+                Toggle("Keep Screen Awake (when connected to server)", isOn: $keepScreenAwake)
                     .onChange(of: keepScreenAwake) { newValue in
                         client.idleManager?.update()
                     }
