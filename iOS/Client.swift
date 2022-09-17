@@ -6,7 +6,7 @@ import Network
 let pingInterval: TimeInterval = 2
 let maxPingCount = 5
 
-public class Client: ObservableObject {
+class Client: ObservableObject {
     static let storage = UserDefaults.standard
     
     public var connection: NWConnection? = nil {
@@ -14,6 +14,7 @@ public class Client: ObservableObject {
             DispatchQueue.main.async {
                 self.objectWillChange.send()
             }
+            idleManager?.update()
         }
     }
 
@@ -25,8 +26,11 @@ public class Client: ObservableObject {
 
     @Published var lastServer: NWEndpoint?
     @Published var controllerInfo: ClientControllerInfo? = nil
+
+    public var idleManager: IdleManager? = nil
         
     init() {
+        idleManager = IdleManager(client: self)
         if let endpointData = Self.storage.value(forKey: StorageKeys.lastUsedServer.rawValue) as? Data,
            let endpointWrapper = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(endpointData) as? EndpointWrapper {
             lastServer = endpointWrapper.endpoint

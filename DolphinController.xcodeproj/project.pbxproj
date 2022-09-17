@@ -46,6 +46,7 @@
 		C54BE4AA26D495D500530927 /* PolygonShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54BE4A926D495D500530927 /* PolygonShape.swift */; };
 		C54BE4AB26D495D500530927 /* PolygonShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54BE4A926D495D500530927 /* PolygonShape.swift */; };
 		C5624F2626D3292B00ECD78A /* GCPadNew.ini in Resources */ = {isa = PBXBuildFile; fileRef = C5624F2526D3292B00ECD78A /* GCPadNew.ini */; };
+		C59D538E28D6776B005AFEC8 /* IdleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59D538D28D6776B005AFEC8 /* IdleManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +107,7 @@
 		C53D55AA26B5362700E1F75B /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		C54BE4A926D495D500530927 /* PolygonShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonShape.swift; sourceTree = "<group>"; };
 		C5624F2526D3292B00ECD78A /* GCPadNew.ini */ = {isa = PBXFileReference; lastKnownFileType = text; path = GCPadNew.ini; sourceTree = SOURCE_ROOT; };
+		C59D538D28D6776B005AFEC8 /* IdleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdleManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +214,7 @@
 				C51271BE26D2F9AF00820249 /* Storage.swift */,
 				C50E761B26B83F2400FB8C2C /* Haptics.swift */,
 				C53D55AA26B5362700E1F75B /* Client.swift */,
+				C59D538D28D6776B005AFEC8 /* IdleManager.swift */,
 				C53D554B26B43D4E00E1F75B /* Info.plist */,
 			);
 			path = iOS;
@@ -447,6 +450,7 @@
 				C51271B726D2B14300820249 /* Theme.swift in Sources */,
 				C51271C026D2F9B200820249 /* Storage.swift in Sources */,
 				C53D558726B43F3C00E1F75B /* ObservableObject.swift in Sources */,
+				C59D538E28D6776B005AFEC8 /* IdleManager.swift in Sources */,
 				C52CD4BA26C44C970081ABF5 /* ServerBrowserView.swift in Sources */,
 				C50E761726B7CA6B00FB8C2C /* JoystickView.swift in Sources */,
 				C53D55AB26B5362700E1F75B /* Client.swift in Sources */,
