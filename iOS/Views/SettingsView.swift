@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @EnvironmentObject private var client: Client
     @Environment(\.presentationMode) private var presentationMode
     @AppStorage("keepScreenAwake") private var keepScreenAwake = true
     @AppStorage("joystickHapticsEnabled") private var joystickHapticsEnabled = true
@@ -11,7 +12,7 @@ struct SettingsView: View {
             List {
                 Toggle("Keep Screen Awake", isOn: $keepScreenAwake)
                     .onChange(of: keepScreenAwake) { newValue in
-                        UIApplication.shared.isIdleTimerDisabled = newValue
+                        client.idleManager?.update()
                     }
                 Toggle("Continuous Joystick Haptics", isOn: $joystickHapticsEnabled)
                 Toggle("Display Ping", isOn: $showPing)
