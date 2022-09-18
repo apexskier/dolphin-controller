@@ -19,9 +19,11 @@ class IdleManager {
     }
 
     func update() {
-        let settingVal = Self.storage.value(forKey: "keepScreenAwake") as? Bool ?? true
-        let hasConnection = client.connection != nil
 
-        UIApplication.shared.isIdleTimerDisabled = settingVal && hasConnection
+        DispatchQueue.main.async {
+            let settingVal = Self.storage.value(forKey: "keepScreenAwake") as? Bool ?? true
+            let hasConnection = self.client.connection != nil
+            UIApplication.shared.isIdleTimerDisabled = settingVal && hasConnection
+        }
     }
 }
