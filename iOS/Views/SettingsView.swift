@@ -16,6 +16,8 @@ struct SettingsView: View {
                     }
                 Toggle("Continuous Joystick Haptics", isOn: $joystickHapticsEnabled)
                 Toggle("Display Ping", isOn: $showPing)
+
+                HelpView()
             }
                 .navigationBarTitle("Settings")
                 .navigationBarItems(trailing: Button("Close", action: {

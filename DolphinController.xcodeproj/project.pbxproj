@@ -47,6 +47,7 @@
 		C54BE4AB26D495D500530927 /* PolygonShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54BE4A926D495D500530927 /* PolygonShape.swift */; };
 		C5624F2626D3292B00ECD78A /* GCPadNew.ini in Resources */ = {isa = PBXBuildFile; fileRef = C5624F2526D3292B00ECD78A /* GCPadNew.ini */; };
 		C59D538E28D6776B005AFEC8 /* IdleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59D538D28D6776B005AFEC8 /* IdleManager.swift */; };
+		C59D539028D69A9E005AFEC8 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59D538F28D69A9E005AFEC8 /* HelpView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,6 +109,7 @@
 		C54BE4A926D495D500530927 /* PolygonShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonShape.swift; sourceTree = "<group>"; };
 		C5624F2526D3292B00ECD78A /* GCPadNew.ini */ = {isa = PBXFileReference; lastKnownFileType = text; path = GCPadNew.ini; sourceTree = SOURCE_ROOT; };
 		C59D538D28D6776B005AFEC8 /* IdleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdleManager.swift; sourceTree = "<group>"; };
+		C59D538F28D69A9E005AFEC8 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +156,7 @@
 				C50E761626B7CA6B00FB8C2C /* JoystickView.swift */,
 				C52CD4B926C44C970081ABF5 /* ServerBrowserView.swift */,
 				C52528B226DAEFB000902B87 /* SettingsView.swift */,
+				C59D538F28D69A9E005AFEC8 /* HelpView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -449,6 +452,7 @@
 				C52A64C126DC02A1001A39C7 /* PingView.swift in Sources */,
 				C51271B726D2B14300820249 /* Theme.swift in Sources */,
 				C51271C026D2F9B200820249 /* Storage.swift in Sources */,
+				C59D539028D69A9E005AFEC8 /* HelpView.swift in Sources */,
 				C53D558726B43F3C00E1F75B /* ObservableObject.swift in Sources */,
 				C59D538E28D6776B005AFEC8 /* IdleManager.swift in Sources */,
 				C52CD4BA26C44C970081ABF5 /* ServerBrowserView.swift in Sources */,

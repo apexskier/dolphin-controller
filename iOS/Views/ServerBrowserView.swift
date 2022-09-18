@@ -57,6 +57,7 @@ struct ServerBrowserView: View {
                                 }
                         }
                     }
+                    HelpView()
                 }
             }
             .navigationBarTitle("Server Browser")
