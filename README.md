@@ -13,6 +13,10 @@ Video games were meant to be played together. All you need to play a game with f
 3. From the iOS app, tap "Join" and find your server
 4. Pick a controller number by tapping P1, P2, P3, or P4
 
+**Important**:
+
+Dolphin Controller can be _slow_ depending the speed of your WiFi/bluetooth/remote network connect _and_ the speed of the Dolphin emulator itself. Try verifying the performance with a simple game if a more performance intensive game feels slow. Tips for improving performance can be found in Dolphin's [Performance Guide](https://dolphin-emu.org/docs/guides/performance-guide/).
+
 ## Setup
 
 In order for the app to interact with the Dolphin Emulator software, this app takes advantage of [Dolphin's pipe input feature](https://wiki.dolphin-emu.org/index.php?title=Pipe_Input).
