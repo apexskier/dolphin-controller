@@ -39,5 +39,6 @@ You can verify the controller is connected by clicking "Configure" and ensuring 
 * In the server browser window (after tapping "Join") the ★'d server is the one last connected to.
 * Servers are advertised automatically with Bonjour, so no need to enter manual information if everyone's in the same room.
 * For remote play, tap the Network icon in the macOS app's toolbar to find the port, forward to a public IP address, and enter the address manually.
+* The server is not currently in the App Store because it breaks sandboxing by modifying Dolphin's configuration files directly. A long term goal is to figure out a way to avoid that to distribute on the App Store along side the iOS app.
 
 ❤️ inspired by (and originally forked from, but since rewritten) https://github.com/ajaymerchia/dolphin-controller
