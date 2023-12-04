@@ -154,7 +154,7 @@ class Client: ObservableObject {
                                 DispatchQueue.main.async {
                                     self.pingPublisher.send(pingDuration)
                                 }
-                            case .command, .pickController, .cemuhookControllerData:
+                            case .pickController, .cemuhookControllerData:
                                 fatalError("unexpected message in client \(message.controllerMessageType)")
                             }
                         }
@@ -210,10 +210,6 @@ class Client: ObservableObject {
         self.connection?.sendControllerMessage(.pickController, data: data)
     }
 
-    func send(_ content: String) {
-        self.connection?.sendControllerMessage(.command, data: Data(content.utf8))
-    }
-    
     func sendCemuhook(_ data: OutgoingControllerData) {
         self.connection?.sendControllerMessage(.cemuhookControllerData, data: data.encodedData)
     }

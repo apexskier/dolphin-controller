@@ -30,7 +30,6 @@
 		C52A64C526DC1965001A39C7 /* GCButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52A64C426DC1965001A39C7 /* GCButton.swift */; };
 		C52A64C726DC199A001A39C7 /* PressAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52A64C626DC199A001A39C7 /* PressAction.swift */; };
 		C52CD4BA26C44C970081ABF5 /* ServerBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4B926C44C970081ABF5 /* ServerBrowserView.swift */; };
-		C52CD4BC26C459920081ABF5 /* ControllerFilePipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4BB26C459920081ABF5 /* ControllerFilePipe.swift */; };
 		C52CD4BE26C7E2350081ABF5 /* EndpointWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4BD26C7E2350081ABF5 /* EndpointWrapper.swift */; };
 		C52CD4BF26C7E2350081ABF5 /* EndpointWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4BD26C7E2350081ABF5 /* EndpointWrapper.swift */; };
 		C52CD4C226C7F6DB0081ABF5 /* ControllerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CD4C026C7F6DB0081ABF5 /* ControllerConnection.swift */; };
@@ -96,7 +95,6 @@
 		C52A64C426DC1965001A39C7 /* GCButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCButton.swift; sourceTree = "<group>"; };
 		C52A64C626DC199A001A39C7 /* PressAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressAction.swift; sourceTree = "<group>"; };
 		C52CD4B926C44C970081ABF5 /* ServerBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerBrowserView.swift; sourceTree = "<group>"; };
-		C52CD4BB26C459920081ABF5 /* ControllerFilePipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerFilePipe.swift; sourceTree = "<group>"; };
 		C52CD4BD26C7E2350081ABF5 /* EndpointWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointWrapper.swift; sourceTree = "<group>"; };
 		C52CD4C026C7F6DB0081ABF5 /* ControllerConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerConnection.swift; sourceTree = "<group>"; };
 		C52CD4C326C80B850081ABF5 /* LightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightView.swift; sourceTree = "<group>"; };
@@ -253,7 +251,6 @@
 				C515C76D2B1D338C0083FAC9 /* Server.swift */,
 				C502974E271910F200F2A7CF /* CEMUHookClient.swift */,
 				C52CD4C026C7F6DB0081ABF5 /* ControllerConnection.swift */,
-				C52CD4BB26C459920081ABF5 /* ControllerFilePipe.swift */,
 				C53D555226B43D4F00E1F75B /* Info.plist */,
 				C5624F2526D3292B00ECD78A /* GCPadNew.ini */,
 				C53D555326B43D4F00E1F75B /* macOS.entitlements */,
@@ -499,7 +496,6 @@
 				C502974D27190A0700F2A7CF /* CRC32.swift in Sources */,
 				C5E939FA26EC3E4400E12E94 /* CemuhookProtocol.swift in Sources */,
 				C5029750271910F200F2A7CF /* CEMUHookClient.swift in Sources */,
-				C52CD4BC26C459920081ABF5 /* ControllerFilePipe.swift in Sources */,
 				C505D66C2B1E491E00B14DA9 /* ClientConnectionInstructionsView.swift in Sources */,
 				C51271BA26D2E61C00820249 /* NetworkingInstructionsView.swift in Sources */,
 				C50E761F26C4424D00FB8C2C /* ControllerProtocol.swift in Sources */,

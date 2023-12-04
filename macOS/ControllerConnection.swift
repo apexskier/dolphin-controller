@@ -16,8 +16,6 @@ final class ControllerConnection: Identifiable {
 
     let errorPublisher = PassthroughSubject<Error, Never>()
 
-    private var pipe: ControllerFilePipe? = nil
-
     init(
         connection: NWConnection,
         didClose: @escaping (Error?) -> Void,
@@ -74,27 +72,12 @@ final class ControllerConnection: Identifiable {
                 switch message.controllerMessageType {
                 case .cemuhookControllerData:
                     self.onCemuhookInformation(content)
-                case .command:
-                    guard let pipe = self.pipe else {
-                        // controller number hasn't been chosen
-                        return
-                    }
-                    do {
-                        try pipe.streamText(data: content)
-                    } catch {
-                        self.errorPublisher.send(error)
-                    }
                 case .pickController:
                     let controllerNumber = content.withUnsafeBytes { pointer in
                         pointer.load(as: UInt8.self)
                     }
 
-                    do {
-                        self.pipe = try ControllerFilePipe(index: controllerNumber)
-                        self.didPickControllerNumber(controllerNumber)
-                    } catch {
-                        self.errorPublisher.send(error)
-                    }
+                    self.didPickControllerNumber(controllerNumber)
                 case .ping:
                     self.connection.sendControllerMessage(.pong, data: content)
                 case .errorMessage:

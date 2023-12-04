@@ -6,10 +6,6 @@ import Network
 enum ControllerMessageType: UInt32, CustomDebugStringConvertible {
     case errorMessage = 0
 
-    // sent from client to server
-    // data: a string, to be passed to dolphin's pipe as a command (doesn't include newline)
-    case command = 1
-
     // sent from server to client
     // send the available controller numbers
     // data: bitmask of available controller
@@ -35,8 +31,6 @@ enum ControllerMessageType: UInt32, CustomDebugStringConvertible {
         switch self {
         case .errorMessage:
             return "errorMessage"
-        case .command:
-            return "command"
         case .controllerInfo:
             return "controllerInfo"
         case .pickController:

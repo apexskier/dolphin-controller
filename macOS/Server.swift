@@ -180,34 +180,3 @@ public class Server: ObservableObject {
         print("Server closed")
     }
 }
-
-enum PipeError: Error {
-    case openFailed
-}
-
-func createPipe(index: UInt8) throws -> OutputStream {
-    let applicationSupport = try FileManager.default.url(
-        for: .applicationSupportDirectory,
-        in: .userDomainMask,
-        appropriateFor: nil,
-        create: true
-    )
-    
-    let pipesFolder = applicationSupport
-        .appendingPathComponent("Dolphin")
-        .appendingPathComponent("Pipes")
-    if !FileManager.default.fileExists(atPath: pipesFolder.path) {
-        try FileManager.default.createDirectory(
-            at: pipesFolder,
-            withIntermediateDirectories: true,
-            attributes: nil
-        )
-    }
-    let pipeUrl = pipesFolder.appendingPathComponent("ctrl\(index+1)")
-    mkfifo(pipeUrl.path, 0o644)
-    guard let outputStream = OutputStream(url: pipeUrl, append: true) else {
-        throw PipeError.openFailed
-    }
-    
-    return outputStream
-}

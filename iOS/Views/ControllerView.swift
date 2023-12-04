@@ -15,10 +15,8 @@ private struct PressButton<Label>: View where Label: View {
             label
         }
         .pressAction(pressed: $pressed, onPress: {
-            client.send("PRESS \(identifier)")
             haptic.impactOccurred(intensity: 1)
         }, onRelease: {
-            client.send("RELEASE \(identifier)")
             haptic.impactOccurred(intensity: 0.4)
         })
     }

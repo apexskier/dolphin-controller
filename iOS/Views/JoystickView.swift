@@ -70,7 +70,6 @@ struct Joystick<Label>: View where Label: View {
         willSet {
             guard let value = newValue else {
                 self.handleChange(CGPoint(x: 0.5, y: 0.5))
-                client.send("SET \(identifier) 0.5 0.5")
                 inCenter = true
                 hapticContainer.haptics.stop()
                 return
@@ -85,7 +84,6 @@ struct Joystick<Label>: View where Label: View {
             let x = (translation.width / (diameter*1.5)).clamped(to: -0.5...0.5)
             let y = (-translation.height / (diameter*1.5)).clamped(to: -0.5...0.5)
             self.handleChange(CGPoint(x: x+0.5, y: y+0.5))
-            client.send("SET \(identifier) \(x+0.5) \(y+0.5)")
             let magnitude = sqrt(x*2*x*2 + y*2*y*2)
             inCenter = magnitude < 0.2
             outsideEdges = magnitude > 1
