@@ -226,10 +226,10 @@ struct IncomingControllerData: MessageDecodable {
 struct ButtonsMask1: OptionSet {
     let rawValue: UInt8
 
-    static let dPadLeft = ButtonsMask1(rawValue: 1 << 7)
-    static let dPadDown = ButtonsMask1(rawValue: 1 << 6)
-    static let dPadRight = ButtonsMask1(rawValue: 1 << 5)
-    static let dPadUp = ButtonsMask1(rawValue: 1 << 4)
+    static let dPadLeft = ButtonsMask1(rawValue: 1 << 7) // dolphin doesn't use these
+    static let dPadDown = ButtonsMask1(rawValue: 1 << 6) // dolphin doesn't use these
+    static let dPadRight = ButtonsMask1(rawValue: 1 << 5) // dolphin doesn't use these
+    static let dPadUp = ButtonsMask1(rawValue: 1 << 4) // dolphin doesn't use these
     static let options = ButtonsMask1(rawValue: 1 << 3)
     static let r3 = ButtonsMask1(rawValue: 1 << 2)
     static let l3 = ButtonsMask1(rawValue: 1 << 1)
@@ -239,14 +239,14 @@ struct ButtonsMask1: OptionSet {
 struct ButtonsMask2: OptionSet {
     let rawValue: UInt8
 
-    static let y = ButtonsMask2(rawValue: 1 << 7)
-    static let b = ButtonsMask2(rawValue: 1 << 6)
-    static let a = ButtonsMask2(rawValue: 1 << 5)
-    static let x = ButtonsMask2(rawValue: 1 << 4)
-    static let r1 = ButtonsMask2(rawValue: 1 << 3)
-    static let l1 = ButtonsMask2(rawValue: 1 << 2)
-    static let r2 = ButtonsMask2(rawValue: 1 << 1)
-    static let l2 = ButtonsMask2(rawValue: 1 << 0)
+    static let y = ButtonsMask2(rawValue: 1 << 7) // dolphin doesn't use these
+    static let b = ButtonsMask2(rawValue: 1 << 6) // dolphin doesn't use these
+    static let a = ButtonsMask2(rawValue: 1 << 5) // dolphin doesn't use these
+    static let x = ButtonsMask2(rawValue: 1 << 4) // dolphin doesn't use these
+    static let r1 = ButtonsMask2(rawValue: 1 << 3) // dolphin doesn't use these
+    static let l1 = ButtonsMask2(rawValue: 1 << 2) // dolphin doesn't use these
+    static let r2 = ButtonsMask2(rawValue: 1 << 1) // dolphin doesn't use these
+    static let l2 = ButtonsMask2(rawValue: 1 << 0) // dolphin doesn't use these
 }
 
 struct TouchData {

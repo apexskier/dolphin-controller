@@ -77,15 +77,15 @@ public class Server: ObservableObject {
                     }
                 },
                 onCemuhookInformation: { data in
-                    for client in self.cemuhookClients {
-                        let message = NWProtocolFramer.Message(
-                            cemuhookMessage: .rawControllerData(data)
-                        )
-                        let context = NWConnection.ContentContext(
-                            identifier: "TODO",
-                            metadata: [message]
-                        )
+                    let message = NWProtocolFramer.Message(
+                        cemuhookMessage: .rawControllerData(data)
+                    )
+                    let context = NWConnection.ContentContext(
+                        identifier: "TODO",
+                        metadata: [message]
+                    )
 
+                    for client in self.cemuhookClients {
                         client.connection.send(
                             content: nil,
                             contentContext: context,

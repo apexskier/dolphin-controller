@@ -77,7 +77,8 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
     @State var mainJoystickValue = CGPoint(x: 0.5, y: 0.5)
     @State var cJoystickValue = CGPoint(x: 0.5, y: 0.5)
     
-    @State var packetNumber: UInt32 = 0
+    @State private var packetNumber: UInt32 = 0
+    @State private var batteryStatus: BatteryStatus = .notApplicable
 
     var body: some View {
         HStack {
@@ -255,51 +256,54 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
             }
             .frame(width: 200)
         }
-        .onChange(of: dUpPressed) { newValue in
-            self.sendCemuUpdate()
-        }
-        .onChange(of: dDownPressed) { newValue in
-            self.sendCemuUpdate()
-        }
-        .onChange(of: dLeftPressed) { newValue in
-            self.sendCemuUpdate()
-        }
-        .onChange(of: dRightPressed) { newValue in
-            self.sendCemuUpdate()
-        }
-        .onChange(of: lPressed) { newValue in
-            self.sendCemuUpdate()
-        }
-        .onChange(of: rPressed) { newValue in
-            self.sendCemuUpdate()
-        }
-        .onChange(of: zPressed) { newValue in
-            self.sendCemuUpdate()
-        }
-        .onChange(of: startPressed) { newValue in
-            self.sendCemuUpdate()
-        }
-        .onChange(of: aPressed) { newValue in
-            self.sendCemuUpdate()
-        }
-        .onChange(of: bPressed) { newValue in
-            self.sendCemuUpdate()
-        }
-        .onChange(of: xPressed) { newValue in
-            self.sendCemuUpdate()
-        }
-        .onChange(of: yPressed) { newValue in
-            self.sendCemuUpdate()
-        }
-        .onChange(of: mainJoystickValue) { newValue in
-            self.sendCemuUpdate()
-        }
-        .onChange(of: cJoystickValue) { newValue in
-            self.sendCemuUpdate()
+        .onChange(of: dUpPressed, perform: sendCemuUpdate)
+        .onChange(of: dDownPressed, perform: sendCemuUpdate)
+        .onChange(of: dLeftPressed, perform: sendCemuUpdate)
+        .onChange(of: dRightPressed, perform: sendCemuUpdate)
+        .onChange(of: lPressed, perform: sendCemuUpdate)
+        .onChange(of: rPressed, perform: sendCemuUpdate)
+        .onChange(of: zPressed, perform: sendCemuUpdate)
+        .onChange(of: startPressed, perform: sendCemuUpdate)
+        .onChange(of: aPressed, perform: sendCemuUpdate)
+        .onChange(of: bPressed, perform: sendCemuUpdate)
+        .onChange(of: xPressed, perform: sendCemuUpdate)
+        .onChange(of: yPressed, perform: sendCemuUpdate)
+        .onChange(of: mainJoystickValue, perform: sendCemuUpdate)
+        .onChange(of: cJoystickValue, perform: sendCemuUpdate)
+        .onAppear(perform: {
+            UIDevice.current.isBatteryMonitoringEnabled = true
+            updateBatteryStatus(0)
+        })
+        .onReceive(NotificationCenter.default.publisher(for: UIDevice.batteryLevelDidChangeNotification), perform: updateBatteryStatus)
+        .onReceive(NotificationCenter.default.publisher(for: UIDevice.batteryStateDidChangeNotification), perform: updateBatteryStatus)
+    }
+                   
+    func updateBatteryStatus(_: Any) {
+        switch UIDevice.current.batteryState {
+        case .charging:
+            batteryStatus = .charging
+        case .full:
+            batteryStatus = .charged
+        case .unknown:
+            batteryStatus = .notApplicable
+        case .unplugged:
+            if UIDevice.current.batteryLevel > 0.95 {
+                batteryStatus = .full
+            } else if UIDevice.current.batteryLevel > 0.75 {
+                batteryStatus = .high
+            } else if UIDevice.current.batteryLevel > 0.40 {
+                batteryStatus = .medium
+            } else if UIDevice.current.batteryLevel > 0.15 {
+                batteryStatus = .low
+            } else {
+                batteryStatus = .dying
+            }
+        @unknown default:
+            batteryStatus = .notApplicable
         }
     }
     
-    func sendCemuUpdate() {
+    func sendCemuUpdate(_: Any) {
         var buttons1 = ButtonsMask1()
         var buttons2 = ButtonsMask2()
         
@@ -322,6 +326,7 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
             buttons2.insert(.r1)
         }
         if zPressed {
+            buttons1.insert(.share)
         }
         if startPressed {
             buttons1.insert(.options)
@@ -339,34 +344,34 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
             buttons2.insert(.y)
         }
         
-        self.client.sendCemuhook(OutgoingControllerData(
+        client.sendCemuhook(.init(
             controllerData: .init(
                 slot: 0,
-                state: .connected,
+                state: .connected, // TODO: use reserved if controller temporarily disconnects?
                 model: .notApplicable,
                 connectionType: .notApplicable,
-                batteryStatus: .notApplicable
+                batteryStatus: batteryStatus
             ),
             isConnected: true,
-            clientPacketNumber: self.packetNumber,
+            clientPacketNumber: packetNumber,
             buttons1: buttons1,
             buttons2: buttons2,
             leftStickX: UInt8(mainJoystickValue.x * CGFloat(UInt8.max)),
             leftStickY: UInt8(mainJoystickValue.y * CGFloat(UInt8.max)),
             rightStickX: UInt8(cJoystickValue.x * CGFloat(UInt8.max)),
             rightStickY: UInt8(cJoystickValue.y * CGFloat(UInt8.max)),
-            analogDPadLeft: 128,
-            analogDPadDown: 128,
-            analogDPadRight: 128,
-            analogDPadUp: 128,
-            analogY: 128,
-            analogB: 128,
-            analogA: 128,
-            analogX: 128,
-            analogR1: 128,
-            analogL1: 128,
-            analogR2: 128,
-            analogL2: 128,
+            analogDPadLeft: dLeftPressed ? .max : .min,
+            analogDPadDown: dDownPressed ? .max : .min,
+            analogDPadRight: dRightPressed ? .max : .min,
+            analogDPadUp: dUpPressed ? .max : .min,
+            analogY: yPressed ? .max : .min,
+            analogB: bPressed ? .max : .min,
+            analogA: aPressed ? .max : .min,
+            analogX: xPressed ? .max : .min,
+            analogR1: rPressed ? .max : .min,
+            analogL1: lPressed ? .max : .min,
+            analogR2: .min,
+            analogL2: .min,
             firstTouch: TouchData(active: false, id: 0, xPos: 0, yPos: 0),
             secondTouch: TouchData(active: false, id: 0, xPos: 0, yPos: 0),
             motionTimestamp: 0,
@@ -375,8 +380,8 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
             accZ: 0,
             gyroPitch: 0,
             gyroYaw: 0,
-            gyroRoll: 0)
-        )
+            gyroRoll: 0
+        ))
         self.packetNumber += 1
     }
 }
