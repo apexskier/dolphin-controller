@@ -1,4 +1,5 @@
 import SwiftUI
+import CoreMotion
 
 private struct PressButton<Label>: View where Label: View {
     @EnvironmentObject private var client: Client
@@ -59,7 +60,15 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
     
     var playerIndicators: PlayerIndicators
     var appButtons: AppButtons
-    
+    var motionManager = CMMotionManager()
+    var motionOperationQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.qualityOfService = .userInteractive
+        return queue
+    }()
+    @State var accelerometerData: CMAcceleration? = nil
+    @State var rotationRate: CMRotationRate? = nil
+        
     @State var dUpPressed = false
     @State var dDownPressed = false
     @State var dLeftPressed = false
@@ -271,6 +280,18 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
         .onAppear(perform: {
             UIDevice.current.isBatteryMonitoringEnabled = true
             updateBatteryStatus(0)
+            
+            motionManager.startDeviceMotionUpdates(to: motionOperationQueue, withHandler: { motion, error in
+                if let error = error {
+                    fatalError("error \(error)")
+                }
+                
+                self.accelerometerData = motion?.userAcceleration
+                self.rotationRate = motion?.rotationRate
+                if let motionData = motion {
+                    self.sendCemuUpdateM(motionData: motionData)
+                }
+            })
         })
         .onReceive(NotificationCenter.default.publisher(for: UIDevice.batteryLevelDidChangeNotification), perform: updateBatteryStatus)
         .onReceive(NotificationCenter.default.publisher(for: UIDevice.batteryStateDidChangeNotification), perform: updateBatteryStatus)
@@ -379,15 +400,104 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
             firstTouch: TouchData(active: false, id: 0, xPos: 0, yPos: 0),
             secondTouch: TouchData(active: false, id: 0, xPos: 0, yPos: 0),
             motionTimestamp: 0,
-            accX: 0,
-            accY: 0,
-            accZ: 0,
-            gyroPitch: 0,
-            gyroYaw: 0,
-            gyroRoll: 0
+            accX: Float(self.accelerometerData?.x ?? 0),
+            accY: Float(self.accelerometerData?.y ?? 0),
+            accZ: Float(self.accelerometerData?.z ?? 0),
+            gyroPitch: Float(self.rotationRate?.x ?? 0) * 57.29578, // convert to degrees
+            gyroYaw: Float(self.rotationRate?.y ?? 0) * 57.29578,
+            gyroRoll: Float(self.rotationRate?.z ?? 0) * 57.29578
         ))
         self.packetNumber += 1
     }
+    
+    func sendCemuUpdateM(motionData: CMDeviceMotion) {
+        guard let slot = client.controllerInfo?.assignedController else {
+            return
+        }
+        
+        var buttons1 = ButtonsMask1()
+        var buttons2 = ButtonsMask2()
+        
+        if dUpPressed {
+            buttons1.insert(.dPadUp)
+        }
+        if dDownPressed {
+            buttons1.insert(.dPadDown)
+        }
+        if dLeftPressed {
+            buttons1.insert(.dPadLeft)
+        }
+        if dRightPressed {
+            buttons1.insert(.dPadRight)
+        }
+        if lPressed {
+            buttons2.insert(.l1)
+        }
+        if rPressed {
+            buttons2.insert(.r1)
+        }
+        if zPressed {
+            buttons1.insert(.share)
+        }
+        if startPressed {
+            buttons1.insert(.options)
+        }
+        if aPressed {
+            buttons2.insert(.a)
+        }
+        if bPressed {
+            buttons2.insert(.b)
+        }
+        if xPressed {
+            buttons2.insert(.x)
+        }
+        if yPressed {
+            buttons2.insert(.y)
+        }
+        
+        client.sendCemuhook(OutgoingControllerData(
+            controllerData: .init(
+                slot: slot,
+                state: .connected, // TODO: use reserved if controller temporarily disconnects?
+                model: .notApplicable,
+                connectionType: .bluetooth,
+                batteryStatus: batteryStatus
+            ),
+            isConnected: true,
+            clientPacketNumber: packetNumber,
+            buttons1: buttons1,
+            buttons2: buttons2,
+            homeButton: 0,
+            touchButton: 0,
+            leftStickX: UInt8(mainJoystickValue.x * CGFloat(UInt8.max)),
+            leftStickY: UInt8(mainJoystickValue.y * CGFloat(UInt8.max)),
+            rightStickX: UInt8(cJoystickValue.x * CGFloat(UInt8.max)),
+            rightStickY: UInt8(cJoystickValue.y * CGFloat(UInt8.max)),
+            analogDPadLeft: dLeftPressed ? .max : .min,
+            analogDPadDown: dDownPressed ? .max : .min,
+            analogDPadRight: dRightPressed ? .max : .min,
+            analogDPadUp: dUpPressed ? .max : .min,
+            analogY: yPressed ? .max : .min,
+            analogB: bPressed ? .max : .min,
+            analogA: aPressed ? .max : .min,
+            analogX: xPressed ? .max : .min,
+            analogR1: rPressed ? .max : .min,
+            analogL1: lPressed ? .max : .min,
+            analogR2: .min,
+            analogL2: .min,
+            firstTouch: TouchData(active: false, id: 0, xPos: 0, yPos: 0),
+            secondTouch: TouchData(active: false, id: 0, xPos: 0, yPos: 0),
+            motionTimestamp: 0,
+            accX: Float(motionData.userAcceleration.x),
+            accY: Float(motionData.userAcceleration.y),
+            accZ: Float(motionData.userAcceleration.z),
+            gyroPitch: Float(motionData.rotationRate.x) * 57.29578, // convert to degrees
+            gyroYaw: Float(motionData.rotationRate.y) * 57.29578,
+            gyroRoll: Float(motionData.rotationRate.z) * 57.29578
+        ))
+        self.packetNumber += 1
+    }
+
 }
 
 #Preview {
