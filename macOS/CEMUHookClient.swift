@@ -2,6 +2,11 @@ import Foundation
 import Network
 import Combine
 
+enum RegisteredSlots {
+  case slots([UInt8])
+  case all
+}
+
 final class CEMUHookClient: Equatable, Identifiable {
     internal var id = UUID() // this allows using this in more swiftui places
     
@@ -11,23 +16,23 @@ final class CEMUHookClient: Equatable, Identifiable {
 
     var connection: NWConnection
     var packetCount: UInt32 = 0
+    var disconnectTimer: Timer? = nil
+    var registeredSlots: RegisteredSlots = .slots([])
 
     let errorPublisher = PassthroughSubject<Error, Never>()
     let onCancel: (_ c: CEMUHookClient) -> Void
     let getControllers: () -> [UInt8: ControllerConnection?]
 
-    init(connection: NWConnection, onCancel: @escaping (_ c: CEMUHookClient) -> Void, getControllers: @escaping () -> [UInt8: ControllerConnection?]) {
+    init(
+        connection: NWConnection,
+        onCancel: @escaping (_ c: CEMUHookClient) -> Void,
+        getControllers: @escaping () -> [UInt8: ControllerConnection?]
+    ) {
         self.connection = connection
         self.onCancel = onCancel
         self.getControllers = getControllers
         connection.stateUpdateHandler = self.handleStateUpdate
         connection.start(queue: .global(qos: .userInitiated))
-    }
-
-    func disconnect() {
-        if connection.state != .cancelled {
-            connection.cancel()
-        }
     }
 
     private func handleStateUpdate(state: NWConnection.State) {
@@ -48,6 +53,18 @@ final class CEMUHookClient: Equatable, Identifiable {
             if let error = error {
                 self.connection.handleReceiveError(error: error)
                 return
+            }
+            
+            DispatchQueue.main.async {
+                self.disconnectTimer?.invalidate()
+                let timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { t in
+                    print("client lost")
+                    if self.connection.state != .cancelled {
+                        self.connection.cancel()
+                    }
+                }
+                timer.tolerance = 2
+                self.disconnectTimer = timer
             }
 
             // Extract your message type from the received context.
@@ -83,12 +100,16 @@ final class CEMUHookClient: Equatable, Identifiable {
                         )
                     }
                 case .controllerData(let data):
-                    if data.actions.contains(.slotBaseRegistration) || data.actions.isEmpty {
-                        print("TODO: registration")
-                    }
-                    if data.actions.contains(.macBasedRegistration) || data.actions.isEmpty {
-                        // start sending data for requested mac address
+                    if data.actions.contains(.macBasedRegistration) {
                         fatalError("TODO: not supported")
+                    }
+                    if data.actions.contains(.slotBaseRegistration) {
+                        if case .slots(var slots) = self.registeredSlots {
+                            slots.append(data.slotBasedRegistrationSlot)
+                        }
+                    }
+                    if data.actions.isEmpty {
+                        self.registeredSlots = .all
                     }
                 case .versionInformation:
                     let message = NWProtocolFramer.Message(

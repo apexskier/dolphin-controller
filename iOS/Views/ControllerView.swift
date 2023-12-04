@@ -304,6 +304,10 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
     }
     
     func sendCemuUpdate(_: Any) {
+        guard let slot = client.controllerInfo?.assignedController else {
+            return
+        }
+        
         var buttons1 = ButtonsMask1()
         var buttons2 = ButtonsMask2()
         
@@ -344,12 +348,12 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
             buttons2.insert(.y)
         }
         
-        client.sendCemuhook(.init(
+        client.sendCemuhook(OutgoingControllerData(
             controllerData: .init(
-                slot: 0,
+                slot: slot,
                 state: .connected, // TODO: use reserved if controller temporarily disconnects?
                 model: .notApplicable,
-                connectionType: .notApplicable,
+                connectionType: .bluetooth,
                 batteryStatus: batteryStatus
             ),
             isConnected: true,
@@ -386,23 +390,21 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
     }
 }
 
-struct ControllerView_Previews: PreviewProvider {
-    static var previews: some View {
-        ControllerView(
-            playerIndicators: EmptyView(),
-            appButtons: EmptyView(),
-            dUpPressed: false,
-            dDownPressed: false,
-            dLeftPressed: false,
-            dRightPressed: false,
-            lPressed: false,
-            rPressed: false,
-            zPressed: false,
-            startPressed: false,
-            aPressed: false,
-            bPressed: false,
-            xPressed: false,
-            yPressed: false
-        )
-    }
+#Preview {
+    ControllerView(
+        playerIndicators: EmptyView(),
+        appButtons: EmptyView(),
+        dUpPressed: false,
+        dDownPressed: false,
+        dLeftPressed: false,
+        dRightPressed: false,
+        lPressed: false,
+        rPressed: false,
+        zPressed: false,
+        startPressed: false,
+        aPressed: false,
+        bPressed: false,
+        xPressed: false,
+        yPressed: false
+    )
 }

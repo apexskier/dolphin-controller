@@ -105,13 +105,17 @@ public class Server: ObservableObject {
         }
         
         cemuhookListener.newConnectionHandler = { connection in
-            let client = CEMUHookClient(connection: connection, onCancel: { client in
-                self.cemuhookClients.removeAll { c in
-                    c == client
+            let client = CEMUHookClient(
+                connection: connection,
+                onCancel: { client in
+                    DispatchQueue.main.async {
+                        self.cemuhookClients.removeAll { $0 == client }
+                    }
+                },
+                getControllers: {
+                    self.controllers
                 }
-            }, getControllers: {
-                self.controllers
-            })
+            )
             DispatchQueue.main.async {
                 self.cemuhookClients.append(client)
             }
