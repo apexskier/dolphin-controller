@@ -429,26 +429,12 @@ class CemuhookProtocol: NWProtocolFramerImplementation {
         data.append(eventType.encodedData)
         data.append(content)
 
-        let url = try! FileManager.default.url(
-            for: .cachesDirectory,
-            in: .userDomainMask,
-            appropriateFor: nil,
-            create: true
-        ).appendingPathComponent("temp")
-        try! data.write(to: url)
         let crc32Value: UInt32 = CRC32.checksum(bytes: data)
         data.withUnsafeMutableBytes { ptr in
             ptr.storeBytes(of: crc32Value, toByteOffset: 8, as: UInt32.self)
         }
 
         framer.writeOutput(data: data)
-
-        // Ask the connection to insert the content of the application message after your header.
-//        do {
-//            try framer.writeOutputNoCopy(length: messageLength)
-//        } catch let error {
-//            print("Error writing \(error)")
-//        }
     }
 
     // Whenever new bytes are available to read, try to parse out your message format.
