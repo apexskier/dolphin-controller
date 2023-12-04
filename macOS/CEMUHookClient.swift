@@ -22,64 +22,6 @@ final class CEMUHookClient: Equatable {
         connection.start(queue: .global(qos: .userInitiated))
     }
 
-    func send(on slot: UInt8, buttons2: ButtonsMask2) {
-        let message = NWProtocolFramer.Message(
-            cemuhookMessage: .controllerData(
-                OutgoingControllerData(
-                    controllerData: SharedControllerData(
-                        slot: slot,
-                        state: .connected,
-                        model: .notApplicable,
-                        connectionType: .notApplicable,
-                        batteryStatus: .medium
-                    ),
-                    isConnected: true,
-                    clientPacketNumber: packetCount,
-                    buttons1: .dPadLeft,
-                    buttons2: buttons2,
-                    leftStickX: 128,
-                    leftStickY: 128,
-                    rightStickX: 128,
-                    rightStickY: 128,
-                    analogDPadLeft: 128,
-                    analogDPadDown: 128,
-                    analogDPadRight: 128,
-                    analogDPadUp: 128,
-                    analogY: 128,
-                    analogB: 128,
-                    analogA: 128,
-                    analogX: 128,
-                    analogR1: 128,
-                    analogL1: 128,
-                    analogR2: 128,
-                    analogL2: 128,
-                    firstTouch: TouchData(active: false, id: 0, xPos: 0, yPos: 0),
-                    secondTouch: TouchData(active: false, id: 0, xPos: 0, yPos: 0),
-                    motionTimestamp: 0,
-                    accX: 0,
-                    accY: 0,
-                    accZ: 0,
-                    gyroPitch: 0,
-                    gyroYaw: 0,
-                    gyroRoll: 0
-                )
-            )
-        )
-        let context = NWConnection.ContentContext(
-            identifier: "outgoing version information cemuhook message contex",
-            metadata: [message]
-        )
-        
-        packetCount += 1
-        
-        connection.send(
-            content: nil,
-            contentContext: context,
-            isComplete: true,
-            completion: .idempotent
-        )
-    }
-
     func disconnect() {
         if connection.state != .cancelled {
             connection.cancel()
