@@ -2,8 +2,8 @@ import Foundation
 import Network
 import Combine
 
-final class CEMUHookServerClient: Equatable {
-    static func == (lhs: CEMUHookServerClient, rhs: CEMUHookServerClient) -> Bool {
+final class CEMUHookClient: Equatable {
+    static func == (lhs: CEMUHookClient, rhs: CEMUHookClient) -> Bool {
         lhs.connection == rhs.connection
     }
 
@@ -11,10 +11,10 @@ final class CEMUHookServerClient: Equatable {
     var packetCount: UInt32 = 0
 
     let errorPublisher = PassthroughSubject<Error, Never>()
-    let onCancel: (_ c: CEMUHookServerClient) -> Void
+    let onCancel: (_ c: CEMUHookClient) -> Void
     let getControllers: () -> [UInt8: ControllerConnection?]
 
-    init(connection: NWConnection, onCancel: @escaping (_ c: CEMUHookServerClient) -> Void, getControllers: @escaping () -> [UInt8: ControllerConnection?]) {
+    init(connection: NWConnection, onCancel: @escaping (_ c: CEMUHookClient) -> Void, getControllers: @escaping () -> [UInt8: ControllerConnection?]) {
         self.connection = connection
         self.onCancel = onCancel
         self.getControllers = getControllers
@@ -35,24 +35,24 @@ final class CEMUHookServerClient: Equatable {
                     ),
                     isConnected: true,
                     clientPacketNumber: packetCount,
-                    buttons1: [],
+                    buttons1: .dPadLeft,
                     buttons2: buttons2,
-                    leftStickX: .min,
-                    leftStickY: .min,
-                    rightStickX: .min,
-                    rightStickY: .min,
-                    analogDPadLeft: .min,
-                    analogDPadDown: .min,
-                    analogDPadRight: .min,
-                    analogDPadUp: .min,
-                    analogY: .min,
-                    analogB: .min,
-                    analogA: .min,
-                    analogX: .min,
-                    analogR1: .min,
-                    analogL1: .min,
-                    analogR2: .min,
-                    analogL2: .min,
+                    leftStickX: 128,
+                    leftStickY: 128,
+                    rightStickX: 128,
+                    rightStickY: 128,
+                    analogDPadLeft: 128,
+                    analogDPadDown: 128,
+                    analogDPadRight: 128,
+                    analogDPadUp: 128,
+                    analogY: 128,
+                    analogB: 128,
+                    analogA: 128,
+                    analogX: 128,
+                    analogR1: 128,
+                    analogL1: 128,
+                    analogR2: 128,
+                    analogL2: 128,
                     firstTouch: TouchData(active: false, id: 0, xPos: 0, yPos: 0),
                     secondTouch: TouchData(active: false, id: 0, xPos: 0, yPos: 0),
                     motionTimestamp: 0,

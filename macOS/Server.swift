@@ -12,10 +12,10 @@ public class Server: ObservableObject {
     @Published var controllers: [UInt8: ControllerConnection?] = [:]
     @Published var port: NWEndpoint.Port? = nil
     private var allControllers: [ControllerConnection] = []
-    private var cemuhookClients: [CEMUHookServerClient] = []
+    private var cemuhookClients: [CEMUHookClient] = []
 
     init() {
-        self.controllerListener = try! NWListener(using: .custom())
+        self.controllerListener = try! NWListener(using: .controller())
         self.cemuhookListener = try! NWListener(using: .cemuhook(), on: NWEndpoint.Port(integerLiteral: 26760))
         
         controllerListener.service = NWListener.Service(
@@ -92,7 +92,7 @@ public class Server: ObservableObject {
         
         
         cemuhookListener.newConnectionHandler = { connection in
-            self.cemuhookClients.append(CEMUHookServerClient(connection: connection, onCancel: { client in
+            self.cemuhookClients.append(CEMUHookClient(connection: connection, onCancel: { client in
                 self.cemuhookClients.removeAll { c in
                     c == client
                 }

@@ -5,7 +5,7 @@ import CryptoKit
 let serviceType = "dolphinC"
 
 extension NWParameters {
-    static func custom() -> NWParameters {
+    static func controller() -> NWParameters {
         // Customize TCP options to enable keepalives.
         let tcpOptions = NWProtocolTCP.Options()
         tcpOptions.enableKeepalive = true
@@ -23,6 +23,21 @@ extension NWParameters {
         let controllerProtocolOptions = NWProtocolFramer.Options(definition: ControllerProtocol.definition)
         params.defaultProtocolStack.applicationProtocols.insert(controllerProtocolOptions, at: 0)
         
+        return params
+    }
+    
+    static func cemuhook() -> NWParameters {
+        let udpOptions = NWProtocolUDP.Options()
+        let params = NWParameters(dtls: nil, udp: udpOptions)
+
+        // Enable using a peer-to-peer link.
+        params.includePeerToPeer = true
+        params.acceptLocalOnly = false
+        params.serviceClass = .responsiveData
+
+        let controllerProtocolOptions = NWProtocolFramer.Options(definition: CemuhookProtocol.definition)
+        params.defaultProtocolStack.applicationProtocols.insert(controllerProtocolOptions, at: 0)
+
         return params
     }
     
@@ -61,23 +76,6 @@ extension NWParameters {
             DispatchData(bytes: UnsafeRawBufferPointer(start: ptr.baseAddress, count: stringData.count))
         }
         return dispatchData
-    }
-}
-
-extension NWParameters {
-    static func cemuhook() -> NWParameters {
-        let udpOptions = NWProtocolUDP.Options()
-        let params = NWParameters(dtls: nil, udp: udpOptions)
-
-        // Enable using a peer-to-peer link.
-        params.includePeerToPeer = true
-        params.acceptLocalOnly = false
-        params.serviceClass = .interactiveVideo // not really, but I want this fast, and it's low size
-
-        let controllerProtocolOptions = NWProtocolFramer.Options(definition: CemuhookProtocol.definition)
-        params.defaultProtocolStack.applicationProtocols.insert(controllerProtocolOptions, at: 0)
-
-        return params
     }
 }
 
