@@ -96,7 +96,7 @@ final class ControllerConnection: Identifiable {
                         self.errorPublisher.send(error)
                     }
                 case .ping:
-                    self.connection.sendMessage(.pong, data: content)
+                    self.connection.sendControllerMessage(.pong, data: content)
                 case .errorMessage:
                     let errorStr = String(data: content, encoding: .utf8) ?? "Unknown error"
                     self.errorPublisher.send(ControllerProtocol.ProtocolError.errorMessage(errorStr))

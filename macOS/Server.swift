@@ -162,7 +162,7 @@ public class Server: ObservableObject {
             print("Failed to utf8 encode error string")
             return
         }
-        connection.sendMessage(.errorMessage, data: data)
+        connection.sendControllerMessage(.errorMessage, data: data)
     }
 
     func start() throws {

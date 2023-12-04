@@ -93,7 +93,7 @@ class Client: ObservableObject {
                         let now = Date()
                         self.ping = (uuid, now)
                         let data = Data(bytes: &uuid, count: MemoryLayout<UUID>.size)
-                        connection.sendMessage(.ping, data: data)
+                        connection.sendControllerMessage(.ping, data: data)
                     }
                     pingTimer.fire()
                     self.pingTimer = pingTimer
@@ -131,7 +131,7 @@ class Client: ObservableObject {
                                 let errorStr = String(data: content, encoding: .utf8) ?? "Unknown error"
                                 self.errorPublisher.send(ControllerProtocol.ProtocolError.errorMessage(errorStr))
                             case .ping:
-                                connection.sendMessage(.pong, data: content)
+                                connection.sendControllerMessage(.pong, data: content)
                             case .pong:
                                 let uuid = content.withUnsafeBytes { pointer in
                                     pointer.load(as: UUID.self)
@@ -207,15 +207,15 @@ class Client: ObservableObject {
     func pickController(index: UInt8) {
         var value = index
         let data = Data(bytes: &value, count: MemoryLayout<UInt8>.size)
-        self.connection?.sendMessage(.pickController, data: data)
+        self.connection?.sendControllerMessage(.pickController, data: data)
     }
 
     func send(_ content: String) {
-        self.connection?.sendMessage(.command, data: Data(content.utf8))
+        self.connection?.sendControllerMessage(.command, data: Data(content.utf8))
     }
     
     func sendCemuhook(_ data: OutgoingControllerData) {
-        self.connection?.sendMessage(.cemuhookControllerData, data: data.encodedData)
+        self.connection?.sendControllerMessage(.cemuhookControllerData, data: data.encodedData)
     }
     
     func disconnect() {

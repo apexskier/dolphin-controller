@@ -86,7 +86,7 @@ extension NWConnection: Equatable {
 }
 
 extension NWConnection {
-    func sendMessage(_ type: ControllerMessageType, data: Data) {
+    func sendControllerMessage(_ type: ControllerMessageType, data: Data) {
         let message = NWProtocolFramer.Message(controllerMessageType: type)
         let context = NWConnection.ContentContext(
             identifier: type.debugDescription,
