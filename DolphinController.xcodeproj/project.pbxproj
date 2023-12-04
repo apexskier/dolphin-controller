@@ -20,6 +20,7 @@
 		C51271B826D2B14300820249 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271B626D2B14300820249 /* Theme.swift */; };
 		C51271BA26D2E61C00820249 /* NetworkingInstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271B926D2E61C00820249 /* NetworkingInstructionsView.swift */; };
 		C51271C026D2F9B200820249 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271BE26D2F9AF00820249 /* Storage.swift */; };
+		C515C76F2B1D33900083FAC9 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = C515C76D2B1D338C0083FAC9 /* Server.swift */; };
 		C518B0D426D5E8480042A931 /* ControllerPlugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C518B0D326D5E8480042A931 /* ControllerPlugView.swift */; };
 		C52528B326DAEFB000902B87 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52528B226DAEFB000902B87 /* SettingsView.swift */; };
 		C52A64C126DC02A1001A39C7 /* PingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52A64C026DC02A1001A39C7 /* PingView.swift */; };
@@ -45,16 +46,15 @@
 		C53D558D26B4402E00E1F75B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D558C26B4402E00E1F75B /* ContentView.swift */; };
 		C53D559026B443D500E1F75B /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D558F26B443D500E1F75B /* Networking.swift */; };
 		C53D559126B443D500E1F75B /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D558F26B443D500E1F75B /* Networking.swift */; };
-		C53D55A226B5311900E1F75B /* ControllerServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D55A026B5311900E1F75B /* ControllerServer.swift */; };
 		C53D55AB26B5362700E1F75B /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D55AA26B5362700E1F75B /* Client.swift */; };
 		C54BE4AA26D495D500530927 /* PolygonShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54BE4A926D495D500530927 /* PolygonShape.swift */; };
 		C54BE4AB26D495D500530927 /* PolygonShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54BE4A926D495D500530927 /* PolygonShape.swift */; };
 		C5624F2626D3292B00ECD78A /* GCPadNew.ini in Resources */ = {isa = PBXBuildFile; fileRef = C5624F2526D3292B00ECD78A /* GCPadNew.ini */; };
-		C5E939F926EC3E4400E12E94 /* CemuhookProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E939F826EC3E4400E12E94 /* CemuhookProtocol.swift */; };
-		C5E939FA26EC3E4400E12E94 /* CemuhookProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E939F826EC3E4400E12E94 /* CemuhookProtocol.swift */; };
 		C59D538E28D6776B005AFEC8 /* IdleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59D538D28D6776B005AFEC8 /* IdleManager.swift */; };
 		C59D539028D69A9E005AFEC8 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59D538F28D69A9E005AFEC8 /* HelpView.swift */; };
 		C59D539228D781C9005AFEC8 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C59D539128D781C9005AFEC8 /* README.md */; };
+		C5E939F926EC3E4400E12E94 /* CemuhookProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E939F826EC3E4400E12E94 /* CemuhookProtocol.swift */; };
+		C5E939FA26EC3E4400E12E94 /* CemuhookProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E939F826EC3E4400E12E94 /* CemuhookProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +84,7 @@
 		C51271B626D2B14300820249 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		C51271B926D2E61C00820249 /* NetworkingInstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingInstructionsView.swift; sourceTree = "<group>"; };
 		C51271BE26D2F9AF00820249 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		C515C76D2B1D338C0083FAC9 /* Server.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		C518B0D326D5E8480042A931 /* ControllerPlugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerPlugView.swift; sourceTree = "<group>"; };
 		C52528B226DAEFB000902B87 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		C52A64C026DC02A1001A39C7 /* PingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PingView.swift; sourceTree = "<group>"; };
@@ -113,15 +114,14 @@
 		C53D558626B43F3C00E1F75B /* ObservableObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableObject.swift; sourceTree = "<group>"; };
 		C53D558C26B4402E00E1F75B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C53D558F26B443D500E1F75B /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
-		C53D55A026B5311900E1F75B /* ControllerServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerServer.swift; sourceTree = "<group>"; };
 		C53D55AA26B5362700E1F75B /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		C54BE4A926D495D500530927 /* PolygonShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonShape.swift; sourceTree = "<group>"; };
 		C5624F2526D3292B00ECD78A /* GCPadNew.ini */ = {isa = PBXFileReference; lastKnownFileType = text; path = GCPadNew.ini; sourceTree = SOURCE_ROOT; };
-		C5E939F826EC3E4400E12E94 /* CemuhookProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CemuhookProtocol.swift; sourceTree = "<group>"; };
 		C59D538D28D6776B005AFEC8 /* IdleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdleManager.swift; sourceTree = "<group>"; };
 		C59D538F28D69A9E005AFEC8 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 		C59D539128D781C9005AFEC8 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		C59D539328D781DA005AFEC8 /* CONTRIBUTING.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTING.md; sourceTree = "<group>"; };
+		C5E939F826EC3E4400E12E94 /* CemuhookProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CemuhookProtocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -244,7 +244,7 @@
 			children = (
 				C518B0D526D5EA620042A931 /* Views */,
 				C53D557E26B43E1F00E1F75B /* DolphinControllerApp.swift */,
-				C53D55A026B5311900E1F75B /* ControllerServer.swift */,
+				C515C76D2B1D338C0083FAC9 /* Server.swift */,
 				C502974E271910F200F2A7CF /* CEMUHookServer.swift */,
 				C52CD4C026C7F6DB0081ABF5 /* ControllerConnection.swift */,
 				C52CD4BB26C459920081ABF5 /* ControllerFilePipe.swift */,
@@ -498,9 +498,9 @@
 				C50E761526B7C71900FB8C2C /* Comparable.swift in Sources */,
 				C52CD4BF26C7E2350081ABF5 /* EndpointWrapper.swift in Sources */,
 				C53D556D26B43D4F00E1F75B /* ContentView.swift in Sources */,
-				C53D55A226B5311900E1F75B /* ControllerServer.swift in Sources */,
 				C53D559126B443D500E1F75B /* Networking.swift in Sources */,
 				C518B0D426D5E8480042A931 /* ControllerPlugView.swift in Sources */,
+				C515C76F2B1D33900083FAC9 /* Server.swift in Sources */,
 				C52CD4C226C7F6DB0081ABF5 /* ControllerConnection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

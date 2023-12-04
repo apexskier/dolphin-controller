@@ -2,49 +2,27 @@ import Foundation
 import Network
 import Combine
 
-final class CEMUHookServer: Identifiable {
-    private let listener: NWListener
+final class CEMUHookServerClient: Equatable {
+    static func == (lhs: CEMUHookServerClient, rhs: CEMUHookServerClient) -> Bool {
+        lhs.connection == rhs.connection
+    }
 
-    let name = "\(Host.current().localizedName ?? Host.current().name ?? "Unknown computer") - Dolphin Controller Server"
-
-    internal var id = UUID() // this allows using this in more swiftui places
-
-    var connection: NWConnection? = nil
+    var connection: NWConnection
+    var packetCount: UInt32 = 0
 
     let errorPublisher = PassthroughSubject<Error, Never>()
+    let onCancel: (_ c: CEMUHookServerClient) -> Void
+    let getControllers: () -> [UInt8: ControllerConnection?]
 
-    private let port = NWEndpoint.Port(integerLiteral: 26760)
-
-    init() {
-        self.listener = try! NWListener(using: .cemuhook(), on: self.port)
-        listener.newConnectionLimit = 1
-        listener.newConnectionHandler = { connection in
-            self.connection = connection
-            connection.stateUpdateHandler = self.handleStateUpdate
-            connection.start(queue: .global(qos: .userInitiated))
-        }
+    init(connection: NWConnection, onCancel: @escaping (_ c: CEMUHookServerClient) -> Void, getControllers: @escaping () -> [UInt8: ControllerConnection?]) {
+        self.connection = connection
+        self.onCancel = onCancel
+        self.getControllers = getControllers
+        connection.stateUpdateHandler = self.handleStateUpdate
+        connection.start(queue: .global(qos: .userInitiated))
     }
 
-    func start() throws {
-        listener.start(queue: .global(qos: .userInitiated))
-    }
-
-    func stop() throws {
-        listener.cancel()
-        print("Server closed")
-    }
-
-    var slotCounters: Dictionary<UInt8, UInt32> = [:]
-
-    func send(on slot: UInt8) {
-        guard let count = slotCounters[slot] else {
-            return
-        }
-        guard let connection = self.connection else {
-            return
-        }
-        slotCounters[slot] = count + 1
-
+    func send(on slot: UInt8, buttons2: ButtonsMask2) {
         let message = NWProtocolFramer.Message(
             cemuhookMessage: .controllerData(
                 OutgoingControllerData(
@@ -56,9 +34,9 @@ final class CEMUHookServer: Identifiable {
                         batteryStatus: .medium
                     ),
                     isConnected: true,
-                    clientPacketNumber: count,
+                    clientPacketNumber: packetCount,
                     buttons1: [],
-                    buttons2: [],
+                    buttons2: buttons2,
                     leftStickX: .min,
                     leftStickY: .min,
                     rightStickX: .min,
@@ -91,7 +69,9 @@ final class CEMUHookServer: Identifiable {
             identifier: "outgoing version information cemuhook message contex",
             metadata: [message]
         )
-
+        
+        packetCount += 1
+        
         connection.send(
             content: nil,
             contentContext: context,
@@ -101,8 +81,8 @@ final class CEMUHookServer: Identifiable {
     }
 
     func disconnect() {
-        if connection?.state != .cancelled {
-            connection?.cancel()
+        if connection.state != .cancelled {
+            connection.cancel()
         }
     }
 
@@ -111,7 +91,7 @@ final class CEMUHookServer: Identifiable {
         case .ready:
             receiveNextMessage()
         case .cancelled:
-            self.connection = nil
+            self.onCancel(self)
         case .failed(let error):
             self.errorPublisher.send(error)
         default:
@@ -120,12 +100,9 @@ final class CEMUHookServer: Identifiable {
     }
 
     private func receiveNextMessage() {
-        guard let connection = self.connection else {
-            return
-        }
         connection.receiveMessage { (content, context, isComplete, error) in
             if let error = error {
-                connection.handleReceiveError(error: error)
+                self.connection.handleReceiveError(error: error)
                 return
             }
 
@@ -133,13 +110,15 @@ final class CEMUHookServer: Identifiable {
             if let message = context?.protocolMetadata(definition: CemuhookProtocol.definition) as? NWProtocolFramer.Message {
                 switch message.incomingCemuhookMessage {
                 case .connectedControllerInformation(let info):
+                    let controllers = self.getControllers()
                     for slot in info.slotNumbers {
+                        let connected = controllers[slot] != nil
                         let message = NWProtocolFramer.Message(
                             cemuhookMessage: .connectedControllerInformation(
                                 OutgoingConnectedControllerInformation(
                                     controllerData: SharedControllerData(
                                         slot: slot,
-                                        state: .connected,
+                                        state: connected ? .connected : .notConnected,
                                         model: .noOrPartialGyro,
                                         connectionType: .notApplicable,
                                         batteryStatus: .notApplicable
@@ -152,7 +131,7 @@ final class CEMUHookServer: Identifiable {
                             metadata: [message]
                         )
 
-                        connection.send(
+                        self.connection.send(
                             content: nil,
                             contentContext: context,
                             isComplete: true,
@@ -161,9 +140,7 @@ final class CEMUHookServer: Identifiable {
                     }
                 case .controllerData(let data):
                     if data.actions.contains(.slotBaseRegistration) || data.actions.isEmpty {
-                        if self.slotCounters[data.slotBasedRegistrationSlot] == nil {
-                            self.slotCounters[data.slotBasedRegistrationSlot] = 0
-                        }
+                        print("TODO: registration")
                     }
                     if data.actions.contains(.macBasedRegistration) || data.actions.isEmpty {
                         // start sending data for requested mac address
@@ -180,7 +157,7 @@ final class CEMUHookServer: Identifiable {
                         metadata: [message]
                     )
 
-                    connection.send(
+                    self.connection.send(
                         content: nil,
                         contentContext: context,
                         isComplete: true,

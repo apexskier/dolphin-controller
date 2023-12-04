@@ -2,30 +2,31 @@ import Foundation
 import Combine
 import Network
 
-public class ControllerServer: ObservableObject {
-    private let netService: NWListener
+public class Server: ObservableObject {
+    private let controllerListener: NWListener
+    private var cemuhookListener: NWListener
     
     let name = "\(Host.current().localizedName ?? Host.current().name ?? "Unknown computer") - Dolphin Controller Server"
 
     @Published var broadcasting: Bool = false
     @Published var controllers: [UInt8: ControllerConnection?] = [:]
-
     @Published var port: NWEndpoint.Port? = nil
     private var allControllers: [ControllerConnection] = []
-    private var cemuhookServer: CEMUHookServer
+    private var cemuhookClients: [CEMUHookServerClient] = []
 
-    init(cemuhookServer: CEMUHookServer) {
-        self.cemuhookServer = cemuhookServer
-        self.netService = try! NWListener(using: .custom())
-        netService.service = NWListener.Service(
+    init() {
+        self.controllerListener = try! NWListener(using: .custom())
+        self.cemuhookListener = try! NWListener(using: .cemuhook(), on: NWEndpoint.Port(integerLiteral: 26760))
+        
+        controllerListener.service = NWListener.Service(
             name: self.name,
             type: "_\(serviceType)._tcp.",
             domain: nil,
             txtRecord: nil
         )
-        netService.stateUpdateHandler = { state in
+        controllerListener.stateUpdateHandler = { state in
             DispatchQueue.main.async {
-                self.port = self.netService.port
+                self.port = self.controllerListener.port
                 switch state {
                 case .ready:
                     self.broadcasting = true
@@ -34,17 +35,16 @@ public class ControllerServer: ObservableObject {
                 }
             }
         }
-        netService.serviceRegistrationUpdateHandler = { change in
+        controllerListener.serviceRegistrationUpdateHandler = { change in
             DispatchQueue.main.async {
-                self.port = self.netService.port
+                self.port = self.controllerListener.port
             }
         }
-        netService.newConnectionHandler = { connection in
+        controllerListener.newConnectionHandler = { connection in
             var index: UInt8? = nil
 
             var controllerConnection: ControllerConnection? = nil
             controllerConnection = try! ControllerConnection(
-                cemuhookServer: self.cemuhookServer,
                 connection: connection,
                 didClose: { error in
                     DispatchQueue.main.async {
@@ -75,6 +75,11 @@ public class ControllerServer: ObservableObject {
                         self.controllers[newIndex] = controllerConnection
                         self.sendControllerInfo()
                     }
+                },
+                didCommand: { buttons2 in
+                    for client in self.cemuhookClients {
+                        client.send(on: 0, buttons2: buttons2)
+                    }
                 }
             )
 
@@ -83,6 +88,17 @@ public class ControllerServer: ObservableObject {
                     self.allControllers.append(controllerConnection)
                 }
             }
+        }
+        
+        
+        cemuhookListener.newConnectionHandler = { connection in
+            self.cemuhookClients.append(CEMUHookServerClient(connection: connection, onCancel: { client in
+                self.cemuhookClients.removeAll { c in
+                    c == client
+                }
+            }, getControllers: {
+                self.controllers
+            }))
         }
     }
 
@@ -134,11 +150,13 @@ public class ControllerServer: ObservableObject {
     }
 
     func start() throws {
-        netService.start(queue: .global(qos: .userInitiated))
+        controllerListener.start(queue: .global(qos: .userInitiated))
+        cemuhookListener.start(queue: .global(qos: .userInitiated))
     }
     
     func stop() throws {
-        netService.cancel()
+        controllerListener.cancel()
+        cemuhookListener.cancel()
         print("Server closed")
     }
 }

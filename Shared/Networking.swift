@@ -81,6 +81,12 @@ extension NWParameters {
     }
 }
 
+extension NWConnection: Equatable {
+    public static func == (lhs: NWConnection, rhs: NWConnection) -> Bool {
+        lhs.endpoint == rhs.endpoint
+    }
+}
+
 extension NWConnection {
     func sendMessage(_ type: ControllerMessageType, data: Data) {
         let message = NWProtocolFramer.Message(controllerMessageType: type)
