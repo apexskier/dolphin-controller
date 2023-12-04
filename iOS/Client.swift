@@ -59,7 +59,7 @@ class Client: ObservableObject {
     }
     
     func connect(to endpoint: Network.NWEndpoint) {
-        let connection = NWConnection(to: endpoint, using: .custom())
+        let connection = NWConnection(to: endpoint, using: .controller())
         
         var hasBeenReplaced = false
         
@@ -154,7 +154,7 @@ class Client: ObservableObject {
                                 DispatchQueue.main.async {
                                     self.pingPublisher.send(pingDuration)
                                 }
-                            case .command, .pickController:
+                            case .command, .pickController, .cemuhookControllerData:
                                 fatalError("unexpected message in client \(message.controllerMessageType)")
                             }
                         }
@@ -212,6 +212,10 @@ class Client: ObservableObject {
 
     func send(_ content: String) {
         self.connection?.sendMessage(.command, data: Data(content.utf8))
+    }
+    
+    func sendCemuhook(_ data: OutgoingControllerData) {
+        self.connection?.sendMessage(.cemuhookControllerData, data: data.encodedData)
     }
     
     func disconnect() {

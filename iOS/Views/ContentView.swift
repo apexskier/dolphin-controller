@@ -120,13 +120,3 @@ struct ContentView: View {
             }
     }
 }
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        Button(action: {
-            print("pressed")
-        }, label: {
-            Text("B")
-        }).buttonStyle(GCCButton(color: .red))
-    }
-}

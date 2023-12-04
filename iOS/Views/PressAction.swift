@@ -1,10 +1,9 @@
 import SwiftUI
 
 struct PressActions: ViewModifier {
+    @Binding var pressed: Bool
     var onPress: () -> Void
     var onRelease: () -> Void
-
-    @State var pressed = false
 
     func body(content: Content) -> some View {
         content
@@ -25,8 +24,8 @@ struct PressActions: ViewModifier {
 }
 
 extension View {
-    func pressAction(onPress: @escaping (() -> Void), onRelease: @escaping (() -> Void)) -> some View {
-        modifier(PressActions(onPress: {
+    func pressAction(pressed: Binding<Bool>, onPress: @escaping (() -> Void), onRelease: @escaping (() -> Void)) -> some View {
+        modifier(PressActions(pressed: pressed, onPress: {
             onPress()
         }, onRelease: {
             onRelease()

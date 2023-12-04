@@ -164,7 +164,7 @@ struct SharedControllerData: MessageEncodable {
         data.append(Data(bytes: &tempModel, count: MemoryLayout.size(ofValue: tempModel)))
         var tempConnectionType = connectionType
         data.append(Data(bytes: &tempConnectionType, count: MemoryLayout.size(ofValue: tempConnectionType)))
-        data.append(contentsOf: [0, 0, 0, 0, 0, 0])
+        data.append(contentsOf: [0, 0, 0, 0, 0, 0]) // mac address
         var tempBatteryStatus = batteryStatus
         data.append(Data(bytes: &tempBatteryStatus, count: MemoryLayout.size(ofValue: tempBatteryStatus)))
         return data
@@ -291,6 +291,8 @@ struct OutgoingControllerData: MessageEncodable {
     let gyroRoll: Float
 
     var encodedData: Data {
+        // TODO: this feels inefficient, can we preallocate 80 bytes?
+        
         var data = controllerData.encodedData
         var temp_isConnected = isConnected
         data.append(Data(bytes: &temp_isConnected, count: MemoryLayout.size(ofValue: temp_isConnected)))
@@ -370,6 +372,7 @@ enum OutgoingCemuhookMessage {
     case versionInformation(OutgoingVersionInformation)
     case connectedControllerInformation(OutgoingConnectedControllerInformation)
     case controllerData(OutgoingControllerData)
+    case rawControllerData(Data)
 }
 
 // Create a class that implements a framing protocol.
@@ -406,6 +409,9 @@ class CemuhookProtocol: NWProtocolFramerImplementation {
         case .controllerData(let controllerData):
             eventType = .controllerData
             content = controllerData.encodedData
+        case .rawControllerData(let data):
+            eventType = .controllerData
+            content = data
         case .versionInformation:
             eventType = .versionInformation
             var tempVersion = cemuhookVersion

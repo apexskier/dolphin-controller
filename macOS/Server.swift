@@ -76,9 +76,22 @@ public class Server: ObservableObject {
                         self.sendControllerInfo()
                     }
                 },
-                didCommand: { buttons2 in
+                onCemuhookInformation: { data in
                     for client in self.cemuhookClients {
-                        client.send(on: 0, buttons2: buttons2)
+                        let message = NWProtocolFramer.Message(
+                            cemuhookMessage: .rawControllerData(data)
+                        )
+                        let context = NWConnection.ContentContext(
+                            identifier: "TODO",
+                            metadata: [message]
+                        )
+
+                        client.connection.send(
+                            content: nil,
+                            contentContext: context,
+                            isComplete: true,
+                            completion: .idempotent
+                        )
                     }
                 }
             )
@@ -89,7 +102,6 @@ public class Server: ObservableObject {
                 }
             }
         }
-        
         
         cemuhookListener.newConnectionHandler = { connection in
             self.cemuhookClients.append(CEMUHookClient(connection: connection, onCancel: { client in

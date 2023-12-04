@@ -12,7 +12,7 @@ final class ControllerConnection: Identifiable {
     private let didClose: (Error?) -> Void
     private let connectionReady: () -> Void
     private let didPickControllerNumber: (UInt8) -> Void
-    private let didCommand: (ButtonsMask2) -> Void
+    private let onCemuhookInformation: (Data) -> Void
 
     let errorPublisher = PassthroughSubject<Error, Never>()
 
@@ -23,13 +23,13 @@ final class ControllerConnection: Identifiable {
         didClose: @escaping (Error?) -> Void,
         connectionReady: @escaping () -> Void,
         didPickControllerIndex: @escaping (UInt8) -> Void,
-        didCommand: @escaping (ButtonsMask2) -> Void
+        onCemuhookInformation: @escaping (Data) -> Void
     ) throws {
         self.connection = connection
         self.didClose = didClose
         self.connectionReady = connectionReady
         self.didPickControllerNumber = didPickControllerIndex
-        self.didCommand = didCommand
+        self.onCemuhookInformation = onCemuhookInformation
 
         connection.stateUpdateHandler = self.handleStateUpdate
         connection.start(queue: .global(qos: .userInitiated))
@@ -72,30 +72,13 @@ final class ControllerConnection: Identifiable {
                     fatalError("missing content in \(message.controllerMessageType)")
                 }
                 switch message.controllerMessageType {
+                case .cemuhookControllerData:
+                    self.onCemuhookInformation(content)
                 case .command:
                     guard let pipe = self.pipe else {
                         // controller number hasn't been chosen
                         return
                     }
-                    var buttons2 = ButtonsMask2()
-                    switch String(data: content, encoding: .utf8) {
-                    case "PRESS A":
-                        buttons2.insert(.a)
-                    case "PRESS B":
-                        buttons2.insert(.b)
-                    case "PRESS X":
-                        buttons2.insert(.x)
-                    case "PRESS Y":
-                        buttons2.insert(.y)
-                    case "PRESS L":
-                        buttons2.insert(.l1)
-                    case "PRESS R":
-                        buttons2.insert(.r1)
-                    default:
-                        break
-                    }
-                    
-                    self.didCommand(buttons2)
                     do {
                         try pipe.streamText(data: content)
                     } catch {

@@ -20,6 +20,8 @@ struct Joystick<Label>: View where Label: View {
     var diameter: CGFloat
     var knobDiameter: CGFloat
     var label: Label
+    
+    private var handleChange: (CGPoint) -> Void
 
     private let pressHaptic = UIImpactFeedbackGenerator(style: .rigid)
     @State private var hapticContainer: HapticContainer
@@ -32,7 +34,8 @@ struct Joystick<Label>: View where Label: View {
         diameter: CGFloat,
         knobDiameter: CGFloat,
         label: Label,
-        hapticsSharpness: Float
+        hapticsSharpness: Float,
+        handleChange: @escaping (CGPoint) -> Void
     ) {
         self.identifier = identifier
         self.color = color
@@ -40,6 +43,7 @@ struct Joystick<Label>: View where Label: View {
         self.knobDiameter = knobDiameter
         self.label = label
         self._hapticContainer = .init(initialValue: HapticContainer(sharpness: hapticsSharpness))
+        self.handleChange = handleChange
     }
     
     @State private var inCenter: Bool = true {
@@ -65,6 +69,7 @@ struct Joystick<Label>: View where Label: View {
     @State private var dragValue: DragGesture.Value? = nil {
         willSet {
             guard let value = newValue else {
+                self.handleChange(CGPoint(x: 0.5, y: 0.5))
                 client.send("SET \(identifier) 0.5 0.5")
                 inCenter = true
                 hapticContainer.haptics.stop()
@@ -79,6 +84,7 @@ struct Joystick<Label>: View where Label: View {
             let translation = value.translation
             let x = (translation.width / (diameter*1.5)).clamped(to: -0.5...0.5)
             let y = (-translation.height / (diameter*1.5)).clamped(to: -0.5...0.5)
+            self.handleChange(CGPoint(x: x+0.5, y: y+0.5))
             client.send("SET \(identifier) \(x+0.5) \(y+0.5)")
             let magnitude = sqrt(x*2*x*2 + y*2*y*2)
             inCenter = magnitude < 0.2

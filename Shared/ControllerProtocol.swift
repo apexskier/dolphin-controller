@@ -27,6 +27,9 @@ enum ControllerMessageType: UInt32, CustomDebugStringConvertible {
     // sent from other to either in response to a ping
     // data: UUID (from ping)
     case pong = 5
+    
+    // sent from client to server
+    case cemuhookControllerData = 6
 
     var debugDescription: String {
         switch self {
@@ -42,6 +45,8 @@ enum ControllerMessageType: UInt32, CustomDebugStringConvertible {
             return "ping"
         case .pong:
             return "pong"
+        case .cemuhookControllerData:
+            return "cemuhookControllerData"
         }
     }
 }
