@@ -10,13 +10,14 @@ public class Server: ObservableObject {
 
     @Published var broadcasting: Bool = false
     @Published var controllers: [UInt8: ControllerConnection?] = [:]
-    @Published var port: NWEndpoint.Port? = nil
+    @Published var bonjourPort: NWEndpoint.Port? = nil
+    static var cemuhookPort = NWEndpoint.Port(integerLiteral: 26760)
     private var allControllers: [ControllerConnection] = []
-    private var cemuhookClients: [CEMUHookClient] = []
+    @Published var cemuhookClients: [CEMUHookClient] = []
 
     init() {
         self.controllerListener = try! NWListener(using: .controller())
-        self.cemuhookListener = try! NWListener(using: .cemuhook(), on: NWEndpoint.Port(integerLiteral: 26760))
+        self.cemuhookListener = try! NWListener(using: .cemuhook(), on: Self.cemuhookPort)
         
         controllerListener.service = NWListener.Service(
             name: self.name,
@@ -26,7 +27,7 @@ public class Server: ObservableObject {
         )
         controllerListener.stateUpdateHandler = { state in
             DispatchQueue.main.async {
-                self.port = self.controllerListener.port
+                self.bonjourPort = self.controllerListener.port
                 switch state {
                 case .ready:
                     self.broadcasting = true
@@ -37,7 +38,7 @@ public class Server: ObservableObject {
         }
         controllerListener.serviceRegistrationUpdateHandler = { change in
             DispatchQueue.main.async {
-                self.port = self.controllerListener.port
+                self.bonjourPort = self.controllerListener.port
             }
         }
         controllerListener.newConnectionHandler = { connection in
@@ -104,13 +105,16 @@ public class Server: ObservableObject {
         }
         
         cemuhookListener.newConnectionHandler = { connection in
-            self.cemuhookClients.append(CEMUHookClient(connection: connection, onCancel: { client in
+            let client = CEMUHookClient(connection: connection, onCancel: { client in
                 self.cemuhookClients.removeAll { c in
                     c == client
                 }
             }, getControllers: {
                 self.controllers
-            }))
+            })
+            DispatchQueue.main.async {
+                self.cemuhookClients.append(client)
+            }
         }
     }
 

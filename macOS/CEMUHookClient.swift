@@ -2,7 +2,9 @@ import Foundation
 import Network
 import Combine
 
-final class CEMUHookClient: Equatable {
+final class CEMUHookClient: Equatable, Identifiable {
+    internal var id = UUID() // this allows using this in more swiftui places
+    
     static func == (lhs: CEMUHookClient, rhs: CEMUHookClient) -> Bool {
         lhs.connection == rhs.connection
     }

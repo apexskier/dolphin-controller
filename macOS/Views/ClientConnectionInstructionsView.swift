@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct NetworkingInstructionsView: View {
+struct ClientConnectionInstructionsView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject private var server: Server
     
@@ -12,18 +12,20 @@ struct NetworkingInstructionsView: View {
     }()
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text("Networking")
+        VStack(spacing: 4) {
+            Text("Cemuhook Clients")
                 .font(.title)
-            if let port = server.bonjourPort?.rawValue,
-               let formattedPort = portFormatter.string(from: NSNumber(value: port)) {
-                Text("From your local network (e.g. on the same Wi-Fi connection), the server should automatically be discovered via Bonjour. To connect from across the internet, you must forward the port \(formattedPort).").fixedSize(horizontal: false, vertical: true)
+            if server.cemuhookClients.isEmpty {
+                Text("No clients known.")
             } else {
-                Text("No port has been allocated for the server yet.")
+                Text("\(server.cemuhookClients.count) client\(server.cemuhookClients.count != 1 ? "s" : "") recently connected.")
             }
+            ForEach(server.cemuhookClients) { client in
+                Text("\(client.connection.endpoint.debugDescription)")
+            }
+            Text("Connect your emulator to http://127.0.0.1:\(portFormatter.string(from: NSNumber(value: Server.cemuhookPort.rawValue))!). For Dolphin, [here are the instructions](https://wiki.dolphin-emu.org/index.php?title=DSU_Client#Setting_up).").fixedSize(horizontal: false, vertical: true)
             HStack {
-                if let port = server.bonjourPort?.rawValue,
-                   let formattedPort = portFormatter.string(from: NSNumber(value: port)) {
+                if let formattedPort = portFormatter.string(from: NSNumber(value: Server.cemuhookPort.rawValue)) {
                     Button("Copy Port") {
                         NSPasteboard.general.clearContents()
                         if !NSPasteboard.general.setString(formattedPort, forType: .string) {
@@ -46,6 +48,8 @@ struct NetworkingInstructionsView: View {
     }
 }
 
-#Preview {
-    NetworkingInstructionsView()
+struct ClientConnectionInstructionsView_Previews: PreviewProvider {
+    static var previews: some View {
+        ClientConnectionInstructionsView()
+    }
 }

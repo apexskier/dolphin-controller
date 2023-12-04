@@ -4,9 +4,9 @@ import SwiftUI
 @main
 struct DolphinControllerApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate: AppDelegate
-    @EnvironmentObject var server: Server
     
     @State var showAdvancedNetworking = false
+    @State var showCemuhookConnection = false
     
     var body: some Scene {
         WindowGroup {
@@ -17,17 +17,24 @@ struct DolphinControllerApp: App {
             }
             .toolbar {
                 ToolbarItem(placement: ToolbarItemPlacement.automatic) {
-                    Image(systemName: "network")
-                        .accessibilityLabel("Show advanced networking information")
+                    Image(systemName: "bonjour")
+                        .accessibilityLabel("Show controller networking information")
                         .onTapGesture {
                             self.showAdvancedNetworking = true
                         }
+                }
+                ToolbarItem(placement: ToolbarItemPlacement.automatic) {
+                    ClientConnectionToolbarItem(showCemuhookConnection: $showCemuhookConnection)
                 }
             }
             .foregroundColor(GameCubeColors.lightGray)
             .frame(idealWidth: 380, idealHeight: 280)
             .sheet(isPresented: self.$showAdvancedNetworking) {
                 NetworkingInstructionsView()
+                    .padding()
+            }
+            .sheet(isPresented: self.$showCemuhookConnection) {
+                ClientConnectionInstructionsView()
                     .padding()
             }
             .environmentObject(appDelegate.server)
