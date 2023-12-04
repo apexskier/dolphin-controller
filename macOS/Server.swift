@@ -79,7 +79,7 @@ public class Server: ObservableObject {
                 },
                 onCemuhookInformation: { data in
                     let message = NWProtocolFramer.Message(
-                        cemuhookMessage: .rawControllerData(data)
+                        cemuhookMessage: .controllerData(data)
                     )
                     let context = NWConnection.ContentContext(
                         identifier: "TODO",

@@ -358,6 +358,8 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
             clientPacketNumber: packetNumber,
             buttons1: buttons1,
             buttons2: buttons2,
+            homeButton: 0,
+            touchButton: 0,
             leftStickX: UInt8(mainJoystickValue.x * CGFloat(UInt8.max)),
             leftStickY: UInt8(mainJoystickValue.y * CGFloat(UInt8.max)),
             rightStickX: UInt8(cJoystickValue.x * CGFloat(UInt8.max)),

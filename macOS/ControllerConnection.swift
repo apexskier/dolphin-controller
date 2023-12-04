@@ -12,7 +12,8 @@ final class ControllerConnection: Identifiable {
     private let didClose: (Error?) -> Void
     private let connectionReady: () -> Void
     private let didPickControllerNumber: (UInt8) -> Void
-    private let onCemuhookInformation: (Data) -> Void
+    private let onCemuhookInformation: (OutgoingControllerData) -> Void
+    var lastControllerData: OutgoingControllerData? = nil
 
     let errorPublisher = PassthroughSubject<Error, Never>()
 
@@ -21,7 +22,7 @@ final class ControllerConnection: Identifiable {
         didClose: @escaping (Error?) -> Void,
         connectionReady: @escaping () -> Void,
         didPickControllerIndex: @escaping (UInt8) -> Void,
-        onCemuhookInformation: @escaping (Data) -> Void
+        onCemuhookInformation: @escaping (OutgoingControllerData) -> Void
     ) throws {
         self.connection = connection
         self.didClose = didClose
@@ -66,12 +67,18 @@ final class ControllerConnection: Identifiable {
             
             // Extract your message type from the received context.
             if let message = context?.protocolMetadata(definition: ControllerProtocol.definition) as? NWProtocolFramer.Message {
-                guard let content = content else {
+                guard var content = content else {
                     fatalError("missing content in \(message.controllerMessageType)")
                 }
                 switch message.controllerMessageType {
                 case .cemuhookControllerData:
-                    self.onCemuhookInformation(content)
+                    guard let data = content.withUnsafeMutableBytes({ pointer in
+                        OutgoingControllerData(pointer)
+                    }) else {
+                        fatalError("failed to get outgoing controller data")
+                    }
+                    self.lastControllerData = data
+                    self.onCemuhookInformation(data)
                 case .pickController:
                     let controllerNumber = content.withUnsafeBytes { pointer in
                         pointer.load(as: UInt8.self)

@@ -169,6 +169,14 @@ struct SharedControllerData: MessageEncodable {
         data.append(Data(bytes: &tempBatteryStatus, count: MemoryLayout.size(ofValue: tempBatteryStatus)))
         return data
     }
+    
+    static let notConnected = SharedControllerData(
+        slot: 0,
+        state: .notConnected,
+        model: .notApplicable,
+        connectionType: .notApplicable,
+        batteryStatus: .notApplicable
+    )
 
     static var encodedSize: Int = 12
 }
@@ -256,14 +264,14 @@ struct TouchData {
     let yPos: UInt16
 }
 
-struct OutgoingControllerData: MessageEncodable {
+struct OutgoingControllerData: MessageCodable {
     let controllerData: SharedControllerData
     let isConnected: Bool // UInt8
     let clientPacketNumber: UInt32
     let buttons1: ButtonsMask1
     let buttons2: ButtonsMask2
-    let psButton: UInt8 = 0
-    let touchButton: UInt8 = 0
+    let homeButton: UInt8
+    let touchButton: UInt8
     let leftStickX: UInt8 // plus rightward
     let leftStickY: UInt8 // plus upward
     let rightStickX: UInt8 // plus rightward
@@ -290,6 +298,109 @@ struct OutgoingControllerData: MessageEncodable {
     let gyroYaw: Float
     let gyroRoll: Float
 
+    init?(_ buffer: UnsafeMutableRawBufferPointer) {
+        self.controllerData = buffer.load(as: SharedControllerData.self)
+        self.isConnected = buffer.load(fromByteOffset: 11, as: Bool.self)
+        self.clientPacketNumber = buffer.load(fromByteOffset: 12, as: UInt32.self)
+        self.buttons1 = buffer.load(fromByteOffset: 16, as: ButtonsMask1.self)
+        self.buttons2 = buffer.load(fromByteOffset: 17, as: ButtonsMask2.self)
+        self.homeButton = buffer.load(fromByteOffset: 18, as: UInt8.self)
+        self.touchButton = buffer.load(fromByteOffset: 19, as: UInt8.self)
+        self.leftStickX = buffer.load(fromByteOffset: 20, as: UInt8.self)
+        self.leftStickY = buffer.load(fromByteOffset: 21, as: UInt8.self)
+        self.rightStickX = buffer.load(fromByteOffset: 22, as: UInt8.self)
+        self.rightStickY = buffer.load(fromByteOffset: 23, as: UInt8.self)
+        self.analogDPadLeft = buffer.load(fromByteOffset: 24, as: UInt8.self)
+        self.analogDPadDown = buffer.load(fromByteOffset: 25, as: UInt8.self)
+        self.analogDPadRight = buffer.load(fromByteOffset: 26, as: UInt8.self)
+        self.analogDPadUp = buffer.load(fromByteOffset: 27, as: UInt8.self)
+        self.analogY = buffer.load(fromByteOffset: 28, as: UInt8.self)
+        self.analogB = buffer.load(fromByteOffset: 29, as: UInt8.self)
+        self.analogA = buffer.load(fromByteOffset: 30, as: UInt8.self)
+        self.analogX = buffer.load(fromByteOffset: 31, as: UInt8.self)
+        self.analogR1 = buffer.load(fromByteOffset: 32, as: UInt8.self)
+        self.analogL1 = buffer.load(fromByteOffset: 33, as: UInt8.self)
+        self.analogR2 = buffer.load(fromByteOffset: 34, as: UInt8.self)
+        self.analogL2 = buffer.load(fromByteOffset: 35, as: UInt8.self)
+        self.firstTouch = buffer.load(fromByteOffset: 36, as: TouchData.self)
+        self.secondTouch = buffer.load(fromByteOffset: 42, as: TouchData.self)
+        self.motionTimestamp = buffer.load(fromByteOffset: 48, as: UInt64.self)
+        self.accX = buffer.load(fromByteOffset: 56, as: Float.self)
+        self.accY = buffer.load(fromByteOffset: 60, as: Float.self)
+        self.accZ = buffer.load(fromByteOffset: 64, as: Float.self)
+        self.gyroPitch = buffer.load(fromByteOffset: 68, as: Float.self)
+        self.gyroYaw = buffer.load(fromByteOffset: 72, as: Float.self)
+        self.gyroRoll = buffer.load(fromByteOffset: 76, as: Float.self)
+    }
+    
+    init(
+        controllerData: SharedControllerData,
+        isConnected: Bool,
+        clientPacketNumber: UInt32,
+        buttons1: ButtonsMask1,
+        buttons2: ButtonsMask2,
+        homeButton: UInt8,
+        touchButton: UInt8,
+        leftStickX: UInt8,
+        leftStickY: UInt8,
+        rightStickX: UInt8,
+        rightStickY: UInt8,
+        analogDPadLeft: UInt8,
+        analogDPadDown: UInt8,
+        analogDPadRight: UInt8,
+        analogDPadUp: UInt8,
+        analogY: UInt8,
+        analogB: UInt8,
+        analogA: UInt8,
+        analogX: UInt8,
+        analogR1: UInt8,
+        analogL1: UInt8,
+        analogR2: UInt8,
+        analogL2: UInt8,
+        firstTouch: TouchData,
+        secondTouch: TouchData,
+        motionTimestamp: UInt64,
+        accX: Float,
+        accY: Float,
+        accZ: Float,
+        gyroPitch: Float,
+        gyroYaw: Float,
+        gyroRoll: Float
+    ) {
+        self.controllerData = controllerData
+        self.isConnected = isConnected
+        self.clientPacketNumber = clientPacketNumber
+        self.buttons1 = buttons1
+        self.buttons2 = buttons2
+        self.homeButton = homeButton
+        self.touchButton = touchButton
+        self.leftStickX = leftStickX
+        self.leftStickY = leftStickY
+        self.rightStickX = rightStickX
+        self.rightStickY = rightStickY
+        self.analogDPadLeft = analogDPadLeft
+        self.analogDPadDown = analogDPadDown
+        self.analogDPadRight = analogDPadRight
+        self.analogDPadUp = analogDPadUp
+        self.analogY = analogY
+        self.analogB = analogB
+        self.analogA = analogA
+        self.analogX = analogX
+        self.analogR1 = analogR1
+        self.analogL1 = analogL1
+        self.analogR2 = analogR2
+        self.analogL2 = analogL2
+        self.firstTouch = firstTouch
+        self.secondTouch = secondTouch
+        self.motionTimestamp = motionTimestamp
+        self.accX = accX
+        self.accY = accY
+        self.accZ = accZ
+        self.gyroPitch = gyroPitch
+        self.gyroYaw = gyroYaw
+        self.gyroRoll = gyroRoll
+    }
+    
     var encodedData: Data {
         // TODO: this feels inefficient, can we preallocate 80 bytes?
         
@@ -302,7 +413,7 @@ struct OutgoingControllerData: MessageEncodable {
         data.append(Data(bytes: &temp_buttons1, count: MemoryLayout.size(ofValue: temp_buttons1)))
         var temp_buttons2 = buttons2
         data.append(Data(bytes: &temp_buttons2, count: MemoryLayout.size(ofValue: temp_buttons2)))
-        var temp_psButton = psButton
+        var temp_psButton = homeButton
         data.append(Data(bytes: &temp_psButton, count: MemoryLayout.size(ofValue: temp_psButton)))
         var temp_touchButton = touchButton
         data.append(Data(bytes: &temp_touchButton, count: MemoryLayout.size(ofValue: temp_touchButton)))
@@ -372,7 +483,6 @@ enum OutgoingCemuhookMessage {
     case versionInformation(OutgoingVersionInformation)
     case connectedControllerInformation(OutgoingConnectedControllerInformation)
     case controllerData(OutgoingControllerData)
-    case rawControllerData(Data)
 }
 
 // Create a class that implements a framing protocol.
@@ -409,9 +519,6 @@ class CemuhookProtocol: NWProtocolFramerImplementation {
         case .controllerData(let controllerData):
             eventType = .controllerData
             content = controllerData.encodedData
-        case .rawControllerData(let data):
-            eventType = .controllerData
-            content = data
         case .versionInformation:
             eventType = .versionInformation
             var tempVersion = cemuhookVersion

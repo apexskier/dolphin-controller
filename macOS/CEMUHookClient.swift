@@ -73,19 +73,9 @@ final class CEMUHookClient: Equatable, Identifiable {
                 case .connectedControllerInformation(let info):
                     let controllers = self.getControllers()
                     for slot in info.slotNumbers {
-                        let connected = controllers[slot] != nil
+                        let controllerData = controllers[slot]??.lastControllerData?.controllerData ?? SharedControllerData.notConnected
                         let message = NWProtocolFramer.Message(
-                            cemuhookMessage: .connectedControllerInformation(
-                                OutgoingConnectedControllerInformation(
-                                    controllerData: SharedControllerData(
-                                        slot: slot,
-                                        state: connected ? .connected : .notConnected,
-                                        model: .noOrPartialGyro,
-                                        connectionType: .notApplicable,
-                                        batteryStatus: .notApplicable
-                                    )
-                                )
-                            )
+                            cemuhookMessage: .connectedControllerInformation(.init(controllerData: controllerData))
                         )
                         let context = NWConnection.ContentContext(
                             identifier: "outgoing version information cemuhook message contex",
