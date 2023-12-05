@@ -66,8 +66,7 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
         queue.qualityOfService = .userInteractive
         return queue
     }()
-    @State var accelerometerData: CMAcceleration? = nil
-    @State var rotationRate: CMRotationRate? = nil
+    @State var motionData: CMDeviceMotion? = nil
         
     @State var dUpPressed = false
     @State var dDownPressed = false
@@ -286,8 +285,7 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
                     fatalError("error \(error)")
                 }
                 
-                self.accelerometerData = motion?.userAcceleration
-                self.rotationRate = motion?.rotationRate
+//                self.motionData = motion
                 if let motionData = motion {
                     self.sendCemuUpdateM(motionData: motionData)
                 }
@@ -399,13 +397,13 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
             analogL2: .min,
             firstTouch: TouchData(active: false, id: 0, xPos: 0, yPos: 0),
             secondTouch: TouchData(active: false, id: 0, xPos: 0, yPos: 0),
-            motionTimestamp: 0,
-            accX: Float(self.accelerometerData?.x ?? 0),
-            accY: Float(self.accelerometerData?.y ?? 0),
-            accZ: Float(self.accelerometerData?.z ?? 0),
-            gyroPitch: Float(self.rotationRate?.x ?? 0) * 57.29578, // convert to degrees
-            gyroYaw: Float(self.rotationRate?.y ?? 0) * 57.29578,
-            gyroRoll: Float(self.rotationRate?.z ?? 0) * 57.29578
+            motionTimestamp: 0, //UInt64((self.motionData?.timestamp ?? 0) * 1000000),
+            accX: 0, //-Float(self.motionData?.userAcceleration.x ?? 0),
+            accY: 0, //-Float(self.motionData?.userAcceleration.y ?? 0),
+            accZ: 0, //-Float(self.motionData?.userAcceleration.z ?? 0),
+            gyroPitch: 0, //Float(self.motionData?.rotationRate.x ?? 0) * 57.29578, // convert to degrees
+            gyroYaw: 0, //Float(self.motionData?.rotationRate.z ?? 0) * 57.29578,
+            gyroRoll: 0 //Float(self.motionData?.rotationRate.y ?? 0) * 57.29578
         ))
         self.packetNumber += 1
     }
@@ -455,6 +453,8 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
             buttons2.insert(.y)
         }
         
+        print(UInt64(motionData.timestamp * 1000000))
+        
         client.sendCemuhook(OutgoingControllerData(
             controllerData: .init(
                 slot: slot,
@@ -487,13 +487,13 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
             analogL2: .min,
             firstTouch: TouchData(active: false, id: 0, xPos: 0, yPos: 0),
             secondTouch: TouchData(active: false, id: 0, xPos: 0, yPos: 0),
-            motionTimestamp: 0,
+            motionTimestamp: UInt64(motionData.timestamp * 1000000),
             accX: Float(motionData.userAcceleration.x),
-            accY: Float(motionData.userAcceleration.y),
-            accZ: Float(motionData.userAcceleration.z),
+            accY: Float(-motionData.userAcceleration.z),
+            accZ: Float(motionData.userAcceleration.y),
             gyroPitch: Float(motionData.rotationRate.x) * 57.29578, // convert to degrees
-            gyroYaw: Float(motionData.rotationRate.y) * 57.29578,
-            gyroRoll: Float(motionData.rotationRate.z) * 57.29578
+            gyroYaw: -Float(motionData.rotationRate.z) * 57.29578,
+            gyroRoll: Float(motionData.rotationRate.y) * 57.29578
         ))
         self.packetNumber += 1
     }
