@@ -2,6 +2,7 @@ import Combine
 import Foundation
 import UIKit
 import Network
+import ActivityKit
 
 let pingInterval: TimeInterval = 2
 let maxPingCount = 5
@@ -23,9 +24,11 @@ class Client: ObservableObject {
     private var ping: (UUID, Date)? = nil
     private lazy var pingTimer: Timer? = nil
     let pingPublisher = PassthroughSubject<TimeInterval?, Never>()
-
+    
     @Published var lastServer: NWEndpoint?
     @Published var controllerInfo: ClientControllerInfo? = nil
+    
+    private var activityCancellable: Cancellable? = nil
 
     public var idleManager: IdleManager? = nil
         
@@ -36,6 +39,18 @@ class Client: ObservableObject {
             lastServer = endpointWrapper.endpoint
         } else {
             lastServer = nil
+        }
+        
+        if #available(iOS 16.2, *) {
+            activityCancellable = $controllerInfo.sink { completion in
+                Task {
+                    await ActivityManager.update(slot: nil)
+                }
+            } receiveValue: { value in
+               Task {
+                   await ActivityManager.update(slot: value?.assignedController)
+               }
+            }
         }
     }
     

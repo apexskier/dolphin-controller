@@ -122,7 +122,7 @@ class Haptics {
             
             // Create a player from the continuous haptic pattern.
             continuousPlayer = try engine?.makeAdvancedPlayer(with: pattern)
-        } catch let error {
+        } catch {
             print("Pattern Player Creation Error: \(error)")
         }
     }
@@ -146,7 +146,7 @@ class Haptics {
         // Send dynamic parameters to the haptic player.
         do {
             try self.continuousPlayer?.sendParameters([intensityParameter], atTime: CHHapticTimeImmediate)
-        } catch let error {
+        } catch {
             print("Dynamic Parameter Error: \(error)")
         }
     }
