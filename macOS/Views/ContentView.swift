@@ -47,7 +47,7 @@ struct ContentView: View {
                 .fixedSize()
             Spacer(minLength: 16)
             HStack(spacing: 30) {
-                ForEach(0..<Int(AvailableControllers.numberOfControllers)) { (i: Int) in
+                ForEach(0..<Int(AvailableControllers.numberOfControllers), id: \.self) { (i: Int) in
                     VStack {
                         ControllerPlugView(
                             index: UInt8(i),

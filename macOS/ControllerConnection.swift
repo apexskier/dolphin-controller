@@ -53,6 +53,11 @@ final class ControllerConnection: Identifiable {
     }
     
     private func receiveNextMessage() {
+        if connection.state != .ready {
+            print("connection not ready, stopping receiving")
+            return
+        }
+
         connection.receiveMessage { (content, context, isComplete, error) in
             if let error = error {
                 self.connection.handleReceiveError(error: error)

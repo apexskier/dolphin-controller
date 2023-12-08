@@ -30,7 +30,7 @@ struct ContentView: View {
             }
             ControllerView(
                 playerIndicators: HStack(alignment: .center, spacing: 0) {
-                    ForEach(0..<Int(AvailableControllers.numberOfControllers)) { (i: Int) in
+                    ForEach(0..<Int(AvailableControllers.numberOfControllers), id: \.self) { (i: Int) in
                         VStack(spacing: 4) {
                             LightView(
                                 assigned: client.controllerInfo?.assignedController == UInt8(i),
@@ -118,15 +118,5 @@ struct ContentView: View {
                     dismissButton: .default(Text("Dismiss"))
                 )
             }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        Button(action: {
-            print("pressed")
-        }, label: {
-            Text("B")
-        }).buttonStyle(GCCButton(color: .red))
     }
 }

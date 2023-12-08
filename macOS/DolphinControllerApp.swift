@@ -4,7 +4,6 @@ import SwiftUI
 @main
 struct DolphinControllerApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate: AppDelegate
-    @EnvironmentObject var server: Server
     
     @State var showAdvancedNetworking = false
     
@@ -25,7 +24,7 @@ struct DolphinControllerApp: App {
                 }
             }
             .foregroundColor(GameCubeColors.lightGray)
-            .frame(idealWidth: 380, idealHeight: 280)
+            .frame(idealWidth: 1, idealHeight: 1)
             .sheet(isPresented: self.$showAdvancedNetworking) {
                 NetworkingInstructionsView()
                     .padding()

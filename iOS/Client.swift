@@ -32,7 +32,7 @@ class Client: ObservableObject {
     init() {
         idleManager = IdleManager(client: self)
         if let endpointData = Self.storage.value(forKey: StorageKeys.lastUsedServer.rawValue) as? Data,
-           let endpointWrapper = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(endpointData) as? EndpointWrapper {
+           let endpointWrapper = try? NSKeyedUnarchiver.unarchivedObject(ofClass: EndpointWrapper.self, from: endpointData) {
             lastServer = endpointWrapper.endpoint
         } else {
             lastServer = nil
