@@ -107,7 +107,8 @@ class Client: ObservableObject {
                         var uuid = UUID()
                         let now = Date()
                         self.ping = (uuid, now)
-                        let data = Data(bytes: &uuid, count: MemoryLayout<UUID>.size)
+                        var bytes = uuid.uuid
+                        let data = Data(bytes: &bytes, count: MemoryLayout<UUID>.size)
                         connection.sendMessage(.ping, data: data)
                     }
                     pingTimer.fire()
