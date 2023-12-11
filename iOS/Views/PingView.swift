@@ -28,8 +28,6 @@ struct PingView: View {
     }
 }
 
-struct PingView_Previews: PreviewProvider {
-    static var previews: some View {
-        PingView()
-    }
+#Preview {
+    PingView()
 }

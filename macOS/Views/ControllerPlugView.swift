@@ -71,8 +71,6 @@ struct ControllerPlugView: View {
     }
 }
 
-struct ControllerPlugView_Previews: PreviewProvider {
-    static var previews: some View {
-        ControllerPlugView(index: 1, connected: true)
-    }
+#Preview {
+    ControllerPlugView(index: 1, connected: true)
 }

@@ -46,8 +46,6 @@ struct NetworkingInstructionsView: View {
     }
 }
 
-struct NetworkingInstructionsView_Previews: PreviewProvider {
-    static var previews: some View {
-        NetworkingInstructionsView()
-    }
+#Preview {
+    NetworkingInstructionsView()
 }
