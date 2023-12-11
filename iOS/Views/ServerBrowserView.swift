@@ -88,11 +88,9 @@ struct ServerBrowserView: View {
     }
 }
 
-struct ServerBrowser_Previews: PreviewProvider {
-    static var previews: some View {
-        ServerBrowserView { connection in
-            print(connection)
-        }
+#Preview {
+    ServerBrowserView { connection in
+        print(connection)
     }
 }
 

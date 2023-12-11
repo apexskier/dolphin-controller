@@ -12,7 +12,7 @@ struct NetworkingInstructionsView: View {
     }()
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 4) {
             Text("Networking")
                 .font(.title)
             if let port = server.port?.rawValue,
@@ -21,7 +21,6 @@ struct NetworkingInstructionsView: View {
             } else {
                 Text("No port has been allocated for the server yet.")
             }
-            Spacer()
             HStack {
                 if let port = server.port?.rawValue,
                    let formattedPort = portFormatter.string(from: NSNumber(value: port)) {
@@ -47,8 +46,6 @@ struct NetworkingInstructionsView: View {
     }
 }
 
-struct NetworkingInstructionsView_Previews: PreviewProvider {
-    static var previews: some View {
-        NetworkingInstructionsView()
-    }
+#Preview {
+    NetworkingInstructionsView()
 }

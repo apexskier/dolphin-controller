@@ -19,7 +19,6 @@ class IdleManager {
     }
 
     func update() {
-
         DispatchQueue.main.async {
             let settingVal = Self.storage.value(forKey: "keepScreenAwake") as? Bool ?? true
             let hasConnection = self.client.connection != nil

@@ -234,8 +234,6 @@ struct ControllerView<PlayerIndicators, AppButtons>: View where PlayerIndicators
     }
 }
 
-struct ControllerView_Previews: PreviewProvider {
-    static var previews: some View {
-        ControllerView(playerIndicators: EmptyView(), appButtons: EmptyView())
-    }
+#Preview {
+    ControllerView(playerIndicators: EmptyView(), appButtons: EmptyView())
 }

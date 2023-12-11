@@ -5,7 +5,7 @@ private struct ControllerDots: View {
 
     var body: some View {
         HStack(spacing: 3) {
-            ForEach(0..<Int(index+1)) { _ in
+            ForEach(0..<Int(index+1), id: \.self) { _ in
                 Circle()
                     .fill(Color.gray)
                     .frame(width: 4, height: 4)
@@ -71,8 +71,6 @@ struct ControllerPlugView: View {
     }
 }
 
-struct ControllerPlugView_Previews: PreviewProvider {
-    static var previews: some View {
-        ControllerPlugView(index: 1, connected: true)
-    }
+#Preview {
+    ControllerPlugView(index: 1, connected: true)
 }

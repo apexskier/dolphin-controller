@@ -2,6 +2,7 @@ import Combine
 import Foundation
 import UIKit
 import Network
+import ActivityKit
 
 let pingInterval: TimeInterval = 2
 let maxPingCount = 5
@@ -23,19 +24,33 @@ class Client: ObservableObject {
     private var ping: (UUID, Date)? = nil
     private lazy var pingTimer: Timer? = nil
     let pingPublisher = PassthroughSubject<TimeInterval?, Never>()
-
+    
     @Published var lastServer: NWEndpoint?
     @Published var controllerInfo: ClientControllerInfo? = nil
+    
+    private var activityCancellable: Cancellable? = nil
 
     public var idleManager: IdleManager? = nil
         
     init() {
         idleManager = IdleManager(client: self)
         if let endpointData = Self.storage.value(forKey: StorageKeys.lastUsedServer.rawValue) as? Data,
-           let endpointWrapper = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(endpointData) as? EndpointWrapper {
+           let endpointWrapper = try? NSKeyedUnarchiver.unarchivedObject(ofClass: EndpointWrapper.self, from: endpointData) {
             lastServer = endpointWrapper.endpoint
         } else {
             lastServer = nil
+        }
+        
+        if #available(iOS 16.2, *) {
+            activityCancellable = $controllerInfo.sink { completion in
+                Task {
+                    await ActivityManager.update(slot: nil)
+                }
+            } receiveValue: { value in
+               Task {
+                   await ActivityManager.update(slot: value?.assignedController)
+               }
+            }
         }
     }
     
@@ -92,7 +107,8 @@ class Client: ObservableObject {
                         var uuid = UUID()
                         let now = Date()
                         self.ping = (uuid, now)
-                        let data = Data(bytes: &uuid, count: MemoryLayout<UUID>.size)
+                        var bytes = uuid.uuid
+                        let data = Data(bytes: &bytes, count: MemoryLayout<UUID>.size)
                         connection.sendMessage(.ping, data: data)
                     }
                     pingTimer.fire()
