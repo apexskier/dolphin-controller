@@ -4,6 +4,12 @@ import ActivityKit
 class ActivityManager {
     static var activity: Activity<WidgetExtensionAttributes>? = nil
     
+    static func reset() async {
+        for activity in Activity<WidgetExtensionAttributes>.activities {
+            await activity.end(nil, dismissalPolicy: .immediate)
+        }
+    }
+    
     static func update(slot: UInt8?) async {
         if let slot = slot {
             let content = ActivityContent(state: WidgetExtensionAttributes.ContentState(slot: slot), staleDate: nil)

@@ -42,14 +42,17 @@ class Client: ObservableObject {
         }
         
         if #available(iOS 16.2, *) {
+            Task {
+                await ActivityManager.reset()
+            }
             activityCancellable = $controllerInfo.sink { completion in
                 Task {
                     await ActivityManager.update(slot: nil)
                 }
             } receiveValue: { value in
-               Task {
-                   await ActivityManager.update(slot: value?.assignedController)
-               }
+                Task {
+                    await ActivityManager.update(slot: value?.assignedController)
+                }
             }
         }
     }
