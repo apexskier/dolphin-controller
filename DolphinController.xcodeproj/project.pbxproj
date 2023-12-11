@@ -47,19 +47,18 @@
 		C54BE4AB26D495D500530927 /* PolygonShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54BE4A926D495D500530927 /* PolygonShape.swift */; };
 		C55E1CB52B23C001005A98F5 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E1CB42B23C001005A98F5 /* WidgetKit.framework */; };
 		C55E1CB72B23C001005A98F5 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E1CB62B23C001005A98F5 /* SwiftUI.framework */; };
-		C55E1CBA2B23C001005A98F5 /* iOSWidgetExtensionBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E1CB92B23C001005A98F5 /* iOSWidgetExtensionBundle.swift */; };
-		C55E1CBC2B23C001005A98F5 /* iOSWidgetExtensionLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E1CBB2B23C001005A98F5 /* iOSWidgetExtensionLiveActivity.swift */; };
-		C55E1CBE2B23C001005A98F5 /* iOSWidgetExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E1CBD2B23C001005A98F5 /* iOSWidgetExtension.swift */; };
-		C55E1CC02B23C001005A98F5 /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E1CBF2B23C001005A98F5 /* AppIntent.swift */; };
-		C55E1CC22B23C002005A98F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C55E1CC12B23C002005A98F5 /* Assets.xcassets */; };
-		C55E1CC62B23C002005A98F5 /* iOSWidgetExtensionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C55E1CB32B23C001005A98F5 /* iOSWidgetExtensionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C55E1CC62B23C002005A98F5 /* WidgetExtensionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C55E1CB32B23C001005A98F5 /* WidgetExtensionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C55E1CCB2B23C197005A98F5 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51271B626D2B14300820249 /* Theme.swift */; };
 		C55E1CCC2B23C39B005A98F5 /* GCButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52A64C426DC1965001A39C7 /* GCButton.swift */; };
 		C55E1CD12B23CD30005A98F5 /* ActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E1CD02B23CD30005A98F5 /* ActivityManager.swift */; };
-		C55E1CD42B23D082005A98F5 /* ActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E1CD32B23D082005A98F5 /* ActivityAttributes.swift */; };
-		C55E1CD52B23D082005A98F5 /* ActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E1CD32B23D082005A98F5 /* ActivityAttributes.swift */; };
 		C55E1CD82B23D68D005A98F5 /* Intents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E1CD72B23D68D005A98F5 /* Intents.swift */; };
 		C55E1CD92B23D68D005A98F5 /* Intents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E1CD72B23D68D005A98F5 /* Intents.swift */; };
+		C55E1CED2B269A68005A98F5 /* WidgetExtensionBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E1CDD2B269976005A98F5 /* WidgetExtensionBundle.swift */; };
+		C55E1CEE2B269A68005A98F5 /* ActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E1CDC2B269976005A98F5 /* ActivityAttributes.swift */; };
+		C55E1CEF2B269A68005A98F5 /* WidgetExtensionLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E1CDF2B269976005A98F5 /* WidgetExtensionLiveActivity.swift */; };
+		C55E1CF12B269A68005A98F5 /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E1CDE2B269976005A98F5 /* AppIntent.swift */; };
+		C55E1CF22B269A68005A98F5 /* WidgetExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E1CDB2B269976005A98F5 /* WidgetExtension.swift */; };
+		C55E1CF32B269A6B005A98F5 /* ActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E1CDC2B269976005A98F5 /* ActivityAttributes.swift */; };
 		C5624F2626D3292B00ECD78A /* GCPadNew.ini in Resources */ = {isa = PBXBuildFile; fileRef = C5624F2526D3292B00ECD78A /* GCPadNew.ini */; };
 		C59D538E28D6776B005AFEC8 /* IdleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59D538D28D6776B005AFEC8 /* IdleManager.swift */; };
 		C59D539028D69A9E005AFEC8 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59D538F28D69A9E005AFEC8 /* HelpView.swift */; };
@@ -86,7 +85,7 @@
 			containerPortal = C53D553C26B43D4C00E1F75B /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = C55E1CB22B23C001005A98F5;
-			remoteInfo = iOSWidgetExtensionExtension;
+			remoteInfo = WidgetExtensionExtension;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -97,7 +96,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				C55E1CC62B23C002005A98F5 /* iOSWidgetExtensionExtension.appex in Embed Foundation Extensions */,
+				C55E1CC62B23C002005A98F5 /* WidgetExtensionExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -144,18 +143,17 @@
 		C53D55A026B5311900E1F75B /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		C53D55AA26B5362700E1F75B /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		C54BE4A926D495D500530927 /* PolygonShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonShape.swift; sourceTree = "<group>"; };
-		C55E1CB32B23C001005A98F5 /* iOSWidgetExtensionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = iOSWidgetExtensionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		C55E1CB32B23C001005A98F5 /* WidgetExtensionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WidgetExtensionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C55E1CB42B23C001005A98F5 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		C55E1CB62B23C001005A98F5 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		C55E1CB92B23C001005A98F5 /* iOSWidgetExtensionBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSWidgetExtensionBundle.swift; sourceTree = "<group>"; };
-		C55E1CBB2B23C001005A98F5 /* iOSWidgetExtensionLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSWidgetExtensionLiveActivity.swift; sourceTree = "<group>"; };
-		C55E1CBD2B23C001005A98F5 /* iOSWidgetExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSWidgetExtension.swift; sourceTree = "<group>"; };
-		C55E1CBF2B23C001005A98F5 /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
-		C55E1CC12B23C002005A98F5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C55E1CC32B23C002005A98F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C55E1CD02B23CD30005A98F5 /* ActivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityManager.swift; sourceTree = "<group>"; };
-		C55E1CD32B23D082005A98F5 /* ActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityAttributes.swift; sourceTree = "<group>"; };
 		C55E1CD72B23D68D005A98F5 /* Intents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Intents.swift; sourceTree = "<group>"; };
+		C55E1CDA2B269976005A98F5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C55E1CDB2B269976005A98F5 /* WidgetExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetExtension.swift; sourceTree = "<group>"; };
+		C55E1CDC2B269976005A98F5 /* ActivityAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityAttributes.swift; sourceTree = "<group>"; };
+		C55E1CDD2B269976005A98F5 /* WidgetExtensionBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetExtensionBundle.swift; sourceTree = "<group>"; };
+		C55E1CDE2B269976005A98F5 /* AppIntent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
+		C55E1CDF2B269976005A98F5 /* WidgetExtensionLiveActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetExtensionLiveActivity.swift; sourceTree = "<group>"; };
 		C5624F2526D3292B00ECD78A /* GCPadNew.ini */ = {isa = PBXFileReference; lastKnownFileType = text; path = GCPadNew.ini; sourceTree = SOURCE_ROOT; };
 		C59D538D28D6776B005AFEC8 /* IdleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdleManager.swift; sourceTree = "<group>"; };
 		C59D538F28D69A9E005AFEC8 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
@@ -241,7 +239,7 @@
 				C53D555126B43D4F00E1F75B /* macOS */,
 				C53D555B26B43D4F00E1F75B /* Tests iOS */,
 				C53D556626B43D4F00E1F75B /* Tests macOS */,
-				C55E1CB82B23C001005A98F5 /* iOSWidgetExtension */,
+				C55E1CB82B23C001005A98F5 /* WidgetExtension */,
 				C53D554926B43D4E00E1F75B /* Products */,
 				C53D55A326B5332D00E1F75B /* Frameworks */,
 			);
@@ -268,7 +266,7 @@
 				C53D555026B43D4F00E1F75B /* Dolphin Ctrl Server.app */,
 				C53D555826B43D4F00E1F75B /* Tests iOS.xctest */,
 				C53D556326B43D4F00E1F75B /* Tests macOS.xctest */,
-				C55E1CB32B23C001005A98F5 /* iOSWidgetExtensionExtension.appex */,
+				C55E1CB32B23C001005A98F5 /* WidgetExtensionExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -340,18 +338,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C55E1CB82B23C001005A98F5 /* iOSWidgetExtension */ = {
+		C55E1CB82B23C001005A98F5 /* WidgetExtension */ = {
 			isa = PBXGroup;
 			children = (
-				C55E1CB92B23C001005A98F5 /* iOSWidgetExtensionBundle.swift */,
-				C55E1CBB2B23C001005A98F5 /* iOSWidgetExtensionLiveActivity.swift */,
-				C55E1CBD2B23C001005A98F5 /* iOSWidgetExtension.swift */,
-				C55E1CD32B23D082005A98F5 /* ActivityAttributes.swift */,
-				C55E1CBF2B23C001005A98F5 /* AppIntent.swift */,
-				C55E1CC12B23C002005A98F5 /* Assets.xcassets */,
-				C55E1CC32B23C002005A98F5 /* Info.plist */,
+				C55E1CDC2B269976005A98F5 /* ActivityAttributes.swift */,
+				C55E1CDE2B269976005A98F5 /* AppIntent.swift */,
+				C55E1CDB2B269976005A98F5 /* WidgetExtension.swift */,
+				C55E1CDD2B269976005A98F5 /* WidgetExtensionBundle.swift */,
+				C55E1CDF2B269976005A98F5 /* WidgetExtensionLiveActivity.swift */,
+				C55E1CDA2B269976005A98F5 /* Info.plist */,
 			);
-			path = iOSWidgetExtension;
+			path = WidgetExtension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -433,9 +430,9 @@
 			productReference = C53D556326B43D4F00E1F75B /* Tests macOS.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		C55E1CB22B23C001005A98F5 /* iOSWidgetExtensionExtension */ = {
+		C55E1CB22B23C001005A98F5 /* WidgetExtensionExtension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C55E1CCA2B23C002005A98F5 /* Build configuration list for PBXNativeTarget "iOSWidgetExtensionExtension" */;
+			buildConfigurationList = C55E1CCA2B23C002005A98F5 /* Build configuration list for PBXNativeTarget "WidgetExtensionExtension" */;
 			buildPhases = (
 				C55E1CAF2B23C001005A98F5 /* Sources */,
 				C55E1CB02B23C001005A98F5 /* Frameworks */,
@@ -445,9 +442,9 @@
 			);
 			dependencies = (
 			);
-			name = iOSWidgetExtensionExtension;
-			productName = iOSWidgetExtensionExtension;
-			productReference = C55E1CB32B23C001005A98F5 /* iOSWidgetExtensionExtension.appex */;
+			name = WidgetExtensionExtension;
+			productName = WidgetExtensionExtension;
+			productReference = C55E1CB32B23C001005A98F5 /* WidgetExtensionExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -498,7 +495,7 @@
 				C53D554F26B43D4F00E1F75B /* DolphinController (macOS) */,
 				C53D555726B43D4F00E1F75B /* Tests iOS */,
 				C53D556226B43D4F00E1F75B /* Tests macOS */,
-				C55E1CB22B23C001005A98F5 /* iOSWidgetExtensionExtension */,
+				C55E1CB22B23C001005A98F5 /* WidgetExtensionExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -540,7 +537,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C55E1CC22B23C002005A98F5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -556,7 +552,6 @@
 				C52A64C326DC1910001A39C7 /* ControllerView.swift in Sources */,
 				C53D559026B443D500E1F75B /* Networking.swift in Sources */,
 				C50E761C26B83F2400FB8C2C /* Haptics.swift in Sources */,
-				C55E1CD42B23D082005A98F5 /* ActivityAttributes.swift in Sources */,
 				C53D558D26B4402E00E1F75B /* ContentView.swift in Sources */,
 				C55E1CD12B23CD30005A98F5 /* ActivityManager.swift in Sources */,
 				C54BE4AA26D495D500530927 /* PolygonShape.swift in Sources */,
@@ -574,6 +569,7 @@
 				C53D558726B43F3C00E1F75B /* ObservableObject.swift in Sources */,
 				C59D538E28D6776B005AFEC8 /* IdleManager.swift in Sources */,
 				C52CD4BA26C44C970081ABF5 /* ServerBrowserView.swift in Sources */,
+				C55E1CF32B269A6B005A98F5 /* ActivityAttributes.swift in Sources */,
 				C50E761726B7CA6B00FB8C2C /* JoystickView.swift in Sources */,
 				C53D55AB26B5362700E1F75B /* Client.swift in Sources */,
 			);
@@ -620,14 +616,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C55E1CBC2B23C001005A98F5 /* iOSWidgetExtensionLiveActivity.swift in Sources */,
-				C55E1CC02B23C001005A98F5 /* AppIntent.swift in Sources */,
-				C55E1CD52B23D082005A98F5 /* ActivityAttributes.swift in Sources */,
 				C55E1CCB2B23C197005A98F5 /* Theme.swift in Sources */,
+				C55E1CF22B269A68005A98F5 /* WidgetExtension.swift in Sources */,
+				C55E1CED2B269A68005A98F5 /* WidgetExtensionBundle.swift in Sources */,
+				C55E1CEE2B269A68005A98F5 /* ActivityAttributes.swift in Sources */,
 				C55E1CCC2B23C39B005A98F5 /* GCButton.swift in Sources */,
+				C55E1CF12B269A68005A98F5 /* AppIntent.swift in Sources */,
+				C55E1CEF2B269A68005A98F5 /* WidgetExtensionLiveActivity.swift in Sources */,
 				C55E1CD92B23D68D005A98F5 /* Intents.swift in Sources */,
-				C55E1CBA2B23C001005A98F5 /* iOSWidgetExtensionBundle.swift in Sources */,
-				C55E1CBE2B23C001005A98F5 /* iOSWidgetExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -646,7 +642,7 @@
 		};
 		C55E1CC52B23C002005A98F5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = C55E1CB22B23C001005A98F5 /* iOSWidgetExtensionExtension */;
+			target = C55E1CB22B23C001005A98F5 /* WidgetExtensionExtension */;
 			targetProxy = C55E1CC42B23C002005A98F5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -967,8 +963,8 @@
 				DEVELOPMENT_TEAM = 6D9DLTQJSN;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = iOSWidgetExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = iOSWidgetExtension;
+				INFOPLIST_FILE = WidgetExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = WidgetExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -978,7 +974,7 @@
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.camlittle.DolphinController.iOSWidgetExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.camlittle.DolphinController.WidgetExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1001,8 +997,8 @@
 				DEVELOPMENT_TEAM = 6D9DLTQJSN;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = iOSWidgetExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = iOSWidgetExtension;
+				INFOPLIST_FILE = WidgetExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = WidgetExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1012,7 +1008,7 @@
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.camlittle.DolphinController.iOSWidgetExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.camlittle.DolphinController.WidgetExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1071,7 +1067,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C55E1CCA2B23C002005A98F5 /* Build configuration list for PBXNativeTarget "iOSWidgetExtensionExtension" */ = {
+		C55E1CCA2B23C002005A98F5 /* Build configuration list for PBXNativeTarget "WidgetExtensionExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C55E1CC82B23C002005A98F5 /* Debug */,

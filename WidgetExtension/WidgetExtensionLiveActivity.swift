@@ -2,9 +2,9 @@ import ActivityKit
 import WidgetKit
 import SwiftUI
 
-struct iOSWidgetExtensionLiveActivity: Widget {
+struct WidgetExtensionLiveActivity: Widget {
     var body: some WidgetConfiguration {
-        ActivityConfiguration(for: iOSWidgetExtensionAttributes.self) { context in
+        ActivityConfiguration(for: WidgetExtensionAttributes.self) { context in
             // Lock screen/banner UI goes here
             HStack {
                 Button(intent: PressBIntent()) {
@@ -68,6 +68,7 @@ struct iOSWidgetExtensionLiveActivity: Widget {
                     .font(.gameCubeController(size: 16))
                     .bold()
             } compactTrailing: {
+                // nothing
             } minimal: {
                 Text("P\(context.state.slot+1)")
                     .font(.gameCubeController(size: 16))
@@ -78,8 +79,8 @@ struct iOSWidgetExtensionLiveActivity: Widget {
     }
 }
 
-#Preview("Notification", as: .content, using: iOSWidgetExtensionAttributes()) {
-    iOSWidgetExtensionLiveActivity()
+#Preview("Notification", as: .content, using: WidgetExtensionAttributes()) {
+    WidgetExtensionLiveActivity()
 } contentStates: {
-    iOSWidgetExtensionAttributes.ContentState(slot: 1)
+    WidgetExtensionAttributes.ContentState(slot: 1)
 }
