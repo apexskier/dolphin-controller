@@ -104,7 +104,7 @@ class Client: ObservableObject {
                         guard let self = self else {
                             return
                         }
-                        var uuid = UUID()
+                        let uuid = UUID()
                         let now = Date()
                         self.ping = (uuid, now)
                         var bytes = uuid.uuid
