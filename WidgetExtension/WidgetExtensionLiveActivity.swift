@@ -3,30 +3,40 @@ import WidgetKit
 import SwiftUI
 
 struct WidgetExtensionLiveActivity: Widget {
+    let aButton: some View = Button(intent: PressAIntent()) {
+        Text("A")
+    }
+        .buttonStyle(GCCButton(
+            color: GameCubeColors.green,
+            width: 60,
+            height: 60
+        ))
+    
+    let bButton: some View = VStack {
+        Spacer()
+        Button(intent: PressBIntent()) {
+            Text("B")
+        }
+            .buttonStyle(GCCButton(
+                color: GameCubeColors.red,
+                width: 50,
+                height: 50
+            ))
+    }.frame(maxHeight: .infinity)
+    
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: WidgetExtensionAttributes.self) { context in
             // Lock screen/banner UI goes here
             HStack {
-                Button(intent: PressBIntent()) {
-                    Text("B")
-                }
-                    .buttonStyle(GCCButton(
-                        color: GameCubeColors.red,
-                        width: 50,
-                        height: 50
-                    ))
+                VStack {
+                    Spacer()
+                    bButton
+                }.frame(maxHeight: .infinity)
                 Spacer()
                 Text("P\(context.state.slot+1)")
                     .gcLabel(size: 20)
                 Spacer()
-                Button(intent: PressAIntent()) {
-                    Text("A")
-                }
-                    .buttonStyle(GCCButton(
-                        color: GameCubeColors.green,
-                        width: 60,
-                        height: 60
-                    ))
+                aButton
             }
             .frame(maxWidth: .infinity)
             .padding()
@@ -37,45 +47,35 @@ struct WidgetExtensionLiveActivity: Widget {
                 DynamicIslandExpandedRegion(.leading) {
                     VStack {
                         Spacer()
-                        Button(intent: PressBIntent()) {
-                            Text("B")
-                        }
-                        .buttonStyle(GCCButton(
-                            color: GameCubeColors.red,
-                            width: 60,
-                            height: 60
-                        ))
+                        bButton
                     }.frame(maxHeight: .infinity)
                 }
                 DynamicIslandExpandedRegion(.center) {
-                    Text("P\(context.state.slot+1)")
-                        .font(.gameCubeController(size: 24))
-                        .bold()
+                    SlotText(slot: context.state.slot)
+                        .font(.gameCubeController(size: 24)).bold()
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    // might be nice to be able to confirm without opening the app in something like mario party
-                    Button(intent: PressBIntent()) {
-                        Text("A")
-                    }
-                        .buttonStyle(GCCButton(
-                            color: GameCubeColors.green,
-                            width: 80,
-                            height: 80
-                        ))
+                    aButton
                 }
             } compactLeading: {
-                Text("P\(context.state.slot+1)")
-                    .font(.gameCubeController(size: 16))
-                    .bold()
+                SlotText(slot: context.state.slot)
+                    .font(.gameCubeController(size: 16)).bold()
             } compactTrailing: {
                 // nothing
             } minimal: {
-                Text("P\(context.state.slot+1)")
-                    .font(.gameCubeController(size: 16))
-                    .bold()
+                SlotText(slot: context.state.slot)
+                    .font(.gameCubeController(size: 16)).bold()
             }
             .keylineTint(GameCubeColors.purple)
         }
+    }
+}
+
+struct SlotText: View {
+    var slot: UInt8
+    
+    var body: some View {
+        Text("P\(slot+1)")
     }
 }
 
