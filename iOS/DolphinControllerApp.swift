@@ -9,13 +9,16 @@ import NetworkExtension
 struct DolphinControllerApp: App {
     @ObservedObject var client = Client()
     @State var shouldAutoReconnect: Bool = true
-    
+
+    @AppStorage("skin") private var skin = Skin.indigo
+
     var body: some Scene {
         WindowGroup {
             ZStack {
-                GameCubeColors.purple.ignoresSafeArea()
+                skin.view.ignoresSafeArea()
                 ContentView(
-                    shouldAutoReconnect: $shouldAutoReconnect
+                    shouldAutoReconnect: $shouldAutoReconnect,
+                    skin: $skin
                 )
                     .environmentObject(client)
                     .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
@@ -24,7 +27,6 @@ struct DolphinControllerApp: App {
                         }
                     }
                     .onReceive(NotificationCenter.default.publisher(for: AIntentNotificationName), perform: { _ in
-                        print("press A intent handler")
                         client.send("PRESS A")
                         DispatchQueue.main.async {
                             let t = Timer.scheduledTimer(
@@ -37,7 +39,6 @@ struct DolphinControllerApp: App {
                         }
                     })
                     .onReceive(NotificationCenter.default.publisher(for: BIntentNotificationName), perform: { _ in
-                        print("press B intent handler")
                         client.send("PRESS B")
                         DispatchQueue.main.async {
                             let t = Timer.scheduledTimer(
@@ -51,6 +52,7 @@ struct DolphinControllerApp: App {
                     })
             }
             .ignoresSafeArea(edges: .top)
+            .environment(\.skin, skin)
         }
     }
 }

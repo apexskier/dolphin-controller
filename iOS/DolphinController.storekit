@@ -1,0 +1,167 @@
+{
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
+  },
+  "identifier" : "72A49B88",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "5.00",
+      "familyShareable" : false,
+      "internalID" : "727664EF",
+      "localizations" : [
+        {
+          "description" : "A five dollar tip!",
+          "displayName" : "T2",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "tip5",
+      "referenceName" : "Tip5",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "10.00",
+      "familyShareable" : false,
+      "internalID" : "DDD7B3AC",
+      "localizations" : [
+        {
+          "description" : "A three dollar tip!",
+          "displayName" : "T3",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "tip10",
+      "referenceName" : "Tip10",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "1.00",
+      "familyShareable" : false,
+      "internalID" : "593BE86C",
+      "localizations" : [
+        {
+          "description" : "A one dollar tip!",
+          "displayName" : "T1",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "tip1",
+      "referenceName" : "Tip1",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "1.00",
+      "familyShareable" : false,
+      "internalID" : "6EB1D2BC",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "support1",
+      "referenceName" : "Support1",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "5.00",
+      "familyShareable" : false,
+      "internalID" : "BF018C86",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "T2",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "support5",
+      "referenceName" : "Support5",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "10.00",
+      "familyShareable" : false,
+      "internalID" : "280D2231",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "T3",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "support10",
+      "referenceName" : "Support10",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

@@ -10,7 +10,7 @@ struct DolphinControllerApp: App {
     var body: some Scene {
         WindowGroup {
             ZStack {
-                GameCubeColors.purple.ignoresSafeArea()
+                Skin.indigo.color.ignoresSafeArea()
                 ContentView()
                     .padding([.horizontal, .bottom])
             }
