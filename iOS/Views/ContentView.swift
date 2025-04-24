@@ -14,6 +14,8 @@ struct ContentView: View {
     @State private var ping: TimeInterval? = nil
     @AppStorage("showPing") private var showPing = false
 
+    @Binding var skin: Skin
+
     var body: some View {
         ZStack {
             if showPing {
@@ -105,7 +107,7 @@ struct ContentView: View {
                     .environmentObject(client)
             }
             .sheet(isPresented: $showingSettings) {
-                SettingsView()
+                SettingsView(skin: $skin)
             }
             .alert(isPresented: Binding(get: {
                 self.error != nil

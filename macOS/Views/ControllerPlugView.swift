@@ -52,7 +52,7 @@ struct ControllerPlugView: View {
                     .frame(width: 36, height: 36)
                 if connected {
                     Circle()
-                        .fill(GameCubeColors.purple)
+                        .fill(Skin.indigo.color)
                         .frame(width: 30, height: 30)
                     ZStack { // this pulls the "cord" (rounded rect) out of the layout flow
                         RoundedRectangle(cornerRadius: 12)
