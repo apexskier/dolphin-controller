@@ -9,7 +9,7 @@ Video games were meant to be played together. All you need to play a game with f
 ## Installation & Usage
 
 1. [Download the latest version of Dolphin emulator](https://dolphin-emu.org)
-2. [Install the iOS app from the App Store](https://apps.apple.com/us/app/dolphin-ctrl/id1584272645) and the [macOS server from GitHub](https://github.com/apexskier/dolphin-controller/releases/latest) (or build and run the with XCode)
+2. [Install the iOS app from the App Store](https://apps.apple.com/us/app/dolphin-ctrl/id1584272645) and the [macOS server from GitHub](https://github.com/apexskier/dolphin-controller/releases/latest) (or build and run with XCode)
 3. From the iOS app, tap "Join" and find your server
 4. Pick a controller number by tapping P1, P2, P3, or P4
 
